@@ -13,7 +13,7 @@ We do extensive experiments to show how different components (#Layers, #Filters,
 Further information and details please contact [Guohao Li](https://ivul.kaust.edu.sa/Pages/Guohao-Li.aspx) and [Matthias Muller](https://matthias.pw/).
 
 ## Requirements
-* [TensorFlow 1.12.0](https://www.tensorflow.org/)
+* [Pytorch 1.1](https://pytorch.org)
 * [h5py](https://www.h5py.org/)
 
 ## Citation
