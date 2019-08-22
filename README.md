@@ -14,7 +14,11 @@ Further information and details please contact [Guohao Li](https://ivul.kaust.ed
 
 ## Requirements
 * [Pytorch 1.1](https://pytorch.org)
-* [h5py](https://www.h5py.org/)
+* [pytorch_geometric 1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
+
+```
+bash deepgcn_env_install.sh
+```
 
 ## Citation
 Please cite our paper if you find anything helpful,
