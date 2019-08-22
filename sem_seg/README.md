@@ -24,9 +24,9 @@ bash sem_seg/script/test.sh
 
 #### Pretrained Models
 
-use parameter $--pretrained_model$ to change the specific pretrained model you want. Have fun.
+use parameter $--pretrained_model$ to change the specific pretrained model you want. 
 ```
-python -u sem_seg/test.py --pretrained_model sem_seg/checkpoints/1v_checkpoint_50.pth  --batch_size 1 --train_path data/3D/S3DIS 
+python -u sem_seg/test.py --pretrained_model sem_seg/checkpoints/deepgcn-res-edge-190822_ckpt_50.pth  --batch_size 1 --train_path data/3D/S3DIS 
 ```
 
 #### Notice
