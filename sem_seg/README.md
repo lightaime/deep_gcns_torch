@@ -29,5 +29,9 @@ use parameter $--pretrained_model$ to change the specific pretrained model you w
 python -u sem_seg/test.py --pretrained_model sem_seg/checkpoints/1v_checkpoint_50.pth  --batch_size 1 --train_path data/3D/S3DIS 
 ```
 
+#### Notice
+
+This is a draft version. The pretrained model was trained for 50 epochs. The final performance for ResGCN-28 on Area 5 is 51.04 mIOU which is slightly lower than the TensorFlow implementation (52.49 mIOU).
+
 #### Visualization
 Coming soon!! 
