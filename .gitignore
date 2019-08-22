@@ -1,4 +1,3 @@
-sem_seg/checkpoints/
 sem_seg/logs/
 *ipynb
 *.pyc
