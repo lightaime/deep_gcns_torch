@@ -3,3 +3,8 @@ sem_seg/logs/
 *.pyc
 .git/
 .idea/*
+sem_seg/checkpoints/
+sem_seg/logs/
+sem_seg_dense/checkpoints/
+sem_seg_dense/logs/
+sem_seg_dense/script/train_ibex.sh

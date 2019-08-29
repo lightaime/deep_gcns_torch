@@ -25,14 +25,14 @@ def main():
         opt.n_classes -= 1
 
     print('===> Loading the network ...')
-    opt.model = getattr(models, opt.model_name)(opt).to(opt.device)
-    load_pretrained_models(opt)
+    model = getattr(models, opt.model_name)(opt).to(opt.device)
+    model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     print('===> Start Evaluation ...')
-    test(test_loader, opt.model, opt)
+    test(opt.model, test_loader, opt)
 
 
-def test(loader, model, opt):
+def test(model, loader, opt):
     Is = np.empty((len(loader), opt.n_classes))
     Us = np.empty((len(loader), opt.n_classes))
 
