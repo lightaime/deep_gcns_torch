@@ -23,14 +23,14 @@ bash deepgcn_env_install.sh
 ## Citation
 Please cite our paper if you find anything helpful,
 
-	@misc{li2019deepgcns,
-	    title={DeepGCNs: Can GCNs Go as Deep as CNNs?},
-	    author={Guohao Li and Matthias Müller and Ali Thabet and Bernard Ghanem},
-	    year={2019},
-	    eprint={1904.03751},
-	    archivePrefix={arXiv},
-	    primaryClass={cs.CV}
-	}
+```
+@InProceedings{li2019deepgcns,
+    title={DeepGCNs: Can GCNs Go as Deep as CNNs?},
+    author={Guohao Li and Matthias Müller and Ali Thabet and Bernard Ghanem},
+    booktitle={The IEEE International Conference on Computer Vision (ICCV)},
+    year={2019}
+}
+```
 
 ## License
 MIT License
