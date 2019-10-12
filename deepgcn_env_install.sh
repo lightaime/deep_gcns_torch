@@ -31,7 +31,7 @@ pip install --verbose --no-cache-dir torch-sparse
 pip install --verbose --no-cache-dir torch-cluster
 pip install --verbose --no-cache-dir torch-spline-conv
 pip install torch-geometric
-
+pip install --upgrade tensorflow-graphics
 # install useful modules
 pip install requests # sometimes pytorch geometric forget to install it, but it is in need
 pip install tqdm
