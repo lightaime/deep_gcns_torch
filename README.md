@@ -17,7 +17,7 @@ Further information and details please contact [Guohao Li](https://ivul.kaust.ed
 * [pytorch_geometric 1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
 
 ```
-bash deepgcn_env_install.sh
+source deepgcn_env_install.sh
 ```
 
 ## Code Architecture
