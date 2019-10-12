@@ -3,16 +3,14 @@
 
 For training the default ResEdgeConv-28 with 64 filters, run
 ```
-cd deep_gcns_torch
-python -u examples/ppi/main.py --phase train --train_path path/to/data
+python -u examples/ppi/main.py --phase train --train_path /data/deepgcn/ppi
 ```
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-cd deep_gcns_torch
-python -u examples/ppi/main.py --phase train --conv mr --train_path path/to/data
+python -u examples/ppi/main.py --phase train --conv mr --train_path /data/deepgcn/ppi
 ```
 
-Just need to set `--train_path path/to/data`, dataset will be downloaded automatically.
+Just need to set `--train_path` into your data folder, dataset will be downloaded automatically.
 Other parameters for changing the architecture are:
 ```
     --block         graph backbone block type {res, plain, dense}
@@ -28,6 +26,6 @@ The Naming format of our pretrained model: `task-connection-conv_type-n_blocks-n
 
 Use parameter `--pretrained_model` to set the specific pretrained model you want. 
 ```
-python -u examples/ppi/main.py --pretrained_model checkpoints/ppi-res-edge-14-256_model_best.pth --train_path data/ --n_filters 256 --n_blocks 14
+python -u examples/ppi/main.py --pretrained_model checkpoints/ppi-res-edge-14-256_model_best.pth --train_path /data/deepgcn/ppi --n_filters 256 --n_blocks 14
 ```
 Please also specify the number of blocks and filters according to the name of pretrained models.

@@ -8,13 +8,11 @@ For example, our data folder structure is like this: `/data/deepgcn/partnet/raw/
 ### Train
 For training the default ResEdgeConv-28 with 64 filters on the Bed category, run:
 ```
-cd deep_gcns_torch
-python -u examples/part_sem_seg/main.py --phase train  --category 1 --train_path path/to/data
+python examples/part_sem_seg/main.py --phase train  --category 1 --train_path /data/deepgcn/part
 ```
 If you want to train a model with other gcn layers (for example mrgcn), run
 ```
-cd deep_gcns_torch
-python -u examples/part_sem_seg/main.py --phase train --category 1 --conv mr --train_path path/to/data
+python examples/part_sem_seg/main.py --phase train --category 1 --conv mr --train_path /data/deepgcn/part
 ```
 Other parameters for changing the architecture are:
 ```
@@ -39,7 +37,7 @@ The Naming format of our pretrained model is: `task-connection-conv_type-n_block
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example, 
 ```
-python -u examples/part_sem_seg/main.py --category 1 --pretrained_model checkpoints/part_sem_seg-res-edge-28-64_model_best.pth
+python -u examples/part_sem_seg/main.py --category 1 --pretrained_model checkpoints/part_sem_seg-res-edge-28-64_model_best.pth --train_path /data/deepgcn/part
 ```
 Please also specify the number of blocks and filters. 
 Note: the path of `--pretrained_model` is a relative path to `examples/part_sem_seg/main.py`, so don't add `examples/part_sem_seg` in `--pretrained_model`. Or you can feed an absolute path of `--pretrained_model`. 
@@ -47,13 +45,13 @@ Note: the path of `--pretrained_model` is a relative path to `examples/part_sem_
 #### Evaluation
 Use the following command to test a model:
 ```
-python -u examples/part_sem_seg/main.py --phase test --test_path path/to/data --category 1
+python -u examples/part_sem_seg/main.py --phase test --test_path /data/deepgcn/part--category 1
 ```
 #### Visualization
 1. step1
 Use the script `eval.py` to generate `.obj` files to be visualized:
 ```
-python -u examples/part_sem_seg/eval.py --phase test --test_path path/to/data --category 1
+python -u examples/part_sem_seg/eval.py --phase test --test_path /data/deepgcn/part --category 1
 ```
 2. step2
 To visualize the output of a trained model please use `visualize.py`.
