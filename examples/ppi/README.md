@@ -13,10 +13,10 @@ python -u examples/ppi/main.py --phase train --conv mr --train_path /data/deepgc
 Just need to set `--train_path` into your data folder, dataset will be downloaded automatically.
 Other parameters for changing the architecture are:
 ```
-    --block         graph backbone block type {res, plain, dense}
-    --conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
-    --n_filters     number of channels of deep features, default is 64
-    --n_blocks      number of basic blocks, default is 28
+--block         graph backbone block type {res, plain, dense}
+--conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
+--n_filters     number of channels of deep features, default is 64
+--n_blocks      number of basic blocks, default is 28
 ```
 ### Test
 #### Pretrained Models
