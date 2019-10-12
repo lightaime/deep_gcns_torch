@@ -38,7 +38,6 @@ def pairwise_distance(x):
         pairwise distance: (batch_size, num_points, num_points)
     """
     x_inner = -2*torch.matmul(x, x.transpose(2, 1))
-    # TODO: pairwise distance.
     x_square = torch.sum(torch.mul(x, x), dim=-1, keepdim=True)
     return x_square + x_inner + x_square.transpose(2, 1)
 
@@ -51,17 +50,11 @@ def dense_knn_matrix(x, k=16):
     Returns:
         nearest neighbors: (batch_size, num_points ,k) (batch_size, num_points, k)
     """
-    x = x.transpose(2, 1).squeeze()
+    x = x.transpose(2, 1).squeeze(-1)
     batch_size, n_points, n_dims = x.shape
-    neg_adj = -pairwise_distance(x)
-    _, nn_idx = torch.topk(neg_adj, k=k)
-    del neg_adj
-
-    if x.is_cuda:
-        torch.cuda.empty_cache()
+    _, nn_idx = torch.topk(-pairwise_distance(x.detach()), k=k)
     center_idx = torch.arange(0, n_points).repeat(batch_size, k, 1).transpose(2, 1)
-    if x.is_cuda:
-        center_idx = center_idx.cuda()
+    center_idx = center_idx.to(x.device)
     return torch.stack((nn_idx, center_idx), dim=0)
 
 
@@ -80,4 +73,29 @@ class DenseDilatedKnnGraph(nn.Module):
 
     def forward(self, x):
         edge_index = self.knn(x, self.k * self.dilation)
+        return self._dilated(edge_index)
+
+
+class DilatedKnnGraph(nn.Module):
+    """
+    Find the neighbors' indices based on dilated knn
+    """
+    def __init__(self, k=9, dilation=1, stochastic=False, epsilon=0.0):
+        super(DilatedKnnGraph, self).__init__()
+        self.dilation = dilation
+        self.stochastic = stochastic
+        self.epsilon = epsilon
+        self.k = k
+        self._dilated = DenseDilated(k, dilation, stochastic, epsilon)
+        self.knn = knn_graph
+
+    def forward(self, x):
+        x = x.squeeze(-1)
+        B, C, N = x.shape
+        edge_index = []
+        for i in range(B):
+            edgeindex = self.knn(x[i].contiguous().transpose(1, 0).contiguous(), self.k * self.dilation)
+            edgeindex = edgeindex.view(2, N, self.k * self.dilation)
+            edge_index.append(edgeindex)
+        edge_index = torch.stack(edge_index, dim=1)
         return self._dilated(edge_index)

@@ -9,9 +9,9 @@ import torch_geometric.transforms as T
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT_DIR)
-from utils.opt import OptInit
+from opt import OptInit
+from architecture import DenseDeepGCN
 from utils.ckpt_util import load_pretrained_models
-import models.architecture as models
 
 
 def main():
@@ -25,11 +25,11 @@ def main():
         opt.n_classes -= 1
 
     print('===> Loading the network ...')
-    model = getattr(models, opt.model_name)(opt).to(opt.device)
+    model = DenseDeepGCN(opt).to(opt.device)
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     print('===> Start Evaluation ...')
-    test(opt.model, test_loader, opt)
+    test(model, test_loader, opt)
 
 
 def test(model, loader, opt):
@@ -40,8 +40,10 @@ def test(model, loader, opt):
     with torch.no_grad():
         for i, data in enumerate(tqdm(loader)):
             data = data.to(opt.device)
+            inputs = torch.cat((data.pos.transpose(2, 1).unsqueeze(3), data.x.transpose(2, 1).unsqueeze(3)), 1)
             gt = data.y
-            out = model(data)
+
+            out = model(inputs)
             pred = out.max(dim=1)[1]
 
             pred_np = pred.cpu().numpy()
@@ -62,28 +64,5 @@ def test(model, loader, opt):
 
 if __name__ == '__main__':
     main()
-
-
-# from TorchTools.DataTools import indoor3d_util
-# TODO: visulazation
-# if opt.visu:
-#     fout = open('_pred.obj'), 'w')
-#     fout_gt = open(os.path.join(DUMP_DIR, os.path.basename(room_path)[:-4]+'_gt.obj'), 'w')
-# fout_data_label = open(out_data_label_filename, 'w')
-# fout_gt_label = open(out_gt_label_filename, 'w')
-#
-#
-# data.x[0:3] *= 255.
-#
-# for i in range(len(pred)):
-#     color = indoor3d_util.g_label2color[pred[i]]
-#     color_gt = indoor3d_util.g_label2color[gt[i]]
-#     if opt.visu:
-#         fout.write('v %f %f %f %d %d %d\n' % (data.x[i, 3], data.x[i, 4], data.x[i, 5], color[i, 0], color[i, 1], color[i, 2]))
-#         fout_gt.write(
-#             'v %f %f %f %d %d %d\n' % (data.x[i, 3], data.x[i, 4], data.x[i, 5], color_gt[i, 0], color_gt[i, 1], color_gt[i, 2]))
-#     fout_data_label.write('%f %f %f %d %d %d %f %d\n' % (
-#     data.x[i, 3], data.x[i, 4], data.x[i, 5], data.x[i, 0], data.x[i, 1], data.x[i, 2], out[i, pred], pred))
-#     fout_gt_label.write('%d\n' % (gt[i]))
 
 

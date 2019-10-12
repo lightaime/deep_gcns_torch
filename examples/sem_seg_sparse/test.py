@@ -9,9 +9,9 @@ import torch_geometric.transforms as T
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT_DIR)
-from utils.opt import OptInit
+from opt import OptInit
+from architecture import SparseDeepGCN
 from utils.ckpt_util import load_pretrained_models
-import models.architecture as models
 
 
 def main():
@@ -25,11 +25,11 @@ def main():
         opt.n_classes -= 1
 
     print('===> Loading the network ...')
-    model = getattr(models, opt.model_name)(opt).to(opt.device)
+    model = SparseDeepGCN(opt).to(opt.device)
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     print('===> Start Evaluation ...')
-    test(opt.model, test_loader, opt)
+    test(model, test_loader, opt)
 
 
 def test(model, loader, opt):

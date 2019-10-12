@@ -10,7 +10,7 @@ We do extensive experiments to show how different components (#Layers, #Filters,
 
 <div style="text-align:center"><img src='./misc/pipeline.png' width=800>
 
-Further information and details please contact [Guohao Li](https://ghli.org) and [Matthias Muller](https://matthias.pw/).
+Further information and details please contact [Guohao Li](https://ivul.kaust.edu.sa/Pages/Guohao-Li.aspx) and [Matthias Muller](https://matthias.pw/).
 
 ## Requirements
 * [Pytorch 1.1](https://pytorch.org)
@@ -20,6 +20,22 @@ Further information and details please contact [Guohao Li](https://ghli.org) and
 bash deepgcn_env_install.sh
 ```
 
+## Code Architecture
+    .
+    ├── misc                    # Misc images
+    ├── utils                   # Common useful modules
+    ├── gcn_lib                 # gcn library
+    │   ├── dense               # gcn library for dense data (B x C x N x 1)
+    │   └── sparse              # gcn library for sparse data (N x C)
+    ├── examples 
+    │   ├── sem_seg             # code for point clouds semantic segmentation
+    │   ├── part_sem_seg        # code for part segmentation
+    │   └── ppi                 # code for node classification on PPI dataset
+    └── ...
+
+## How to train, test and evaluate our models
+Please look the details in `Readme.md` of each task inside `examples` folder.
+All the information of code, data, and pretrained models can be found there.
 ## Citation
 Please cite our paper if you find anything helpful,
 
@@ -36,4 +52,4 @@ Please cite our paper if you find anything helpful,
 MIT License
 
 ## Acknowledgement
-Thanks for [Guocheng Qian](https://www.gcqian.com/) for the implementation of the Pytorch version.
+Thanks for [Guocheng Qian](https://github.com/guochengqian) for the implementation of the Pytorch version.

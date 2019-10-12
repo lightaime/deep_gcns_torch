@@ -8,34 +8,34 @@ from torch.nn import Sequential as Seq, Linear as Lin
 def act_layer(act_type, inplace=False, neg_slope=0.2, n_prelu=1):
     """
     helper selecting activation
-    :param act_type:
+    :param act:
     :param inplace:
     :param neg_slope:
     :param n_prelu:
     :return:
     """
 
-    act_type = act_type.lower()
-    if act_type == 'relu':
+    act = act_type.lower()
+    if act == 'relu':
         layer = nn.ReLU(inplace)
-    elif act_type == 'leakyrelu':
+    elif act == 'leakyrelu':
         layer = nn.LeakyReLU(neg_slope, inplace)
-    elif act_type == 'prelu':
+    elif act == 'prelu':
         layer = nn.PReLU(num_parameters=n_prelu, init=neg_slope)
     else:
-        raise NotImplementedError('activation layer [%s] is not found' % act_type)
+        raise NotImplementedError('activation layer [%s] is not found' % act)
     return layer
 
 
 def norm_layer(norm_type, nc):
     # helper selecting normalization layer
-    norm_type = norm_type.lower()
-    if norm_type == 'batch':
+    norm = norm_type.lower()
+    if norm == 'batch':
         layer = nn.BatchNorm1d(nc, affine=True)
-    elif norm_type == 'instance':
+    elif norm == 'instance':
         layer = nn.InstanceNorm1d(nc, affine=False)
     else:
-        raise NotImplementedError('normalization layer [%s] is not found' % norm_type)
+        raise NotImplementedError('normalization layer [%s] is not found' % norm)
     return layer
 
 
@@ -53,13 +53,14 @@ class MultiSeq(Seq):
 
 
 class MLP(Seq):
-    def __init__(self, channels, act_type='relu', norm_type=None, bias=True):
+    def __init__(self, channels, act='relu', norm=None, bias=True):
         m = []
         for i in range(1, len(channels)):
             m.append(Lin(channels[i - 1], channels[i], bias))
-            if act_type:
-                m.append(act_layer(act_type))
-            if norm_type:
-                m.append(norm_layer(norm_type, channels[-1]))
-        super(MLP, self).__init__(*m)
+            if act:
+                m.append(act_layer(act))
+            if norm:
+                m.append(norm_layer(norm, channels[-1]))
+        self.m = m
+        super(MLP, self).__init__(*self.m)
 

@@ -33,14 +33,14 @@ class DilatedKnnGraph(nn.Module):
     """
     Find the neighbors' indices based on dilated knn
     """
-    def __init__(self, k=9, dilation=1, stochastic=False, epsilon=0.0, knn_type='matrix'):
+    def __init__(self, k=9, dilation=1, stochastic=False, epsilon=0.0, knn='matrix'):
         super(DilatedKnnGraph, self).__init__()
         self.dilation = dilation
         self.stochastic = stochastic
         self.epsilon = epsilon
         self.k = k
         self._dilated = Dilated(k, dilation, stochastic, epsilon)
-        if knn_type == 'matrix':
+        if knn == 'matrix':
             self.knn = knn_graph_matrix
         else:
             self.knn = knn_graph
@@ -71,7 +71,10 @@ def knn_matrix(x, k=16, batch=None):
     Returns:
         nearest neighbors: (num_points*k ,1) (num_points, k)
     """
-    batch_size = batch[-1] + 1
+    if batch is None:
+        batch_size = 1
+    else:
+        batch_size = batch[-1] + 1
     x = x.view(batch_size, -1, x.shape[-1])
 
     neg_adj = -pairwise_distance(x)
