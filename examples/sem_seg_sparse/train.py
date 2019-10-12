@@ -4,9 +4,8 @@ import torch
 import torch_geometric.datasets as GeoData
 from torch_geometric.data import DataLoader, DataListLoader
 import torch_geometric.transforms as T
-from torch_geometric.utils import mean_iou as miou
 from torch_geometric.nn.data_parallel import DataParallel
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_DIR)
 from opt import OptInit
 from architecture import SparseDeepGCN

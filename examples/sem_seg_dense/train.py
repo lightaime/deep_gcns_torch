@@ -5,7 +5,7 @@ import torch_geometric.datasets as GeoData
 from torch_geometric.data import DenseDataLoader
 import torch_geometric.transforms as T
 from torch.nn import DataParallel
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_DIR)
 
 from opt import OptInit

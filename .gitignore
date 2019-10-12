@@ -1,4 +1,3 @@
-sem_seg/logs/
 *ipynb
 *.pyc
 .git/
@@ -10,20 +9,17 @@ sem_seg/logs/
 examples/sem_seg_dense/script/
 examples/sem_seg_dense/checkpoints/
 examples/sem_seg_dense/logs/
-examples/sem_seg/checkpoints/
-examples/sem_seg/logs/
-examples/classification/checkpoints/
-examples/classification/logs/
-examples/inductive/checkpoints/
-examples/inductive/logs/
+
+examples/sem_seg_sparse/checkpoints/
+examples/sem_seg_sparse/logs/
+examples/sem_seg_sparse/script/
+
 examples/ppi/checkpoints/
 examples/ppi/logs/
-examples/reddit/checkpoints/
-examples/reddit/logs/
+examples/ppi/script/
+
 examples/part_sem_seg/logs/
 examples/part_sem_seg/checkpoints/
 examples/part_sem_seg/result/
+examples/part_sem_seg/script/
 
-examples/part_sem_seg/
-examples/ppi/
-examples/classification/
