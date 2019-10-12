@@ -16,11 +16,11 @@ python examples/part_sem_seg/main.py --phase train --category 1 --conv mr --trai
 ```
 Other parameters for changing the architecture are:
 ```
-    --block         graph backbone block type {res, plain, dense}
-    --conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
-    --n_filters     number of channels of deep features, default is 64
-    --n_blocks      number of basic blocks, default is 28
-    --category      NO. of category. default is 1 (Bed)
+--block         graph backbone block type {res, plain, dense}
+--conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
+--n_filters     number of channels of deep features, default is 64
+--n_blocks      number of basic blocks, default is 28
+--category      NO. of category. default is 1 (Bed)
 ```
 The category list is:
 ```
