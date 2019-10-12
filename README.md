@@ -10,7 +10,7 @@ We do extensive experiments to show how different components (#Layers, #Filters,
 
 <div style="text-align:center"><img src='./misc/pipeline.png' width=800>
 
-Further information and details please contact [Guohao Li](https://ivul.kaust.edu.sa/Pages/Guohao-Li.aspx) and [Matthias Muller](https://matthias.pw/).
+Further information and details please contact [Guohao Li](https://ghli.org) and [Matthias Muller](https://matthias.pw/).
 
 ## Requirements
 * [Pytorch 1.1](https://pytorch.org)
