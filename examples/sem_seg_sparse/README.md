@@ -10,13 +10,13 @@ In gcn_lib, there are two folders: dense and sparse. They are used for different
 ### Train
 We use 6-fold training, such that 6 models are trained leaving 1 of 6 areas as the testing area for each model. We keep using 2 GPUs for distributed training. To train 6 models sequentially, run
 ```
-python examples/sem_seg_dense/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
+python examples/sem_seg_sparse/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
 ```
 Note on `--train_path`: Make sure you have the folder. Just need to set `--train_path path/to/data`, dataset will be downloaded automatically. 
 
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-python examples/sem_seg_dense/train.py --conv mr --multi_gpus --train
+python examples/sem_seg_sparse/train.py --conv mr --multi_gpus --phase train
 ```
 Other parameters for changing the architecture are:
 ```
