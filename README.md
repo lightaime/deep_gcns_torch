@@ -28,8 +28,8 @@ source deepgcn_env_install.sh
     │   ├── dense               # gcn library for dense data (B x C x N x 1)
     │   └── sparse              # gcn library for sparse data (N x C)
     ├── examples 
-    │   ├── sem_seg             # code for point clouds semantic segmentation
-    │   ├── part_sem_seg        # code for part segmentation
+    │   ├── sem_seg             # code for point clouds semantic segmentation on S3DIS
+    │   ├── part_sem_seg        # code for part segmentation on PartNet
     │   └── ppi                 # code for node classification on PPI dataset
     └── ...
 
