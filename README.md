@@ -15,7 +15,7 @@ Further information and details please contact [Guohao Li](https://ghli.org) and
 ## Requirements
 * [Pytorch 1.1](https://pytorch.org)
 * [pytorch_geometric 1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
-* [tensorboard graphics](https://github.com/tensorflow/graphics/blob/master/tensorflow_graphics/g3doc/install.md)
+* [tensorflow graphics](https://github.com/tensorflow/graphics/blob/master/tensorflow_graphics/g3doc/install.md)
 ```
 source deepgcn_env_install.sh
 ```
@@ -28,7 +28,8 @@ source deepgcn_env_install.sh
     │   ├── dense               # gcn library for dense data (B x C x N x 1)
     │   └── sparse              # gcn library for sparse data (N x C)
     ├── examples 
-    │   ├── sem_seg             # code for point clouds semantic segmentation on S3DIS
+    │   ├── sem_seg_dense       # code for point clouds semantic segmentation on S3DIS (data type: dense)
+    │   ├── sem_seg_sparse      # code for point clouds semantic segmentation on S3DIS (data type: sparse)
     │   ├── part_sem_seg        # code for part segmentation on PartNet
     │   └── ppi                 # code for node classification on PPI dataset
     └── ...
