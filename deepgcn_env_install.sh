@@ -12,8 +12,7 @@
 #module load cuda/10.1.105
 #
 # make sure your annaconda3 is added to bashrc
-#source activate
-#source ~/.bashrc
+source ~/.bashrc
 
 conda create -n deepgcn
 conda activate deepgcn
