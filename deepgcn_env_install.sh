@@ -6,7 +6,7 @@
 # wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
 # bash Anaconda3-2019.07-Linux-x86_64.sh
 
-# module load, uncommet if using local machine
+# module load, commet if using local machine
 #module purge
 #module load gcc
 #module load cuda/10.1.105
