@@ -31,8 +31,7 @@ clss = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher', 'Display
 ### Test
 
 #### Loading Pretrained Models
-Our pretrained models will be available soon.
-<!--Our pretrained models can be found [here](https://drive.google.com/drive/u/0/folders/15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).-->
+Our pretrained models can be found from [Google Cloud](https://drive.google.com/open?id=15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).
 The Naming format of our pretrained model is: `task-connection-conv_type-n_blocks-n_filters_model_best.pth`, eg. `part_sem_seg-res-edge-28-64_model_best.pth`
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example, 
