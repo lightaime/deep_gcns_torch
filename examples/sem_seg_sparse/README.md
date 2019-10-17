@@ -20,7 +20,7 @@ python examples/sem_seg_sparse/train.py --conv mr --multi_gpus --phase train
 ```
 Other parameters for changing the architecture are:
 ```
-    --block         graph backbone block type {res, plain, dense}
+    --block         graph backbone block type {res, dense}
     --conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
     --n_filters     number of channels of deep features, default is 64
     --n_blocks      number of basic blocks, default is 28

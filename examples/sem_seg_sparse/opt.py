@@ -50,6 +50,7 @@ class OptInit():
         parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=64, type=int, help='number of channels of deep features')
         parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
+        parser.add_argument('--dropout', default=0.3, type=float, help='ratio of dropout')
 
         # dilated knn
         parser.add_argument('--epsilon', default=0.2, type=float, help='stochastic epsilon for gcn')
