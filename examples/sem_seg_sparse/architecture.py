@@ -56,4 +56,4 @@ class SparseDeepGCN(torch.nn.Module):
 
         fusion = tg.utils.scatter_('max', self.fusion_block(feats), batch)
         fusion = torch.repeat_interleave(fusion, repeats=feats.shape[0]//fusion.shape[0], dim=0)
-        return self.prediction(torch.cat((feats, fusion), dim=1))
+        return self.prediction(torch.cat((fusion, feats), dim=1))
