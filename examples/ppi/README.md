@@ -1,13 +1,13 @@
 ## Graph Learning on Biological Networks
 ### Train
 
-For training the default ResEdgeConv-28 with 64 filters, run
+For training the default ResMRConv-28 with 64 filters, run
 ```
 python -u examples/ppi/main.py --phase train --train_path /data/deepgcn/ppi
 ```
-If you want to train model with other gcn layers (for example mrgcn), run
+If you want to train model with other gcn layers (for example EdgeConv, 28 layers, 256 channels in the first layer, with dense connection), run
 ```
-python -u examples/ppi/main.py --phase train --conv mr --train_path /data/deepgcn/ppi
+python -u examples/ppi/main.py --phase train --conv edge --train_path /data/deepgcn/ppi  --block dense --n_filters 256 --n_blocks 28
 ```
 
 Just need to set `--train_path` into your data folder, dataset will be downloaded automatically.
@@ -21,11 +21,15 @@ Other parameters for changing the architecture are:
 ### Test
 #### Pretrained Models
 Our pretrained models will be available soon.
-<!--Our pretrained models can be found [here](https://drive.google.com/drive/u/0/folders/15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).-->
-The Naming format of our pretrained model: `task-connection-conv_type-n_blocks-n_filters_model_best.pth`, eg. `ppi-res-edge-14-256_model_best.pth`.
+Our pretrained models can be found from [Goolge Cloud](https://drive.google.com/drive/u/0/folders/15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc)
+The Naming format of our pretrained model: `task-connection-conv_type-n_blocks-n_filters_phase_best.pth`, eg. `ppi-res-mr-28-256_val_best.pth`, which means PPI node classification task, with residual connection, convolution is MRGCN, 28 layers, 256 channels, the best pretrained model found in validation dataset.
 
 Use parameter `--pretrained_model` to set the specific pretrained model you want. 
 ```
-python -u examples/ppi/main.py --pretrained_model checkpoints/ppi-res-edge-14-256_model_best.pth --train_path /data/deepgcn/ppi --n_filters 256 --n_blocks 14
+python -u examples/ppi/main.py --phase test --pretrained_model checkpoints/ppi-res-mr-28-256_val_best.pth --train_path /data/deepgcn/ppi --n_filters 256 --n_blocks 28 --conv mr --block res
+```
+
+```
+python -u examples/ppi/main.py --phase test --pretrained_model checkpoints/ppi-dense-mr-14-256_val_best.pth --train_path /data/deepgcn/ppi --n_filters 256 --n_blocks 14 --conv mr --block dense
 ```
 Please also specify the number of blocks and filters according to the name of pretrained models.
