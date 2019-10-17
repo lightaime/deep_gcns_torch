@@ -141,14 +141,14 @@ def test(model, loader, opt):
     shape_mIoU = shape_iou_tot / shape_iou_cnt
     part_iou = np.divide(part_intersect[1:], part_union[1:])
     mean_part_iou = np.mean(part_iou)
-    opt.printer.info("===> Category {}-{}, Part mIOU is{:.4f} \t Shape mIoU is{:.4f} ".format(
-                      opt.category_no, opt.category, mean_part_iou,  shape_mIoU))
+    opt.printer.info("===> Category {}-{}, Part mIOU is{:.4f} \t ".format(
+                      opt.category_no, opt.category, mean_part_iou))
 
 
 if __name__ == '__main__':
     opt = OptInit().initialize()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = PartNet(opt.train_path, opt.dataset, opt.category, opt.level, 'val')
+    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
     test_loader = DenseDataLoader(test_dataset, batch_size=1, shuffle=True, num_workers=1)
     opt.n_classes = test_loader.dataset.num_classes
 

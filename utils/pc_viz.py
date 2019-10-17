@@ -129,7 +129,6 @@ def show_pointclouds(points, colors, text=[], title="Default", png_path="", inte
     pointclouds = [VtkPointCloud(point_size) for _ in range(num_pointclouds)]
     renderers = [vtk.vtkRenderer() for _ in range(num_pointclouds)]
 
-    # TODO: handle case where there are more points then colors. Then we add red points.
     height = 1.0 / max(num_pointclouds, 1)
     viewports = [(i*height, (i+1)*height) for i in range(num_pointclouds)]
     #print(viewports)

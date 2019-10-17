@@ -8,10 +8,10 @@ import logging
 import logging.config
 from utils.tf_logger import TfLogger
 
-
 clss = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher', 'Display', 'Door', 'Earphone',  # 0-9
         'Faucet', 'Hat', 'Keyboard', 'Knife', 'Lamp', 'Laptop', 'Microwave', 'Mug', 'Refrigerator', 'Scissors',  # 10-19
         'StorageFurniture', 'Table', 'TrashCan', 'Vase']  # 20-23
+
 
 # level3: 1, 2, 4, 5, 6, 7, 8,9 ; 10, 13, 14, 16, 18 ;  20, 21, 22, 23
 class OptInit():
@@ -23,15 +23,13 @@ class OptInit():
         parser.add_argument('--use_cpu', action='store_true', help='use cpu?')
 
         # dataset args
-        parser.add_argument('--train_path', type=str, default='/data/deepgcn/partnet')
-        parser.add_argument('--test_path', type=str, default='/data/deepgcn/partnet')
+        parser.add_argument('--data_dir', type=str, default='/data/deepgcn/partnet')
         parser.add_argument('--dataset', type=str, default='sem_seg_h5')
         parser.add_argument('--category', type=int, default=18)
         parser.add_argument('--level', type=int, default=3)
         parser.add_argument('--batch_size', default=7, type=int, help='mini-batch size (default:8)')
-        parser.add_argument('--test_batch_size', default=12, type=int, help='mini-batch size (default:8)')
+        parser.add_argument('--test_batch_size', default=12, type=int, help='test mini-batch size (default:12)')
         parser.add_argument('--in_channels', default=3, type=int, help='the channel size of input point cloud ')
-        parser.add_argument('--data_augmentation', default=False, type=bool, help='using data augmentation?')
         # train args
         parser.add_argument('--total_epochs', default=500, type=int, help='number of total epochs to run')
         parser.add_argument('--iter', default=-1, type=int, help='number of iteration to start')
@@ -42,27 +40,24 @@ class OptInit():
         parser.add_argument('--multi_gpus', action='store_true', help='use multi-gpus')
         parser.add_argument('--seed', default=0, type=int, help='seed')
 
-        # test args
-        # parser.add_argument('--visu', action='store_true', help='set --visu if need visualization in test phase')
-        parser.add_argument('--test_freq', default=10, type=int, help='test model per num of epochs')
         # model args
         parser.add_argument('--pretrained_model', type=str, help='path to pretrained model(default: none)', default='')
         parser.add_argument('--use_ckpt_lr', type=bool, help='use lr of pretrained model', default=True)
         parser.add_argument('--kernel_size', default=10, type=int, help='neighbor num (default:20)')
-        parser.add_argument('--block', default='res', type=str, help='graph backbone block type {res, nores}')
+        parser.add_argument('--block', default='res', type=str, help='graph backbone block type {res, plain, dense}')
         parser.add_argument('--conv', default='edge', type=str, help='graph conv layer {edge, mr}')
         parser.add_argument('--act', default='relu', type=str, help='activation layer {relu, prelu, leakyrelu}')
-        parser.add_argument('--norm', default='batch', type=str, help='batch or instance normalization')
+        parser.add_argument('--norm', default='batch', type=str,
+                            help='batch or instance normalization {batch, instance}')
         parser.add_argument('--knn', default='matrix', type=str, help='use matrix or tree')
-        parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
+        parser.add_argument('--bias', default=True, type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=64, type=int, help='number of channels of deep features')
         parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
-        # parser.add_argument('--n_layers', default=5, type=int, help='number of basic blocks')
-        parser.add_argument('--use_dilation', default=True,  type=bool, help='use dilated knn or not')
-        parser.add_argument('--dropout', default=.5, type=float, help='ratio of dropout')
+        parser.add_argument('--use_dilation', default=True, type=bool, help='use dilated knn or not')
+        parser.add_argument('--dropout', default=0.5, type=float, help='ratio of dropout')
         # dilated knn
         parser.add_argument('--epsilon', default=0.2, type=float, help='stochastic epsilon for gcn')
-        parser.add_argument('--stochastic', default=True,  type=bool, help='stochastic for gcn, True or False')
+        parser.add_argument('--stochastic', default=True, type=bool, help='stochastic for gcn, True or False')
         # saving
         parser.add_argument('--ckpt_path', type=str, default='')
         parser.add_argument('--save_best_only', action='store_true', help='only save best model')
@@ -72,9 +67,9 @@ class OptInit():
         args.category = clss[args.category]
         dir_path = os.path.dirname(os.path.abspath(__file__))
         args.task = os.path.basename(dir_path)
-        args.post = '-'.join([args.task, args.category, args.block, args.conv, 'b'+str(args.n_blocks),
-                              'f'+str(args.n_filters),
-                              'dil_'+str(args.use_dilation)[0]])
+        args.post = '-'.join([args.task, args.category, args.block, args.conv, 'b' + str(args.n_blocks),
+                              'f' + str(args.n_filters),
+                              'dil_' + str(args.use_dilation)[0]])
         if args.postname:
             args.post += '-' + args.postname
         args.time = datetime.datetime.now().strftime("%y%m%d")
@@ -83,10 +78,10 @@ class OptInit():
             if args.pretrained_model[0] != '/':
                 args.pretrained_model = os.path.join(dir_path, args.pretrained_model)
         if not args.ckpt_path:
-            args.save_path = os.path.join(dir_path, 'checkpoints/ckpts'+'-'+args.post + '-' + args.time)
+            args.save_path = os.path.join(dir_path, 'checkpoints/ckpts' + '-' + args.post + '-' + args.time)
         else:
             args.save_path = os.path.join(args.ckpt_path, 'checkpoints/ckpts' + '-' + args.post + '-' + args.time)
-        args.logdir = os.path.join(dir_path, 'logs/'+args.post + '-' + args.time)
+        args.logdir = os.path.join(dir_path, 'logs/' + args.post + '-' + args.time)
 
         if args.use_cpu:
             args.device = torch.device('cpu')
@@ -130,7 +125,7 @@ class OptInit():
                                                'formatter': 'debug',
                                                'level': logging.DEBUG},
                                    'file': {'class': 'logging.FileHandler',
-                                            'filename': os.path.join(self.args.logdir, self.args.post+'.log'),
+                                            'filename': os.path.join(self.args.logdir, self.args.post + '.log'),
                                             'formatter': 'debug',
                                             'level': logging.DEBUG}},
                       'root': {'handlers': ('console', 'file'), 'level': 'DEBUG'}
@@ -144,8 +139,8 @@ class OptInit():
             os.makedirs(self.args.logdir)
         if not os.path.exists(self.args.save_path):
             os.makedirs(self.args.save_path)
-        if not os.path.exists(self.args.train_path):
-            os.makedirs(self.args.train_path)
+        if not os.path.exists(self.args.data_dir):
+            os.makedirs(self.args.data_dir)
 
     def set_seed(self, seed=0):
         random.seed(seed)
@@ -155,5 +150,3 @@ class OptInit():
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
-
-

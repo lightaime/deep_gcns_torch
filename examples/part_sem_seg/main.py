@@ -37,8 +37,9 @@ def train(model, train_loader, test_loader, opt):
             test(model, test_loader, opt)
         save_ckpt(model, optimizer, scheduler, opt)
         scheduler.step()
-    opt.printer.info('Saving the final model.Finish! Category {}-{}. Best part mIou is {}. Best shape mIOU is {}. Please recalculte them'.
-                     format(opt.category_no, opt.category, opt.best_value, opt.best_shapeMiou))
+    opt.printer.info(
+        'Saving the final model.Finish! Category {}-{}. Best part mIou is {}. Best shape mIOU is {}.'.
+            format(opt.category_no, opt.category, opt.best_value, opt.best_shapeMiou))
 
 
 def train_step(model, train_loader, optimizer, scheduler, criterion, opt):
@@ -54,8 +55,8 @@ def train_step(model, train_loader, optimizer, scheduler, criterion, opt):
         # ------------------ zero, output, loss
         optimizer.zero_grad()
         out = model(inputs)
-        if gt.max() > opt.n_classes-1:
-            gt = gt.clamp(0., opt.n_classes-1)
+        if gt.max() > opt.n_classes - 1:
+            gt = gt.clamp(0., opt.n_classes - 1)
         loss = criterion(out, gt)
 
         # ------------------ optimization
@@ -109,7 +110,7 @@ def test(model, loader, opt):
                     part_intersect[cl] += I
                     part_union[cl] += U
 
-                    cur_shape_iou_tot += I/U
+                    cur_shape_iou_tot += I / U
                     cur_shape_iou_cnt += 1.
 
             if cur_shape_iou_cnt > 0:
@@ -123,8 +124,9 @@ def test(model, loader, opt):
     part_iou = np.divide(part_intersect[1:], part_union[1:])
     mean_part_iou = np.mean(part_iou)
     opt.test_value = mean_part_iou
-    opt.printer.info("===> Category {}-{}, Part mIOU is{:.4f} \t Shape mIoU is{:.4f} \t best Part mIOU is {:.4f}\t best shape mIOu: {:.4f}".format(
-                      opt.category_no, opt.category, opt.test_value,  opt.shape_mIoU, opt.best_value, opt.best_shapeMiou))
+    opt.printer.info(
+        "===> Category {}-{}, Part mIOU is{:.4f} \t Shape mIoU is{:.4f} \t best Part mIOU is {:.4f}\t".format(
+            opt.category_no, opt.category, opt.test_value, opt.shape_mIoU, opt.best_value))
 
 
 def save_ckpt(model, optimizer, scheduler, opt):
@@ -151,7 +153,7 @@ def save_ckpt(model, optimizer, scheduler, opt):
 if __name__ == '__main__':
     opt = OptInit().initialize()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = PartNet(opt.train_path, opt.dataset, opt.category, opt.level, 'val')
+    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
     test_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=True, num_workers=4)
     opt.n_classes = test_loader.dataset.num_classes
 
@@ -165,7 +167,7 @@ if __name__ == '__main__':
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     if opt.phase == 'train':
-        train_dataset = PartNet(opt.train_path, opt.dataset, opt.category, opt.level, 'train')
+        train_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'train')
         train_loader = DenseDataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=8)
         opt.n_classes = test_loader.dataset.num_classes
         train(model, train_loader, test_loader, opt)
