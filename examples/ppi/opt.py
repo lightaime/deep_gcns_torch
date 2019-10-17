@@ -44,7 +44,7 @@ class OptInit():
         parser.add_argument('--pretrained_model', type=str, help='path to pretrained model(default: none)', default='')
         parser.add_argument('--model_name', type=str, default='')
         parser.add_argument('--kernel_size', default=20, type=int, help='neighbor num (default:20)')
-        parser.add_argument('--block', default='res', type=str, help='graph backbone block type {res, nores}')
+        parser.add_argument('--block', default='res', type=str, help='graph backbone block type {res, dense, plain}')
         parser.add_argument('--act', default='relu', type=str, help='activation layer {relu, prelu, leakyrelu}')
         parser.add_argument('--norm', default='batch', type=str, help='batch or instance normalization')
         parser.add_argument('--knn', default='tree', type=str, help='tree or matrix')
@@ -53,7 +53,7 @@ class OptInit():
         parser.add_argument('--n_blocks', default=3, type=int, help='number of basic blocks')
         parser.add_argument('--dropout', default=0.2, type=float, help='ratio of dropout')
         # convolution
-        parser.add_argument('--conv', default='edge', type=str, help='graph conv layer {edge, mr}')
+        parser.add_argument('--conv', default='mr', type=str, help='graph conv layer {edge, mr, gin, gat, gcn}')
         parser.add_argument('--n_heads', default=1, type=int, help='number of heads of GAT')
         # dilated knn
         parser.add_argument('--epsilon', default=0.2, type=float, help='stochastic epsilon for gcn')
