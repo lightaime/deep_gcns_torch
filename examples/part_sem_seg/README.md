@@ -14,7 +14,7 @@ If you want to train a model with other gcn layers (for example mrgcn), run
 ```
 python examples/part_sem_seg/main.py --phase train --category 1 --conv mr --train_path /data/deepgcn/part
 ```
-Other parameters for changing the architecture are:
+Other important parameters are:
 ```
 --block         graph backbone block type {res, plain, dense}
 --conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
@@ -32,6 +32,7 @@ clss = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher', 'Display
 
 #### Loading Pretrained Models
 Our pretrained models can be found from [Google Cloud](https://drive.google.com/open?id=15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).
+
 The Naming format of our pretrained model is: `task-connection-conv_type-n_blocks-n_filters_model_best.pth`, eg. `part_sem_seg-res-edge-28-64_model_best.pth`
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example, 
@@ -44,7 +45,7 @@ Note: the path of `--pretrained_model` is a relative path to `examples/part_sem_
 #### Evaluation
 Use the following command to test a model:
 ```
-python -u examples/part_sem_seg/main.py --phase test --test_path /data/deepgcn/part--category 1
+python -u examples/part_sem_seg/main.py --phase test --test_path /data/deepgcn/part --category 1
 ```
 #### Visualization
 1. step1
