@@ -21,7 +21,7 @@ Other parameters for changing the architecture are:
 ### Test
 #### Pretrained Models
 Our pretrained models will be available soon.
-Our pretrained models can be found from [Goolge Cloud](https://drive.google.com/drive/u/0/folders/15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc)
+Our pretrained models can be found from [Goolge Cloud](https://drive.google.com/drive/folders/1LoT1B9FDgylUffHY8K43FFfred-luZaz?usp=sharing)
 The Naming format of our pretrained model: `task-connection-conv_type-n_blocks-n_filters_phase_best.pth`, eg. `ppi-res-mr-28-256_val_best.pth`, which means PPI node classification task, with residual connection, convolution is MRGCN, 28 layers, 256 channels, the best pretrained model found in validation dataset.
 
 Use parameter `--pretrained_model` to set the specific pretrained model you want. 
