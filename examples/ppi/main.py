@@ -9,7 +9,7 @@ from sklearn.metrics import f1_score
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(ROOT_DIR)
 from opt import OptInit
-from architecture import DeepGCNv2
+from architecture import DeepGCN
 from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer, save_checkpoint
 from utils.metrics import AverageMeter
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -120,24 +120,24 @@ def save_ckpt(model, optimizer, scheduler, epoch, save_path, name_pre, name_post
 if __name__ == '__main__':
     opt = OptInit().initialize()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = GeoData.PPI(opt.train_path, split='test')
+    test_dataset = GeoData.PPI(opt.data_dir, split='test')
     test_loader = DataLoader(test_dataset, batch_size=opt.batch_size, shuffle=True)
     opt.n_classes = test_loader.dataset.num_classes
 
     opt.printer.info('===> Loading the network ...')
-    model = DeepGCNv2(opt).to(opt.device)
+    model = DeepGCN(opt).to(opt.device)
     if opt.multi_gpus:
-        model = DataParallel(DeepGCNv2(opt)).to(opt.device)
+        model = DataParallel(DeepGCN(opt)).to(opt.device)
     opt.printer.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     if opt.phase == 'train':
-        train_dataset = GeoData.PPI(opt.train_path, 'train')
+        train_dataset = GeoData.PPI(opt.data_dir, 'train')
         if opt.multi_gpus:
             train_loader = DataListLoader(train_dataset, batch_size=opt.batch_size, shuffle=True)
         else:
             train_loader = DataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True)
-        valid_dataset = GeoData.PPI(opt.train_path, split='val')
+        valid_dataset = GeoData.PPI(opt.data_dir, split='val')
         valid_loader = DataLoader(valid_dataset, batch_size=opt.batch_size, shuffle=True)
         train()
 

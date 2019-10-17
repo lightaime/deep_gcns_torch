@@ -18,8 +18,7 @@ class OptInit():
         parser.add_argument('--use_cpu', action='store_true', help='use cpu?')
 
         # dataset args
-        parser.add_argument('--train_path', type=str, default='/data/deepgcn/ppi')
-#         parser.add_argument('--test_path', type=str, default='/data/deepgcn/ppi')
+        parser.add_argument('--data_dir', type=str, default='/data/deepgcn/ppi')
         parser.add_argument('--batch_size', default=1, type=int, help='mini-batch size (default:8)')
         parser.add_argument('--in_channels', default=50, type=int, help='the channel size of input point cloud ')
 
@@ -45,7 +44,7 @@ class OptInit():
         parser.add_argument('--knn', default='tree', type=str, help='tree or matrix')
         parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=256, type=int, help='number of channels of deep features')
-        parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
+        parser.add_argument('--n_blocks', default=14, type=int, help='number of basic blocks')
         parser.add_argument('--dropout', default=0.2, type=float, help='ratio of dropout')
         # convolution
         parser.add_argument('--conv', default='mr', type=str, help='graph conv layer {edge, mr, gin, gat, gcn}')
@@ -134,8 +133,8 @@ class OptInit():
             os.makedirs(self.args.logdir)
         if not os.path.exists(self.args.save_path):		
             os.makedirs(self.args.save_path)
-        if not os.path.exists(self.args.train_path):
-            os.makedirs(self.args.train_path)
+        if not os.path.exists(self.args.data_dir):
+            os.makedirs(self.args.data_dir)
 
     def set_seed(self, seed=0):
         random.seed(seed)
