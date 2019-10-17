@@ -30,7 +30,9 @@ class DenseDeepGCN(torch.nn.Module):
         else:
             raise NotImplementedError('{} is not implemented. Please check.\n'.format(opt.block))
         self.fusion_block = BasicConv([channels+c_growth*(self.n_blocks-1), 1024], act, None, bias)
-        self.prediction = Seq(*[BasicConv([1+channels+c_growth*(self.n_blocks-1), 512, 256], act, None, bias),
+        self.prediction = Seq(*[BasicConv([1+channels+c_growth*(self.n_blocks-1), 512], act, norm, bias),
+                                BasicConv([512, 256], act, None, bias),
+                                torch.nn.Dropout(p=opt.dropout),
                                 BasicConv([256, opt.n_classes], None, None, bias)])
 
         self.model_init()
