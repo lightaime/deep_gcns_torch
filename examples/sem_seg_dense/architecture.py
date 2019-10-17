@@ -29,9 +29,9 @@ class DenseDeepGCN(torch.nn.Module):
                                   for i in range(self.n_blocks-1)])
         else:
             raise NotImplementedError('{} is not implemented. Please check.\n'.format(opt.block))
-        self.fusion_block = BasicConv([channels+c_growth*(self.n_blocks-1), 1024], act, None, bias)
-        self.prediction = Seq(*[BasicConv([1+channels+c_growth*(self.n_blocks-1), 512], act, norm, bias),
-                                BasicConv([512, 256], act, None, bias),
+        self.fusion_block = BasicConv([channels+c_growth*(self.n_blocks-1), 1024], act, norm, bias)
+        self.prediction = Seq(*[BasicConv([channels+c_growth*(self.n_blocks-1)+1024, 512], act, norm, bias),
+                                BasicConv([512, 256], act, norm, bias),
                                 torch.nn.Dropout(p=opt.dropout),
                                 BasicConv([256, opt.n_classes], None, None, bias)])
 
@@ -50,7 +50,9 @@ class DenseDeepGCN(torch.nn.Module):
         feats = [self.head(inputs, self.knn(inputs[:, 0:3]))]
         for i in range(self.n_blocks-1):
             feats.append(self.backbone[i](feats[-1]))
-        feats = torch.cat(feats, 1)
-        fusion, _ = torch.max(self.fusion_block(feats), 1, keepdim=True)
-        return self.prediction(torch.cat((feats, fusion), 1)).squeeze()
+        feats = torch.cat(feats, dim=1)
+
+        fusion = torch.max_pool2d(self.fusion_block(feats), kernel_size=[feats.shape[2], feats.shape[3]])
+        fusion = torch.repeat_interleave(fusion, repeats=feats.shape[2], dim=2)
+        return self.prediction(torch.cat((fusion, feats), dim=1)).squeeze()
 

@@ -32,6 +32,7 @@ class OptInit():
         parser.add_argument('--postname', type=str, default='', help='postname of saved file')
         parser.add_argument('--multi_gpus', action='store_true', help='use multi-gpus')
         parser.add_argument('--optim', type=str, default='adam', help='optimizer')
+        parser.add_argument('--seed', type=int, default=0, help='random seed')
 
         # test args
         parser.add_argument('--visu', action='store_true', help='set --visu if need visualization in test phase')
@@ -82,7 +83,7 @@ class OptInit():
             self.args.epoch = -1
             self.make_dir()
 
-        self.set_seed(0)
+        self.set_seed(self.args.seed)
         self.print_args()
         return self.args
 
