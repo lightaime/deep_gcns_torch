@@ -19,7 +19,7 @@ class OptInit():
 
         # dataset args
         parser.add_argument('--train_path', type=str, default='/data/deepgcn/ppi')
-        parser.add_argument('--test_path', type=str, default='/data/deepgcn/ppi')
+#         parser.add_argument('--test_path', type=str, default='/data/deepgcn/ppi')
         parser.add_argument('--batch_size', default=1, type=int, help='mini-batch size (default:8)')
         parser.add_argument('--in_channels', default=50, type=int, help='the channel size of input point cloud ')
 
@@ -35,11 +35,6 @@ class OptInit():
         parser.add_argument('--postname', type=str, default='', help='postname of saved file')
         parser.add_argument('--multi_gpus', action='store_true', help='use multi-gpus')
 
-        # test args
-        parser.add_argument('--test_freq', default=1, type=int, help='save model per num of epochs')
-        parser.add_argument('--visu', action='store_true', help='set --visu if need visualization in test phase')
-        parser.add_argument('--no_clutter', action='store_true', help='no clutter? set --no_clutter if ture.')
-
         # model args
         parser.add_argument('--pretrained_model', type=str, help='path to pretrained model(default: none)', default='')
         parser.add_argument('--model_name', type=str, default='')
@@ -50,7 +45,7 @@ class OptInit():
         parser.add_argument('--knn', default='tree', type=str, help='tree or matrix')
         parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=256, type=int, help='number of channels of deep features')
-        parser.add_argument('--n_blocks', default=3, type=int, help='number of basic blocks')
+        parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
         parser.add_argument('--dropout', default=0.2, type=float, help='ratio of dropout')
         # convolution
         parser.add_argument('--conv', default='mr', type=str, help='graph conv layer {edge, mr, gin, gat, gcn}')
