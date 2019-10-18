@@ -30,6 +30,7 @@ class OptInit():
         parser.add_argument('--batch_size', default=7, type=int, help='mini-batch size (default:8)')
         parser.add_argument('--test_batch_size', default=12, type=int, help='test mini-batch size (default:12)')
         parser.add_argument('--in_channels', default=3, type=int, help='the channel size of input point cloud ')
+        parser.add_argument('--data_augmentation', action='store_true', help='use data augmentation? Default: False')
         # train args
         parser.add_argument('--total_epochs', default=500, type=int, help='number of total epochs to run')
         parser.add_argument('--iter', default=-1, type=int, help='number of iteration to start')
