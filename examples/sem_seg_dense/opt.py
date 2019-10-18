@@ -6,6 +6,8 @@ import random
 import numpy as np
 import torch
 from utils.tf_logger import TfLogger
+import logging
+import logging.config
 
 
 class OptInit():
@@ -84,17 +86,37 @@ class OptInit():
             self.make_dir()
 
         self.set_seed(self.args.seed)
+        self.logging_init()
         self.print_args()
         return self.args
 
     def print_args(self):
-        # print args
-        print("==========       CONFIG      =============")
+        self.args.printer.info("==========       CONFIG      =============")
         for arg, content in self.args.__dict__.items():
-            print("{}:{}".format(arg, content))
-        print("==========     CONFIG END    =============")
-        print("\n")
-        print('===> Phase is {}.'.format(self.args.phase))
+            self.args.printer.info("{}:{}".format(arg, content))
+        self.args.printer.info("==========     CONFIG END    =============")
+        self.args.printer.info("\n")
+        self.args.printer.info('===> Phase is {}.'.format(self.args.phase))
+
+    def logging_init(self):
+        if not os.path.exists(self.args.logdir):
+            os.makedirs(self.args.logdir)
+        ERROR_FORMAT = "%(message)s"
+        DEBUG_FORMAT = "%(message)s"
+        LOG_CONFIG = {'version': 1,
+                      'formatters': {'error': {'format': ERROR_FORMAT},
+                                     'debug': {'format': DEBUG_FORMAT}},
+                      'handlers': {'console': {'class': 'logging.StreamHandler',
+                                               'formatter': 'debug',
+                                               'level': logging.INFO},
+                                   'file': {'class': 'logging.FileHandler',
+                                            'filename': os.path.join(self.args.logdir, self.args.post+'.log'),
+                                            'formatter': 'debug',
+                                            'level': logging.INFO}},
+                      'root': {'handlers': ('console', 'file'), 'level': 'INFO'}
+                      }
+        logging.config.dictConfig(LOG_CONFIG)
+        self.args.printer = logging.getLogger(__name__)
 
     def make_dir(self):
         # check for folders existence
