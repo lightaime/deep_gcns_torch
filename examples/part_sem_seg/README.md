@@ -6,6 +6,8 @@ Once the data is downloaded, extract the `sem_seg_h5` data and put them inside a
 For example, our data folder structure is like this: `/data/deepgcn/partnet/raw/sem_seg_h5/category-level`. `category` is the name of a category, eg. Bed. `level` is 1, 2, or 3. When we train and test, we set `--data_dir /data/deepgcn/partnet`.
 
 ### Train
+We train each model on one tesla V100. 
+
 For training the default ResEdgeConv-28 with 64 filters on the Bed category, run:
 ```
 python examples/part_sem_seg/main.py --phase train  --category 1 --data_dir /data/deepgcn/partnet

@@ -1,5 +1,6 @@
 ## Graph Learning on Biological Networks
 ### Train
+We train each model on one tesla V100.
 
 For training the default ResMRConv-14 with 64 filters, run
 ```
