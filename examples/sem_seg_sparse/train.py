@@ -16,7 +16,7 @@ from utils import optim
 
 def main():
     opt = OptInit().initialize()
-    print('===> Creating dataloader ...')
+    opt.printer.info('===> Creating dataloader ...')
     train_dataset = GeoData.S3DIS(opt.train_path, 5, True, pre_transform=T.NormalizeScale())
     if opt.multi_gpus:
         train_loader = DataListLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=4)
@@ -24,14 +24,14 @@ def main():
         train_loader = DataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=4)
     opt.n_classes = train_loader.dataset.num_classes
 
-    print('===> Loading the network ...')
+    opt.printer.info('===> Loading the network ...')
     model = SparseDeepGCN(opt).to(opt.device)
     if opt.multi_gpus:
         model = DataParallel(SparseDeepGCN(opt)).to(opt.device)
-    print('===> loading pre-trained ...')
+    opt.printer.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
-    print('===> Init the optimizer ...')
+    opt.printer.info('===> Init the optimizer ...')
     criterion = torch.nn.CrossEntropyLoss().to(opt.device)
     if opt.optim.lower() == 'adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
@@ -42,19 +42,19 @@ def main():
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, opt.lr_adjust_freq, opt.lr_decay_rate)
     optimizer, scheduler, opt.lr = load_pretrained_optimizer(opt.pretrained_model, optimizer, scheduler, opt.lr)
 
-    print('===> Init Metric ...')
+    opt.printer.info('===> Init Metric ...')
     opt.losses = AverageMeter()
     # opt.test_metric = miou
     # opt.test_values = AverageMeter()
     opt.test_value = 0.
 
-    print('===> start training ...')
+    opt.printer.info('===> start training ...')
     for _ in range(opt.total_epochs):
         opt.epoch += 1
         train(model, train_loader, optimizer, scheduler, criterion, opt)
         # test_value = test(model, test_loader, test_metric, opt)
         scheduler.step()
-    print('Saving the final model.Finish!')
+    opt.printer.info('Saving the final model.Finish!')
 
 
 def train(model, train_loader, optimizer, scheduler, criterion, opt):
@@ -79,7 +79,7 @@ def train(model, train_loader, optimizer, scheduler, criterion, opt):
         opt.losses.update(loss.item())
         # ------------------ show information
         if opt.iter % opt.print_freq == 0:
-            print('Epoch:{}\t Iter: {}\t [{}/{}]\t Loss: {Losses.avg: .4f}'.format(
+            opt.printer.info('Epoch:{}\t Iter: {}\t [{}/{}]\t Loss: {Losses.avg: .4f}'.format(
                 opt.epoch, opt.iter, i + 1, len(train_loader), Losses=opt.losses))
             opt.losses.reset()
 
@@ -122,7 +122,7 @@ def test(model, test_loader, test_metric, opt):
             out = opt.model(data)
             test_value = test_metric(out.max(dim=1)[1], gt, opt.n_classes)
             opt.test_values.update(test_value, opt.batch_size)
-        print('Epoch: [{0}]\t Iter: [{1}]\t''TEST loss: {test_values.avg: .4f})\t'.format(
+        opt.printer.info('Epoch: [{0}]\t Iter: [{1}]\t''TEST loss: {test_values.avg: .4f})\t'.format(
                opt.epoch, opt.iter, test_values=opt.test_values))
 
     opt.test_value = opt.test_values.avg
