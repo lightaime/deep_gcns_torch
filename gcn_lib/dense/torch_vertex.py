@@ -74,8 +74,6 @@ class DynConv2d(GraphConv2d):
 class ResDynBlock2d(nn.Module):
     """
     Residual Dynamic graph convolution block
-        :input: (x0, x1, x2, ... , xi), batch
-        :output:(x0, x1, x2, ... , xi ,xi+1) , batch
     """
     def __init__(self, in_channels, kernel_size=9, dilation=1, conv='edge', act='relu', norm=None,
                  bias=True,  stochastic=False, epsilon=0.0, knn='matrix', res_scale=1):

@@ -202,8 +202,6 @@ class DynConv(GraphConv):
 class ResDynBlock(nn.Module):
     """
     Residual Dynamic graph convolution block
-        :input: (x0, x1, x2, ... , xi), batch
-        :output:(x0, x1, x2, ... , xi ,xi+1) , batch
     """
     def __init__(self, channels,  kernel_size=9, dilation=1, conv='edge', act='relu', norm=None,
                  bias=True, res_scale=1, **kwargs):
