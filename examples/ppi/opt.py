@@ -55,7 +55,6 @@ class OptInit():
 
         # saving
         parser.add_argument('--ckpt_path', type=str, default='')
-        parser.add_argument('--save_ckpt', default=True, type=bool, help='do you want to save model?')
         parser.add_argument('--save_best_only', default=True, type=bool, help='only save best model')
 
         args = parser.parse_args()

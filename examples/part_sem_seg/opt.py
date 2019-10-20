@@ -43,7 +43,6 @@ class OptInit():
 
         # model args
         parser.add_argument('--pretrained_model', type=str, help='path to pretrained model(default: none)', default='')
-        parser.add_argument('--use_ckpt_lr', type=bool, help='use lr of pretrained model', default=True)
         parser.add_argument('--kernel_size', default=10, type=int, help='neighbor num (default:20)')
         parser.add_argument('--block', default='res', type=str, help='graph backbone block type {res, plain, dense}')
         parser.add_argument('--conv', default='edge', type=str, help='graph conv layer {edge, mr}')

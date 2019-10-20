@@ -23,8 +23,7 @@ def train(model, train_loader, test_loader, opt):
     # criterion = torch.nn.CrossEntropyLoss().to(opt.device)
     optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, opt.lr_adjust_freq, opt.lr_decay_rate)
-    optimizer, scheduler, opt.lr = load_pretrained_optimizer(opt.pretrained_model, optimizer, scheduler, opt.lr,
-                                                             opt.use_ckpt_lr)
+    optimizer, scheduler, opt.lr = load_pretrained_optimizer(opt.pretrained_model, optimizer, scheduler, opt.lr)
     opt.printer.info('===> Init Metric ...')
     opt.losses = AverageMeter()
     opt.test_value = 0.
