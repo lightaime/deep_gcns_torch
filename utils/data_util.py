@@ -61,7 +61,7 @@ class PartNet(InMemoryDataset):
             value, indicating whether the data object should be included in the
             final dataset. (default: :obj:`None`)
     """
-
+    # the dataset we use for our paper is pre-released version
     def __init__(self,
                  root,
                  dataset='sem_seg_h5',
