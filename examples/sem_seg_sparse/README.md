@@ -10,13 +10,13 @@ In gcn_lib, there are two folders: dense and sparse. They are used for different
 ### Train
 We keep using 2 Tesla V100 GPUs for distributed training. Run:
 ```
-python examples/sem_seg_sparse/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
+CUDA_VISIBLE_DEVICES=0,1 python examples/sem_seg_sparse/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS
 ```
 Note on `--train_path`: Make sure you have the folder. Just need to set `--train_path path/to/data`, dataset will be downloaded automatically. 
 
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-python examples/sem_seg_sparse/train.py --conv mr --multi_gpus --phase train
+python examples/sem_seg_sparse/train.py --conv mr --multi_gpus --phase train  --train_path /data/deepgcn/S3DIS
 ```
 Other parameters for changing the architecture are:
 ```
@@ -30,14 +30,14 @@ Other parameters for changing the architecture are:
 Qucik test on area 5, run:
 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
+python examples/sem_seg_dense/test.py --pretrained_model checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
 ```
 
 #### Pretrained Models
 Our pretrained models will be available soon.
 use parameter $--pretrained_model$ to change the specific pretrained model you want. 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
+python examples/sem_seg_dense/test.py --pretrained_model checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
 ```
 
 #### Visualization

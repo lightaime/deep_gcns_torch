@@ -9,18 +9,18 @@ In gcn_lib, there are two folders: dense and sparse. They are used for different
 ### Train
 We keep using 2 Tesla V100 GPUs for distributed training. Run:
 ```
-python examples/sem_seg_dense/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
+CUDA_VISIBLE_DEVICES=0,1 python examples/sem_seg_dense/train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
 ```
 Note on `--train_path`: Make sure you have the folder. Just need to set `--train_path path/to/data`, dataset will be downloaded automatically. 
 
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-python examples/sem_seg_dense/train.py --conv mr --multi_gpus --phase train 
+python examples/sem_seg_dense/train.py --conv mr --multi_gpus --phase train --train_path /data/deepgcn/S3DIS 
 ```
 Other parameters for changing the architecture are:
 ```
     --block         graph backbone block type {res, plain, dense}
-    --conv          graph conv layer {edge, mr, sage, gin, gcn, gat}
+    --conv          graph conv layer {edge, mr}
     --n_filters     number of channels of deep features, default is 64
     --n_blocks      number of basic blocks, default is 28
 ```

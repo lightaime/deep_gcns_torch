@@ -21,7 +21,7 @@ class OptInit():
         # dataset args
         parser.add_argument('--train_path', type=str, default='/data/deepgcn/S3DIS')
         parser.add_argument('--test_path', type=str, default='/data/deepgcn/S3DIS')
-        parser.add_argument('--batch_size', default=8, type=int, help='mini-batch size (default:8)')
+        parser.add_argument('--batch_size', default=16, type=int, help='mini-batch size (default:16)')
         parser.add_argument('--in_channels', default=9, type=int, help='the channel size of input point cloud ')
 
         # train args
