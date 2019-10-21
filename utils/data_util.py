@@ -32,16 +32,19 @@ def random_points_augmentation(points, rotate=False, translate=False, **kwargs):
 
 
 class PartNet(InMemoryDataset):
-    r"""The (pre-processed) Stanford Large-Scale 3D Indoor Spaces dataset from
-    the `"3D Semantic Parsing of Large-Scale Indoor Spaces"
-    <http://buildingparser.stanford.edu/images/3D_Semantic_Parsing.pdf>`_
-    paper, containing point clouds of six large-scale indoor parts in three
-    buildings with 12 semantic elements (and one clutter class).
+    r"""The PartNet dataset from
+    the `"PartNet: A Large-scale Benchmark for Fine-grained and Hierarchical Part-level 3D Object Understanding"
+    <https://arxiv.org/abs/1812.02713>`_
+    paper, containing 3D objects annotated with fine-grained, instance-level, and hierarchical 3D part information.
 
     Args:
         root (string): Root directory where the dataset should be saved.
         dataset (str, optional): Which dataset to use (ins_seg_h5, or sem_seg_h5).
-            (default: :obj:`ins_seg_h5`)
+            (default: :obj:`sem_seg_h5`)
+        obj_category (str, optional): which category to load.
+            (default: :obj:`Bed`)
+        level (str, optional): Which level of part semantic segmentation to use.
+            (default: :obj:`3`)
         phase (str, optional): If :obj:`test`, loads the testing dataset,
             If :obj:`val`, loads the validation dataset,
             otherwise the training dataset. (default: :obj:`train`)
@@ -58,9 +61,6 @@ class PartNet(InMemoryDataset):
             value, indicating whether the data object should be included in the
             final dataset. (default: :obj:`None`)
     """
-    #
-    # url = ('https://shapenet.cs.stanford.edu/media/'
-    #        'indoor3d_sem_seg_hdf5_data.zip')
 
     def __init__(self,
                  root,
