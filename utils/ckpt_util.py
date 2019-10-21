@@ -19,7 +19,10 @@ def load_pretrained_models(model, pretrained_model, phase, ismax=True):  # ismax
             checkpoint = torch.load(pretrained_model)
             try:
                 best_value = checkpoint['best_value']
-                show_best_value = True
+                if best_value == -np.inf or best_value == np.inf:
+                    show_best_value = False
+                else:
+                    show_best_value = True
             except:
                 best_value = best_value
                 show_best_value = False
@@ -44,7 +47,6 @@ def load_pretrained_models(model, pretrained_model, phase, ismax=True):  # ismax
 
             model_dict.update(ckpt_model_state_dict)
             model.load_state_dict(ckpt_model_state_dict)
-
 
             if show_best_value:
                 logging.info("The pretrained_model is at checkpoint {}. \t "
