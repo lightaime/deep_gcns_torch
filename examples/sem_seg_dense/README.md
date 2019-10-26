@@ -29,15 +29,18 @@ Other parameters for changing the architecture are:
 Qucik test on area 5, run:
 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
+python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
 ```
 
 #### Pretrained Models
-Our pretrained models will be available soon.
-use parameter $--pretrained_model$ to change the specific pretrained model you want. 
+Our pretrained model is available here [google driver](https://drive.google.com/open?id=1iAJbHqiNwc4nJlP67sp1xLkl5EtC4PU_)
+
+Note: Please use our Tensorflow code if you want to reproduce the same result in the paper. 
+The performance of pytorch code is slightly worse than tensorflow. mIOU is 52.11% compared to 52.49% in the tensorflow version.
 ```
-python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
+python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
 ```
+Lower the batch size if out of memory. The batch size will not influence the test results.
 
 #### Visualization
 Coming soon!! 
