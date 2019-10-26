@@ -54,5 +54,5 @@ class DenseDeepGCN(torch.nn.Module):
 
         fusion = torch.max_pool2d(self.fusion_block(feats), kernel_size=[feats.shape[2], feats.shape[3]])
         fusion = torch.repeat_interleave(fusion, repeats=feats.shape[2], dim=2)
-        return self.prediction(torch.cat((fusion, feats), dim=1)).squeeze()
+        return self.prediction(torch.cat((fusion, feats), dim=1)).squeeze(-1)
 

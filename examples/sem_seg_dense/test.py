@@ -50,8 +50,10 @@ def test(model, loader, opt):
             target_np = gt.cpu().numpy()
 
             for cl in range(opt.n_classes):
-                I = np.sum(np.logical_and(pred_np == cl, target_np == cl))
-                U = np.sum(np.logical_or(pred_np == cl, target_np == cl))
+                cur_gt_mask = (target_np == cl)
+                cur_pred_mask = (pred_np == cl)
+                I = np.sum(np.logical_and(cur_pred_mask, cur_gt_mask), dtype=np.float32)
+                U = np.sum(np.logical_or(cur_pred_mask, cur_gt_mask), dtype=np.float32)
                 Is[i, cl] = I
                 Us[i, cl] = U
 

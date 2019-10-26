@@ -29,14 +29,14 @@ Other parameters for changing the architecture are:
 Qucik test on area 5, run:
 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS --task sem_seg_dense
+python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
 ```
 
 #### Pretrained Models
 Our pretrained models will be available soon.
 use parameter $--pretrained_model$ to change the specific pretrained model you want. 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS --task sem_seg_dense 
+python examples/sem_seg_dense/test.py --pretrained_model examples/sem_seg_dense/checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
 ```
 
 #### Visualization

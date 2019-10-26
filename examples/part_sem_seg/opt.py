@@ -76,7 +76,13 @@ class OptInit():
 
         if args.pretrained_model:
             if args.pretrained_model[0] != '/':
+                if args.pretrained_model[0:2] == 'ex':
+                    args.pretrained_model = os.path.join(os.path.dirname(os.path.dirname(dir_path)),
+                                                         args.pretrained_model)
+                else:
+                    args.pretrained_model = os.path.join(dir_path, args.pretrained_model)
                 args.pretrained_model = os.path.join(dir_path, args.pretrained_model)
+
         if not args.ckpt_path:
             args.save_path = os.path.join(dir_path, 'checkpoints/ckpts' + '-' + args.post + '-' + args.time)
         else:

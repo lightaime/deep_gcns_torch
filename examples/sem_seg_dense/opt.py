@@ -14,7 +14,7 @@ class OptInit():
     def __init__(self):
         parser = argparse.ArgumentParser(description='PyTorch implementation of Deep GCN')
 
-        parser.add_argument('--phase', default='train', type=str, help='train or test(default)')
+        parser.add_argument('--phase', default='test', type=str, help='train or test(default)')
         parser.add_argument('--use_cpu', action='store_true', help='use cpu?')
 
         # dataset args
@@ -47,14 +47,14 @@ class OptInit():
         parser.add_argument('--conv', default='edge', type=str, help='graph conv layer {edge, mr}')
         parser.add_argument('--act', default='relu', type=str, help='activation layer {relu, prelu, leakyrelu}')
         parser.add_argument('--norm', default='batch', type=str, help='batch or instance normalization')
-        parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
+        parser.add_argument('--bias', default=True, type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=64, type=int, help='number of channels of deep features')
         parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
         parser.add_argument('--dropout', default=0.3, type=float, help='ratio of dropout')
 
         # dilated knn
         parser.add_argument('--epsilon', default=0.2, type=float, help='stochastic epsilon for gcn')
-        parser.add_argument('--stochastic', default=True,  type=bool, help='stochastic for gcn, True or False')
+        parser.add_argument('--stochastic', default=True, type=bool, help='stochastic for gcn, True or False')
         args = parser.parse_args()
 
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -66,7 +66,13 @@ class OptInit():
 
         if args.pretrained_model:
             if args.pretrained_model[0] != '/':
+                if args.pretrained_model[0:2] == 'ex':
+                    args.pretrained_model = os.path.join(os.path.dirname(os.path.dirname(dir_path)),
+                                                         args.pretrained_model)
+                else:
+                    args.pretrained_model = os.path.join(dir_path, args.pretrained_model)
                 args.pretrained_model = os.path.join(dir_path, args.pretrained_model)
+
         args.save_path = os.path.join(dir_path, 'checkpoints/ckpts' + '-' + args.post)
         args.logdir = os.path.join(dir_path, 'logs/' + args.post)
 
@@ -110,7 +116,7 @@ class OptInit():
                                                'formatter': 'debug',
                                                'level': logging.INFO},
                                    'file': {'class': 'logging.FileHandler',
-                                            'filename': os.path.join(self.args.logdir, self.args.post+'.log'),
+                                            'filename': os.path.join(self.args.logdir, self.args.post + '.log'),
                                             'formatter': 'debug',
                                             'level': logging.INFO}},
                       'root': {'handlers': ('console', 'file'), 'level': 'INFO'}
@@ -123,7 +129,7 @@ class OptInit():
         shutil.rmtree(self.args.logdir)
         os.makedirs(self.args.logdir)
 
-        if not os.path.exists(self.args.save_path):		
+        if not os.path.exists(self.args.save_path):
             os.makedirs(self.args.save_path)
         if not os.path.exists(self.args.train_path):
             os.makedirs(self.args.train_path)
@@ -136,4 +142,3 @@ class OptInit():
         torch.cuda.manual_seed_all(seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
-
