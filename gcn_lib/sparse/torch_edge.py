@@ -77,7 +77,7 @@ def knn_matrix(x, k=16, batch=None):
         batch_size = batch[-1] + 1
     x = x.view(batch_size, -1, x.shape[-1])
 
-    neg_adj = -pairwise_distance(x)
+    neg_adj = -pairwise_distance(x.detach())
     _, nn_idx = torch.topk(neg_adj, k=k)
     del neg_adj
 
