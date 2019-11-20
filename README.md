@@ -65,5 +65,5 @@ Please cite our paper if you find anything helpful,
 ## License
 MIT License
 
-## Acknowledgement
-Thanks for [Guocheng Qian](https://github.com/guochengqian) for the implementation of the Pytorch version.
+## Contact
+For more information please contact [Guohao Li](https://ghli.org), [Matthias Muller](https://matthias.pw/), [Guocheng Qian](https://www.gcqian.com/).
