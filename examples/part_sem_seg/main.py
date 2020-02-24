@@ -46,8 +46,9 @@ def train_step(model, train_loader, optimizer, scheduler, criterion, opt):
     for i, data in enumerate(train_loader):
         opt.iter += 1
         inputs = data.pos.transpose(2, 1).unsqueeze(3)
-        if opt.data_augmentation:
-            inputs = random_points_augmentation(inputs, rotate=True, translate=True, mean=0, std=0.02)
+        # We do not use data_augmentation
+        #if opt.data_augmentation:
+        #    inputs = random_points_augmentation(inputs, rotate=True, translate=True, mean=0, std=0.02)
         gt = data.y.to(opt.device)
         inputs = inputs.to(opt.device)
         del data
@@ -152,8 +153,16 @@ def save_ckpt(model, optimizer, scheduler, opt):
 if __name__ == '__main__':
     opt = OptInit().initialize()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
-    test_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=True, num_workers=4)
+    
+    train_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'train')
+    train_loader = DenseDataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=8)
+        
+    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'test')
+    test_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=False, num_workers=8)
+    
+    val_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
+    val_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=False, num_workers=8)
+    
     opt.n_classes = test_loader.dataset.num_classes
 
     opt.best_shapeMiou = 0
@@ -166,10 +175,8 @@ if __name__ == '__main__':
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     if opt.phase == 'train':
-        train_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'train')
-        train_loader = DenseDataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=8)
-        opt.n_classes = test_loader.dataset.num_classes
-        train(model, train_loader, test_loader, opt)
+        opt.n_classes = train_loader.dataset.num_classes
+        train(model, train_loader, val_loader, opt)
 
     else:
         test(model, test_loader, opt)
