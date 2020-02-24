@@ -148,7 +148,7 @@ def test(model, loader, opt):
 if __name__ == '__main__':
     opt = OptInit().initialize()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
+    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'test')
     test_loader = DenseDataLoader(test_dataset, batch_size=1, shuffle=True, num_workers=1)
     opt.n_classes = test_loader.dataset.num_classes
 
