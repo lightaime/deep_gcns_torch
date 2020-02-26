@@ -13,7 +13,7 @@ We do extensive experiments to show how different components (#Layers, #Filters,
 Further information and details please contact [Guohao Li](https://ghli.org) and [Matthias Muller](https://matthias.pw/).
 
 ## Requirements
-* [Pytorch>=1.2.0](https://pytorch.org)
+* [Pytorch>=1.4.0](https://pytorch.org)
 * [pytorch_geometric>=1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
 * [tensorflow graphics](https://github.com/tensorflow/graphics/blob/master/tensorflow_graphics/g3doc/install.md) only used for tensorboard visualization
 
