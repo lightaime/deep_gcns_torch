@@ -16,8 +16,8 @@ export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64:$LD_LIBRARY_PATH
 
 conda create -n deepgcn
 conda activate deepgcn
-# make sure pytorch version >=1.2.0
-conda install -y pytorch=1.2.0 torchvision cudatoolkit=10.0 tensorflow=1.14.0 python=3.7 -c pytorch
+# make sure pytorch version >=1.4.0
+conda install -y pytorch=1.4.0 torchvision cudatoolkit=10.0 tensorflow=1.14.0 python=3.7 -c pytorch
 
 # command to install pytorch geometric
 pip install --verbose --no-cache-dir torch-scatter
