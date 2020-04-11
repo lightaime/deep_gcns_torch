@@ -17,7 +17,6 @@ Our pretrained models can be found from [Google Drive](https://drive.google.com/
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example,
 
-test the best large architecture  using cri2
 ```
 python main.py --phase test --n_blocks 28 --block res  --pretrained_model 
 ```
