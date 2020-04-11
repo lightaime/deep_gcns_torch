@@ -1,4 +1,4 @@
-## Point cloud classification on ModelNet
+## Point cloud classification on ModelNet40
 
 
 ### Train
