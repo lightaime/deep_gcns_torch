@@ -53,7 +53,7 @@ class MLP(Seq):
 
 
 class BasicConv(Seq):
-    def __init__(self, channels, act='relu', norm=None, bias=True):
+    def __init__(self, channels, act='relu', norm=None, bias=True, drop=0.):
         m = []
         for i in range(1, len(channels)):
             m.append(Conv2d(channels[i - 1], channels[i], 1, bias=bias))
@@ -61,7 +61,22 @@ class BasicConv(Seq):
                 m.append(act_layer(act))
             if norm:
                 m.append(norm_layer(norm, channels[-1]))
+            if drop > 0:
+                m.append(nn.Dropout2d(drop))
+
         super(BasicConv, self).__init__(*m)
+
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.InstanceNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
 
 
 def batched_index_select(inputs, index):
