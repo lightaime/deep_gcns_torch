@@ -70,7 +70,21 @@ class DynConv2d(GraphConv2d):
         edge_index = self.dilated_knn_graph(x)
         return super(DynConv2d, self).forward(x, edge_index)
 
+    
+class PlainDynBlock2d(nn.Module):
+    """
+    Residual Dynamic graph convolution block
+    """
+    def __init__(self, in_channels, kernel_size=9, dilation=1, conv='edge', act='relu', norm=None,
+                 bias=True,  stochastic=False, epsilon=0.0, knn='matrix'):
+        super(PlainDynBlock2d, self).__init__()
+        self.body = DynConv2d(in_channels, in_channels, kernel_size, dilation, conv,
+                              act, norm, bias, stochastic, epsilon, knn)
 
+    def forward(self, x):
+        return self.body(x)
+    
+    
 class ResDynBlock2d(nn.Module):
     """
     Residual Dynamic graph convolution block
