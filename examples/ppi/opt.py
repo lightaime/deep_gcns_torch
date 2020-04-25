@@ -20,7 +20,7 @@ class OptInit():
         # dataset args
         parser.add_argument('--data_dir', type=str, default='/data/deepgcn/ppi')
         parser.add_argument('--batch_size', default=1, type=int, help='mini-batch size (default:8)')
-        parser.add_argument('--in_channels', default=50, type=int, help='the channel size of input point cloud ')
+        parser.add_argument('--in_channels', default=50, type=int, help='the channel size of input featurs')
 
         # train args
         parser.add_argument('--total_epochs', default=2000, type=int, help='number of total epochs to run')
