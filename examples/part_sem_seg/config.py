@@ -104,8 +104,8 @@ class OptInit:
         but we add a sub-folder for each separate experiment:
         """
         timestamp = time.strftime('%Y%m%d-%H%M%S')
-        self.args.jobname = '{}-{}-L{}-{}-{}-n{}-C{}-k{}-drop{}-lr{}_B{}' \
-            .format(self.args.exp_name, self.args.category, self.args.level,
+        self.args.jobname = '{}-{}-{}-L{}-{}-{}-n{}-C{}-k{}-drop{}-lr{}_B{}' \
+            .format(self.args.exp_name, self.args.category_no, self.args.category, self.args.level,
                     self.args.block, self.args.conv, self.args.n_blocks, self.args.n_filters,
                     self.args.k, self.args.dropout,  self.args.lr, self.args.batch_size)
 
