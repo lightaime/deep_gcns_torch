@@ -9,6 +9,7 @@ from config import OptInit
 from architecture import DeepGCN
 from utils.ckpt_util import load_pretrained_models
 from utils.data_util import PartNet
+import logging
 
 g_class2color = {
                     '0': [255,  0,  0],
@@ -136,20 +137,20 @@ def test(model, loader, opt):
     shape_mIoU = shape_iou_tot / shape_iou_cnt
     part_iou = np.divide(part_intersect[1:], part_union[1:])
     mean_part_iou = np.mean(part_iou)
-    opt.printer.info("===> Category {}-{}, Part mIOU is{:.4f} \t ".format(
+    logging.info("===> Finish Testing! Category {}-{}, Part mIOU is {:.4f} \n\n\n ".format(
                       opt.category_no, opt.category, mean_part_iou))
 
 
 if __name__ == '__main__':
     opt = OptInit()._get_args()
-    opt.printer.info('===> Creating dataloader ...')
+    logging.info('===> Creating dataloader ...')
     test_dataset = PartNet(opt.data_dir, 'sem_seg_h5', opt.category, opt.level, 'test')
     test_loader = DenseDataLoader(test_dataset, batch_size=1, shuffle=True, num_workers=1)
     opt.n_classes = test_loader.dataset.num_classes
 
-    opt.printer.info('===> Loading the network ...')
+    logging.info('===> Loading the network ...')
     model = DeepGCN(opt).to(opt.device)
-    opt.printer.info('===> loading pre-trained ...')
+    logging.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     test(model, test_loader, opt)

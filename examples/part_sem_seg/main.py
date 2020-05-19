@@ -69,7 +69,7 @@ def train(model, train_loader, val_loader, test_loader, opt):
     save_ckpt(model, optimizer, scheduler, opt, 'last')
     logging.info(
         'Saving the final model.Finish! Category {}-{}. Best val part mIoU is {:.4f}. Its test mIoU is {:.4f}. '
-        'Best test part mIoU is {:.4f}. Last test mIoU {:.4f}'.
+        'Best test part mIoU is {:.4f}. Last test mIoU {:.4f} \n\n\n'.
             format(opt.category_no, opt.category, best_val_part_miou, test_part_miou_val_best,
                    best_test_part_miou, test_part_iou))
 
@@ -192,5 +192,5 @@ if __name__ == '__main__':
     else:
         mean_part_iou, shape_mIoU = test(model, test_loader, opt)
         logging.info(
-            'Category {}-{}. Part mIoU is {:.4f}. Shape mIoU is {:.4f}'.
+            'Finish Testing! Category {}-{} Part mIoU is {:.4f} Shape mIoU is {:.4f}\n\n\n'.
                 format(opt.category_no, opt.category, mean_part_iou, shape_mIoU))
