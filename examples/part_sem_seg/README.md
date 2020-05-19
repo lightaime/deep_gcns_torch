@@ -12,6 +12,9 @@ For training the default ResEdgeConv-28 with 64 filters on the Bed category, run
 ```
 python main.py --phase train  --category 1 --data_dir /data/deepgcn/partnet
 ```
+Note that, We only focus on fine-grained level of part segmentation in the experiment. 
+For all the categories, we use the same training parameters as default (see `config.py` for details). 
+
 If you want to train a model with other gcn layers (for example mrgcn), run
 ```
 python main.py --phase train --category 1 --conv mr --data_dir /data/deepgcn/partnet
@@ -31,24 +34,25 @@ category_names = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher'
         'StorageFurniture', 'Table', 'TrashCan', 'Vase'] 
 ```
 ### Test
+We test and report results on the testing dataset using the checkpoints which perform the best in the validation dataset.  
+Our pretrained models can be found from [Google Cloud](https://drive.google.com/open?id=15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).  
 
-Our pretrained models can be found from [Google Cloud](https://drive.google.com/open?id=15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).
-
-The Naming format of our pretrained model is: `task-connection-conv_type-n_blocks-n_filters-dil_T_model_best.pth`, eg. `part_sem_seg-res-edge-b28-f64-dil_T_model_best.pth`
+The Naming format of our pretrained model is: `task-category-segmentationLevel-conv-n_blocks-n_filters-otherParameters-val_best_model_best.pth`, eg. `PartnetSemanticSeg-Bed-L3-res-edge-n28-C64-k9-drop0.5-lr0.005_B6-val_best_model.pth`. 
+val_best means the checkpoint is the best one on the validation dataset. 
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example, 
 ```
-python -u main.py --phase test --category 1 --pretrained_model checkpoints/part_sem_seg-Bed-res-edge-b28-f64-dil_T_model_best --data_dir /data/deepgcn/partnet  --test_batch_size 8
+python -u main.py --phase test --category 1 --pretrained_model checkpoints/PartnetSemanticSeg-Bed-L3-res-edge-n28-C64-k9-drop0.5-lr0.005_B6-val_best_model.pth --data_dir /data/deepgcn/partnet  --test_batch_size 8
 ```
 Please also specify the number of blocks and filters. 
-Note: the path of `--pretrained_model` is a relative path to `examples/part_sem_seg/main.py`, so don't add `examples/part_sem_seg` in `--pretrained_model`. Or you can feed an absolute path of `--pretrained_model`. 
+Note: the path of `--pretrained_model` is a relative path to `main.py`, so don't add `examples/part_sem_seg` in `--pretrained_model`. Or you can feed an absolute path of `--pretrained_model`. 
 
 
 #### Visualization
 1. step1
 Use the script `eval.py` to generate `.obj` files to be visualized:
 ```
-python -u eval.py --phase test --category 1 --pretrained_model checkpoints/part_sem_seg-Bed-res-edge-b28-f64-dil_T_model_best.pth --data_dir /data/deepgcn/partnet  --test_batch_size 8
+python -u eval.py --phase test --category 1 --pretrained_model checkpoints/PartnetSemanticSeg-Bed-L3-res-edge-n28-C64-k9-drop0.5-lr0.005_B6-val_best_model.pth --data_dir /data/deepgcn/partnet
 ```
 2. step2
 To visualize the output of a trained model please use `visualize.py`.
