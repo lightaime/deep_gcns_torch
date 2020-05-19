@@ -6,7 +6,7 @@ import os.path as osp
 import torch
 from torch_geometric.data import DenseDataLoader
 from config import OptInit
-from architecture import DenseDeepGCN
+from architecture import DeepGCN
 from utils.ckpt_util import load_pretrained_models
 from utils.data_util import PartNet
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     opt.n_classes = test_loader.dataset.num_classes
 
     opt.printer.info('===> Loading the network ...')
-    model = DenseDeepGCN(opt).to(opt.device)
+    model = DeepGCN(opt).to(opt.device)
     opt.printer.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
