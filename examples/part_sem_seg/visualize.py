@@ -8,7 +8,7 @@ from utils.pc_viz import visualize_part_seg
 import argparse
 
 
-clss = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher', 'Display', 'Door', 'Earphone',  # 0-9
+category_names = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher', 'Display', 'Door', 'Earphone',  # 0-9
         'Faucet', 'Hat', 'Keyboard', 'Knife', 'Lamp', 'Laptop', 'Microwave', 'Mug', 'Refrigerator', 'Scissors',  # 10-19
         'StorageFurniture', 'Table', 'TrashCan', 'Vase']  # 20-23
 
@@ -19,7 +19,7 @@ parser.add_argument('--folders', default='res,plain', type=str,
                     help='use "," to separate different folders, eg. "res,plain"')
 args = parser.parse_args()
 
-category = clss[args.category]
+category = category_names[args.category]
 obj_no = args.obj_no
 folders = list(map(lambda x: x.strip(), args.folders.split(',')))
 

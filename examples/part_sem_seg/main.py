@@ -1,62 +1,96 @@
-import os
-import sys
+import __init__
 import numpy as np
 from tqdm import tqdm
+import logging
 
 import torch
 from torch import nn
 from torch_geometric.data import DenseDataLoader
-
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(ROOT_DIR)
-from opt import OptInit
-from architecture import DenseDeepGCN
-from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer, save_checkpoint
+from config import OptInit
+from architecture import DeepGCN
+from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer
 from utils.metrics import AverageMeter
-from utils import random_points_augmentation
+from utils import scale_translate_pointcloud
 from utils.data_util import PartNet
 
 
-def train(model, train_loader, test_loader, opt):
-    opt.printer.info('===> Init the optimizer ...')
+def train(model, train_loader, val_loader, test_loader, opt):
+    logging.info('===> Init the optimizer ...')
     criterion = nn.NLLLoss().to(opt.device)
-    # criterion = torch.nn.CrossEntropyLoss().to(opt.device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr)  # weight_decay=1e-4
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, opt.lr_adjust_freq, opt.lr_decay_rate)
     optimizer, scheduler, opt.lr = load_pretrained_optimizer(opt.pretrained_model, optimizer, scheduler, opt.lr)
-    opt.printer.info('===> Init Metric ...')
+    logging.info('===> Init Metric ...')
     opt.losses = AverageMeter()
-    opt.test_value = 0.
 
-    opt.printer.info('===> start training ...')
+    best_val_part_miou = 0.
+    best_test_part_miou = 0.
+    test_part_miou_val_best = 0.
+
+    logging.info('===> start training ...')
     for _ in range(opt.epoch, opt.total_epochs):
         opt.epoch += 1
-        train_step(model, train_loader, optimizer, scheduler, criterion, opt)
-        if opt.epoch % opt.test_freq:
-            test(model, test_loader, opt)
-        save_ckpt(model, optimizer, scheduler, opt)
+        # reset tracker
+        opt.losses.reset()
+
+        train_epoch(model, train_loader, optimizer, criterion, opt)
+        val_part_iou, val_shape_mIoU = test(model, val_loader, opt)
+        test_part_iou, test_shape_mIoU = test(model, test_loader, opt)
+
         scheduler.step()
-    opt.printer.info(
-        'Saving the final model.Finish! Category {}-{}. Best part mIou is {}. Best shape mIOU is {}.'.
-            format(opt.category_no, opt.category, opt.best_value, opt.best_shapeMiou))
+
+        # ------------------  save ckpt
+        if val_part_iou > best_val_part_miou:
+            best_val_part_miou = val_part_iou
+            test_part_miou_val_best = test_part_iou
+            logging.info("Got a new best model on Validation with Part iou {:.4f}".format(best_val_part_miou))
+            save_ckpt(model, optimizer, scheduler, opt, 'val_best')
+        if test_part_iou > best_test_part_miou:
+            best_test_part_miou = test_part_iou
+            logging.info("Got a new best model on Test with Part iou {:.4f}".format(best_test_part_miou))
+            save_ckpt(model, optimizer, scheduler, opt, 'test_best')
+
+        # ------------------ show information
+        logging.info(
+            "===> Epoch {} Category {}-{}, Train Loss {:.4f}, mIoU on val {:.4f}, mIoU on test {:4f}, "
+            "Best val mIoU {:.4f} Its test mIoU {:.4f}. Best test mIoU {:.4f}".format(
+                opt.epoch, opt.category_no, opt.category, opt.losses.avg, val_part_iou, test_part_iou,
+                best_val_part_miou, test_part_miou_val_best, best_test_part_miou))
+
+        info = {
+            'loss': opt.losses.avg,
+            'val_part_miou': val_part_iou,
+            'test_part_miou': test_part_iou,
+            'lr': scheduler.get_lr()[0]
+        }
+        for tag, value in info.items():
+            opt.logger.scalar_summary(tag, value, opt.step)
+
+    save_ckpt(model, optimizer, scheduler, opt, 'last')
+    logging.info(
+        'Saving the final model.Finish! Category {}-{}. Best val part mIoU is {:.4f}. Its test mIoU is {:.4f}. '
+        'Best test part mIoU is {:.4f}. Last test mIoU {:.4f}'.
+            format(opt.category_no, opt.category, best_val_part_miou, test_part_miou_val_best,
+                   best_test_part_miou, test_part_iou))
 
 
-def train_step(model, train_loader, optimizer, scheduler, criterion, opt):
+def train_epoch(model, train_loader, optimizer, criterion, opt):
     model.train()
-    for i, data in enumerate(train_loader):
-        opt.iter += 1
+    for i, data in enumerate(tqdm(train_loader, desc='[{}/{}] {} '.format(opt.epoch + 1, opt.total_epochs, 'train'))):
+        opt.step += 1
         inputs = data.pos.transpose(2, 1).unsqueeze(3)
-        # We do not use data_augmentation
-        #if opt.data_augmentation:
-        #    inputs = random_points_augmentation(inputs, rotate=True, translate=True, mean=0, std=0.02)
+        if opt.data_augment:
+            inputs = scale_translate_pointcloud(inputs)
+
         gt = data.y.to(opt.device)
+        if gt.max() > opt.n_classes - 1:  # avoid some useless label
+            gt = gt.clamp(0., opt.n_classes - 1)
+
         inputs = inputs.to(opt.device)
         del data
         # ------------------ zero, output, loss
         optimizer.zero_grad()
         out = model(inputs)
-        if gt.max() > opt.n_classes - 1:
-            gt = gt.clamp(0., opt.n_classes - 1)
         loss = criterion(out, gt)
 
         # ------------------ optimization
@@ -64,17 +98,6 @@ def train_step(model, train_loader, optimizer, scheduler, criterion, opt):
         optimizer.step()
 
         opt.losses.update(loss.item())
-
-    # ------------------ show information
-    opt.printer.info('Epoch:{}\t Iter:[{}/{}]\t Loss: {Losses.avg: .4f}'.format(
-        opt.epoch, opt.iter, len(train_loader), Losses=opt.losses))
-    info = {
-        'loss': loss,
-        'test_value': opt.test_value,
-        'lr': scheduler.get_lr()[0]
-    }
-    for tag, value in info.items():
-        opt.logger.scalar_summary(tag, value, opt.iter)
 
 
 def test(model, loader, opt):
@@ -118,65 +141,56 @@ def test(model, loader, opt):
                 shape_iou_tot += cur_shape_miou
                 shape_iou_cnt += 1.
 
-    opt.shape_mIoU = shape_iou_tot / shape_iou_cnt
-    if opt.shape_mIoU > opt.best_shapeMiou:
-        opt.best_shapeMiou = opt.shape_mIoU
+    shape_mIoU = shape_iou_tot / shape_iou_cnt
     part_iou = np.divide(part_intersect[1:], part_union[1:])
-    mean_part_iou = np.mean(part_iou)
-    opt.test_value = mean_part_iou
-    opt.printer.info(
-        "===> Category {}-{}, Part mIOU is{:.4f} \t Shape mIoU is{:.4f} \t best Part mIOU is {:.4f}\t".format(
-            opt.category_no, opt.category, opt.test_value, opt.shape_mIoU, opt.best_value))
+    mean_part_iou = np.nanmean(part_iou)
+    return mean_part_iou, shape_mIoU
 
 
-def save_ckpt(model, optimizer, scheduler, opt):
+def save_ckpt(model, optimizer, scheduler, opt, name_post):
     # ------------------ save ckpt
-    is_best = (opt.test_value > opt.best_value)
-    if opt.save_best_only:
-        save_flag = is_best
-    else:
-        save_flag = True
-    if save_flag:
-        opt.best_value = max(opt.test_value, opt.best_value)
-        model_cpu = {k: v.cpu() for k, v in model.state_dict().items()}
-        save_checkpoint({
-            'epoch': opt.epoch,
-            'state_dict': model_cpu,
-            'optimizer_state_dict': optimizer.state_dict(),
-            'scheduler_state_dict': scheduler.state_dict(),
-            'best_value': opt.best_value,
-        }, is_best, opt.save_path, opt.post)
-        opt.losses.reset()
-        opt.test_value = 0.
+    filename = '{}/{}_model.pth'.format(opt.ckpt_dir, opt.jobname + '-' + name_post)
+    model_cpu = {k: v.cpu() for k, v in model.state_dict().items()}
+    state = {
+        'epoch': opt.epoch,
+        'state_dict': model_cpu,
+        'optimizer_state_dict': optimizer.state_dict(),
+        'scheduler_state_dict': scheduler.state_dict(),
+        'best_value': opt.best_value,
+    }
+    torch.save(state, filename)
+    logging.info('save a new best model into {}'.format(filename))
 
 
 if __name__ == '__main__':
-    opt = OptInit().initialize()
-    opt.printer.info('===> Creating dataloader ...')
-    
-    train_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'train')
+    opt = OptInit()._get_args()
+    logging.info('===> Creating dataloader ...')
+
+    train_dataset = PartNet(opt.data_dir, 'sem_seg_h5', opt.category, opt.level, 'train')
     train_loader = DenseDataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=8)
-        
-    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'test')
+
+    test_dataset = PartNet(opt.data_dir, 'sem_seg_h5', opt.category, opt.level, 'test')
     test_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=False, num_workers=8)
-    
-    val_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'val')
-    val_loader = DenseDataLoader(test_dataset, batch_size=opt.test_batch_size, shuffle=False, num_workers=8)
-    
-    opt.n_classes = test_loader.dataset.num_classes
 
-    opt.best_shapeMiou = 0
+    val_dataset = PartNet(opt.data_dir, 'sem_seg_h5', opt.category, opt.level, 'val')
+    val_loader = DenseDataLoader(val_dataset, batch_size=opt.test_batch_size, shuffle=False, num_workers=8)
 
-    opt.printer.info('===> Loading the network ...')
-    model = DenseDeepGCN(opt).to(opt.device)
+    opt.n_classes = train_dataset.num_classes
+    logging.info('===> Loading PartNet Category {}-{}, Semantic Segmentation level {}. '
+                 'Has classes {}'.format(opt.category_no, opt.category, opt.level, opt.n_classes))
+
+    logging.info('===> Loading the network ...')
+    model = DeepGCN(opt).to(opt.device)
     if opt.multi_gpus:
         model = nn.DataParallel(model).to(opt.device)
-    opt.printer.info('===> loading pre-trained ...')
+    logging.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
     if opt.phase == 'train':
-        opt.n_classes = train_loader.dataset.num_classes
-        train(model, train_loader, val_loader, opt)
+        train(model, train_loader, val_loader, test_loader, opt)
 
     else:
-        test(model, test_loader, opt)
+        mean_part_iou, shape_mIoU = test(model, test_loader, opt)
+        logging.info(
+            'Category {}-{}. Part mIoU is {:.4f}. Shape mIoU is {:.4f}'.
+                format(opt.category_no, opt.category, mean_part_iou, shape_mIoU))

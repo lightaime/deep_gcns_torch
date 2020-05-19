@@ -1,14 +1,11 @@
 import os
-import sys
+import __init__
 import numpy as np
 from tqdm import tqdm
 import os.path as osp
 import torch
 from torch_geometric.data import DenseDataLoader
-
-ROOT_DIR = osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__))))
-sys.path.append(ROOT_DIR)
-from opt import OptInit
+from config import OptInit
 from architecture import DenseDeepGCN
 from utils.ckpt_util import load_pretrained_models
 from utils.data_util import PartNet
@@ -80,9 +77,7 @@ g_class2color = {
 
 
 def test(model, loader, opt):
-    save_path = osp.join(osp.dirname(osp.abspath(__file__)), 'result', opt.block, opt.category)
-    if not osp.exists(save_path):
-        os.makedirs(save_path)
+    save_path = opt.res_dir
 
     part_intersect = np.zeros(opt.n_classes, dtype=np.float32)
     part_union = np.zeros(opt.n_classes, dtype=np.float32)
@@ -146,9 +141,9 @@ def test(model, loader, opt):
 
 
 if __name__ == '__main__':
-    opt = OptInit().initialize()
+    opt = OptInit()._get_args()
     opt.printer.info('===> Creating dataloader ...')
-    test_dataset = PartNet(opt.data_dir, opt.dataset, opt.category, opt.level, 'test')
+    test_dataset = PartNet(opt.data_dir, 'sem_seg_h5', opt.category, opt.level, 'test')
     test_loader = DenseDataLoader(test_dataset, batch_size=1, shuffle=True, num_workers=1)
     opt.n_classes = test_loader.dataset.num_classes
 
