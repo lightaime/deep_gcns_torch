@@ -23,7 +23,7 @@ class OptInit:
         parser.add_argument('--root_dir', type=str, default='log', help='the dir of experiment results, ckpt and logs')
 
         # ----------------- Dataset related
-        parser.add_argument('--datadir', type=str, default='/data/deepgcn/modelnet40')
+        parser.add_argument('--data_dir', type=str, default='/data/deepgcn/modelnet40')
         parser.add_argument('--num_points', type=int, default=1024,
                             help='num of points to use')
         parser.add_argument('--augment', action='store_true', default=True, help='Data Augmentation')
