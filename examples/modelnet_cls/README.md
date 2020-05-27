@@ -7,7 +7,7 @@ For DenseGCN,  we use 4 Tesla V100s.
 
 For training ResGCN-28, run:
 ```
-python main.py --phase train --n_blocks 28 --block res --data /data/deepgcn/modelnet40
+python main.py --phase train --n_blocks 28 --block res --data_dir /path/to/modelnet40
 ```
 Just need to set `--data` into your data folder, dataset will be downloaded automatically.
 
@@ -18,6 +18,6 @@ Our pretrained models can be found from [Google Drive](https://drive.google.com/
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example,
 
 ```
-python main.py --phase test --n_blocks 28 --block res  --pretrained_model 
+python main.py --phase test --n_blocks 28 --block res  --pretrained_model --data_dir /path/to/modelnet40
 ```
 
