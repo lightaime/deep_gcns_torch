@@ -12,8 +12,8 @@ python main.py --phase train --n_blocks 28 --block res --data_dir /path/to/model
 Just need to set `--data` into your data folder, dataset will be downloaded automatically.
 
 ### Test
-
-Our pretrained models can be found from [Google Drive](https://drive.google.com/drive/folders/1LUWH0V3ZoHNQBylj0u0_36Mx0-UrDh1v?usp=sharing).
+Models can be tested on one 1080Ti.   
+Our pretrained models are available [Google Drive](https://drive.google.com/drive/folders/1LUWH0V3ZoHNQBylj0u0_36Mx0-UrDh1v?usp=sharing).
 
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example,
 
