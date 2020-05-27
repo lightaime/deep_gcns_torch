@@ -153,14 +153,14 @@ if __name__ == '__main__':
     opt = OptInit()._get_args()
     logging.info('===> Creating dataloader ...')
 
-    train_loader = DataLoader(ModelNet40(datadir=opt.datadir, partition='train', num_points=opt.num_points),
+    train_loader = DataLoader(ModelNet40(data_dir=opt.data_dir, partition='train', num_points=opt.num_points),
                               num_workers=8, batch_size=opt.batch_size, shuffle=True, drop_last=True)
-    test_loader = DataLoader(ModelNet40(datadir=opt.datadir, partition='test', num_points=opt.num_points),
+    test_loader = DataLoader(ModelNet40(data_dir=opt.data_dir, partition='test', num_points=opt.num_points),
                              num_workers=8, batch_size=opt.test_batch_size, shuffle=True, drop_last=False)
 
     opt.n_classes = train_loader.dataset.num_classes()
 
-    logging.info('===> Loading ModelNet40 from {}. number of classes equal to {}'.format(opt.datadir, opt.n_classes))
+    logging.info('===> Loading ModelNet40 from {}. number of classes equal to {}'.format(opt.data_dir, opt.n_classes))
 
     logging.info('===> Loading the network ...')
     model = DeepGCN(opt).to(opt.device)
