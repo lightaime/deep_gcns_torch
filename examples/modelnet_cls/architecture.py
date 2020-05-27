@@ -45,8 +45,11 @@ class DeepGCN(torch.nn.Module):
                                       for _ in range(self.n_blocks - 1)])
             fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
         else:
-            self.backbone = Seq(*[PlainDynBlock2d(channels, k, i + 1, conv, act, norm,
-                                                bias, stochastic, epsilon, knn)
+            # Plain GCN. No dilation, no stochastic
+            stochastic = False
+
+            self.backbone = Seq(*[PlainDynBlock2d(channels, k, 1, conv, act, norm,
+                                                  bias, stochastic, epsilon, knn)
                                   for i in range(self.n_blocks - 1)])
 
             fusion_dims = int(channels+c_growth*(self.n_blocks-1))
