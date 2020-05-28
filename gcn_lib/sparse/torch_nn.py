@@ -53,7 +53,7 @@ class MultiSeq(Seq):
 
 
 class MLP(Seq):
-    def __init__(self, channels, act='relu', norm=None, bias=True):
+    def __init__(self, channels, act='relu', norm=None, bias=True, drop=0.):
         m = []
         for i in range(1, len(channels)):
             m.append(Lin(channels[i - 1], channels[i], bias))
@@ -61,6 +61,8 @@ class MLP(Seq):
                 m.append(act_layer(act))
             if norm:
                 m.append(norm_layer(norm, channels[-1]))
+            if drop > 0:
+                m.append(nn.Dropout2d(drop))
         self.m = m
         super(MLP, self).__init__(*self.m)
 
