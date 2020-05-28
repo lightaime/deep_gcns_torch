@@ -1,5 +1,5 @@
 import torch
-from gcn_lib.dense import BasicConv, GraphConv2d, ResDynBlock2d, DenseDynBlock2d, DenseDilatedKnnGraph
+from gcn_lib.dense import BasicConv, GraphConv2d, PlainDynBlock2d, ResDynBlock2d, DenseDynBlock2d, DenseDilatedKnnGraph
 from torch.nn import Sequential as Seq
 
 
@@ -7,7 +7,7 @@ class DenseDeepGCN(torch.nn.Module):
     def __init__(self, opt):
         super(DenseDeepGCN, self).__init__()
         channels = opt.n_filters
-        k = opt.kernel_size
+        k = opt.k
         act = opt.act
         norm = opt.norm
         bias = opt.bias
@@ -23,14 +23,23 @@ class DenseDeepGCN(torch.nn.Module):
         if opt.block.lower() == 'res':
             self.backbone = Seq(*[ResDynBlock2d(channels, k, 1+i, conv, act, norm, bias, stochastic, epsilon)
                                   for i in range(self.n_blocks-1)])
+            fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
         elif opt.block.lower() == 'dense':
             self.backbone = Seq(*[DenseDynBlock2d(channels+c_growth*i, c_growth, k, 1+i, conv, act,
                                                   norm, bias, stochastic, epsilon)
                                   for i in range(self.n_blocks-1)])
+            fusion_dims = int(
+                (channels + channels + c_growth * (self.n_blocks - 1)) * self.n_blocks // 2)
         else:
-            raise NotImplementedError('{} is not implemented. Please check.\n'.format(opt.block))
-        self.fusion_block = BasicConv([channels+c_growth*(self.n_blocks-1), 1024], act, norm, bias)
-        self.prediction = Seq(*[BasicConv([channels+c_growth*(self.n_blocks-1)+1024, 512], act, norm, bias),
+            stochastic = False
+
+            self.backbone = Seq(*[PlainDynBlock2d(channels, k, 1, conv, act, norm,
+                                                  bias, stochastic, epsilon)
+                                  for i in range(self.n_blocks - 1)])
+            fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
+
+        self.fusion_block = BasicConv([fusion_dims, 1024], act, norm, bias)
+        self.prediction = Seq(*[BasicConv([fusion_dims+1024, 512], act, norm, bias),
                                 BasicConv([512, 256], act, norm, bias),
                                 torch.nn.Dropout(p=opt.dropout),
                                 BasicConv([256, opt.n_classes], None, None, bias)])
