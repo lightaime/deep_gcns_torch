@@ -1,13 +1,9 @@
-import os
-import sys
+import __init__
 import torch
 import torch_geometric.datasets as GeoData
 from torch_geometric.data import DenseDataLoader
 import torch_geometric.transforms as T
 from torch.nn import DataParallel
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(ROOT_DIR)
-
 from config import OptInit
 from architecture import DenseDeepGCN
 from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer, save_checkpoint

@@ -1,14 +1,10 @@
-import os
-import sys
+import __init__
 from tqdm import tqdm
 import numpy as np
 import torch
 import torch_geometric.datasets as GeoData
 from torch_geometric.data import DataLoader
 import torch_geometric.transforms as T
-
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(ROOT_DIR)
 from config import OptInit
 from architecture import SparseDeepGCN
 from utils.ckpt_util import load_pretrained_models
