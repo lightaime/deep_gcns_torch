@@ -1,14 +1,14 @@
 import torch
 from torch.nn import Linear as Lin
 import torch_geometric as tg
-from gcn_lib.sparse import MultiSeq, MLP, GraphConv, ResDynBlock, DenseDynBlock, DilatedKnnGraph
+from gcn_lib.sparse import MultiSeq, MLP, GraphConv, PlainDynBlock, ResDynBlock, DenseDynBlock, DilatedKnnGraph
 
 
 class SparseDeepGCN(torch.nn.Module):
     def __init__(self, opt):
         super(SparseDeepGCN, self).__init__()
         channels = opt.n_filters
-        k = opt.kernel_size
+        k = opt.k
         act = opt.act
         norm = opt.norm
         bias = opt.bias
@@ -25,15 +25,24 @@ class SparseDeepGCN(torch.nn.Module):
         if opt.block.lower() == 'res':
             self.backbone = MultiSeq(*[ResDynBlock(channels, k, 1+i, conv, act, norm, bias, stochastic=stochastic, epsilon=epsilon)
                                        for i in range(self.n_blocks-1)])
+            fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
         elif opt.block.lower() == 'dense':
-            self.backbone = MultiSeq(*[DenseDynBlock(channels, k, 1+i, conv, act, norm, bias, stochastic=stochastic, epsilon=epsilon)
+            self.backbone = MultiSeq(*[DenseDynBlock(channels+c_growth*i, c_growth, k, 1+i,
+                                                     conv, act, norm, bias, stochastic=stochastic, epsilon=epsilon)
                                        for i in range(self.n_blocks-1)])
+            fusion_dims = int(
+                (channels + channels + c_growth * (self.n_blocks - 1)) * self.n_blocks // 2)
         else:
-            raise NotImplementedError('{} is not implemented. Please check.\n'.format(opt.block))
-        self.fusion_block = MLP([channels + c_growth * (self.n_blocks - 1), 1024], act, norm, bias)
-        self.prediction = MultiSeq(*[MLP([channels+c_growth*(self.n_blocks-1)+1024, 512], act, norm, bias),
-                                     MLP([512, 256], act, norm, bias),
-                                     torch.nn.Dropout(p=opt.dropout),
+            # Use PlainGCN without skip connection and dilated convolution.
+            stochastic = False
+            self.backbone = MultiSeq(
+                *[PlainDynBlock(channels, k, 1, conv, act, norm, bias, stochastic=stochastic, epsilon=epsilon)
+                  for i in range(self.n_blocks - 1)])
+            fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
+
+        self.fusion_block = MLP([fusion_dims, 1024], act, norm, bias)
+        self.prediction = MultiSeq(*[MLP([fusion_dims+1024, 512], act, norm, bias),
+                                     MLP([512, 256], act, norm, bias, drop=opt.dropout),
                                      MLP([256, opt.n_classes], None, None, bias)])
         self.model_init()
 

@@ -9,16 +9,16 @@ import torch_geometric.transforms as T
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT_DIR)
-from opt import OptInit
+from config import OptInit
 from architecture import SparseDeepGCN
 from utils.ckpt_util import load_pretrained_models
 
 
 def main():
-    opt = OptInit().initialize()
+    opt = OptInit().get_args()
 
     print('===> Creating dataloader...')
-    test_dataset = GeoData.S3DIS(opt.test_path, 5, False, pre_transform=T.NormalizeScale())
+    test_dataset = GeoData.S3DIS(opt.data_dir, 5, train=False, pre_transform=T.NormalizeScale())
     test_loader = DataLoader(test_dataset, batch_size=opt.batch_size, shuffle=False, num_workers=0)
     opt.n_classes = test_loader.dataset.num_classes
     if opt.no_clutter:
@@ -61,28 +61,5 @@ def test(model, loader, opt):
 
 if __name__ == '__main__':
     main()
-
-
-# from TorchTools.DataTools import indoor3d_util
-# TODO: visulazation
-# if opt.visu:
-#     fout = open('_pred.obj'), 'w')
-#     fout_gt = open(os.path.join(DUMP_DIR, os.path.basename(room_path)[:-4]+'_gt.obj'), 'w')
-# fout_data_label = open(out_data_label_filename, 'w')
-# fout_gt_label = open(out_gt_label_filename, 'w')
-#
-#
-# data.x[0:3] *= 255.
-#
-# for i in range(len(pred)):
-#     color = indoor3d_util.g_label2color[pred[i]]
-#     color_gt = indoor3d_util.g_label2color[gt[i]]
-#     if opt.visu:
-#         fout.write('v %f %f %f %d %d %d\n' % (data.x[i, 3], data.x[i, 4], data.x[i, 5], color[i, 0], color[i, 1], color[i, 2]))
-#         fout_gt.write(
-#             'v %f %f %f %d %d %d\n' % (data.x[i, 3], data.x[i, 4], data.x[i, 5], color_gt[i, 0], color_gt[i, 1], color_gt[i, 2]))
-#     fout_data_label.write('%f %f %f %d %d %d %f %d\n' % (
-#     data.x[i, 3], data.x[i, 4], data.x[i, 5], data.x[i, 0], data.x[i, 1], data.x[i, 2], out[i, pred], pred))
-#     fout_gt_label.write('%d\n' % (gt[i]))
 
 

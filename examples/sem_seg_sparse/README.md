@@ -7,6 +7,9 @@ But for sem_seg_dense, data shape is Batch_size x feature_size x nodes_num x 1.
 In gcn_lib, there are two folders: dense and sparse. They are used for different data shapes above.
 
 
+### Note
+We suggest to use sem_seg_dense. It is more efficient. 
+
 ### Train
 We keep using 2 Tesla V100 GPUs for distributed training. Run:
 ```
@@ -16,7 +19,7 @@ Note on `--train_path`: Make sure you have the folder. Just need to set `--train
 
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-python examples/sem_seg_sparse/train.py --conv mr --multi_gpus --phase train  --train_path /data/deepgcn/S3DIS
+python train.py --conv mr --multi_gpus --phase train  --train_path /data/deepgcn/S3DIS
 ```
 Other parameters for changing the architecture are:
 ```
@@ -30,14 +33,7 @@ Other parameters for changing the architecture are:
 Qucik test on area 5, run:
 
 ```
-python examples/sem_seg_dense/test.py --pretrained_model checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
-```
-
-#### Pretrained Models
-Our pretrained models will be available soon.
-use parameter $--pretrained_model$ to change the specific pretrained model you want. 
-```
-python examples/sem_seg_dense/test.py --pretrained_model checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
+python test.py --pretrained_model checkpoints/densedeepgcn-res-edge-ckpt_50.pth  --batch_size 1  --test_path /data/deepgcn/S3DIS
 ```
 
 #### Visualization
