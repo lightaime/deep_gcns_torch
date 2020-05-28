@@ -199,6 +199,21 @@ class DynConv(GraphConv):
         return super(DynConv, self).forward(x, edge_index)
 
 
+class PlainDynBlock(nn.Module):
+    """
+    Residual Dynamic graph convolution block
+    """
+    def __init__(self, channels,  kernel_size=9, dilation=1, conv='edge', act='relu', norm=None,
+                 bias=True, res_scale=1, **kwargs):
+        super(PlainDynBlock, self).__init__()
+        self.body = DynConv(channels, channels, kernel_size, dilation, conv,
+                            act, norm, bias, **kwargs)
+        self.res_scale = res_scale
+
+    def forward(self, x, batch=None):
+        return self.body(x, batch), batch
+
+
 class ResDynBlock(nn.Module):
     """
     Residual Dynamic graph convolution block
@@ -218,9 +233,9 @@ class DenseDynBlock(nn.Module):
     """
     Dense Dynamic graph convolution block
     """
-    def __init__(self, channels,  kernel_size=9, dilation=1, conv='edge', act='relu', norm=None, bias=True, **kwargs):
+    def __init__(self, in_channels, out_channels=64, kernel_size=9, dilation=1, conv='edge', act='relu', norm=None, bias=True, **kwargs):
         super(DenseDynBlock, self).__init__()
-        self.body = DynConv(channels*2, channels, kernel_size, dilation, conv,
+        self.body = DynConv(in_channels, out_channels, kernel_size, dilation, conv,
                             act, norm, bias, **kwargs)
 
     def forward(self, x, batch=None):
