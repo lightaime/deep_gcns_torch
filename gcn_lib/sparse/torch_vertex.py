@@ -2,9 +2,89 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 import torch_geometric as tg
-from .torch_nn import MLP, act_layer, norm_layer
+from .torch_nn import MLP, act_layer, norm_layer, BondEncoder
 from .torch_edge import DilatedKnnGraph
+from .torch_message import GenMessagePassing, MsgNorm
 from torch_geometric.utils import remove_self_loops, add_self_loops
+
+
+class GENConv(GenMessagePassing):
+    """
+     GENeralized Graph Convolution (GENConv): https://arxiv.org/pdf/2006.07739.pdf
+     SoftMax  &  PowerMean Aggregation
+    """
+    def __init__(self, in_dim, emb_dim,
+                 aggr='softmax',
+                 t=1.0, learn_t=False,
+                 p=1.0, learn_p=False,
+                 msg_norm=False, learn_msg_scale=True,
+                 encode_edge=False, bond_encoder=False,
+                 edge_feat_dim=None,
+                 norm='batch', mlp_layers=2,
+                 eps=1e-7):
+
+        super(GENConv, self).__init__(aggr=aggr,
+                                      t=t, learn_t=learn_t,
+                                      p=p, learn_p=learn_p)
+
+        channels_list = [in_dim]
+
+        for i in range(mlp_layers-1):
+            channels_list.append(in_dim*2)
+
+        channels_list.append(emb_dim)
+
+        self.mlp = MLP(channels=channels_list,
+                       norm=norm,
+                       last_lin=True)
+
+        self.msg_encoder = torch.nn.ReLU()
+        self.eps = eps
+
+        self.msg_norm = msg_norm
+        self.encode_edge = encode_edge
+        self.bond_encoder = bond_encoder
+
+        if msg_norm:
+            self.msg_norm = MsgNorm(learn_msg_scale=learn_msg_scale)
+        else:
+            self.msg_norm = None
+
+        if self.encode_edge:
+            if self.bond_encoder:
+                self.edge_encoder = BondEncoder(emb_dim=emb_dim)
+            else:
+                self.edge_encoder = torch.nn.Linear(edge_feat_dim, emb_dim)
+
+    def forward(self, x, edge_index, edge_attr=None):
+        x = x
+
+        if self.encode_edge and edge_attr is not None:
+            edge_emb = self.edge_encoder(edge_attr)
+        else:
+            edge_emb = edge_attr
+
+        m = self.propagate(edge_index, x=x, edge_attr=edge_emb)
+
+        if self.msg_norm is not None:
+            m = self.msg_norm(x, m)
+
+        h = x + m
+        out = self.mlp(h)
+
+        return out
+
+    def message(self, x_j, edge_attr=None):
+
+        if edge_attr is not None:
+            msg = x_j + edge_attr
+        else:
+            msg = x_j
+
+        return self.msg_encoder(msg) + self.eps
+
+    def update(self, aggr_out):
+        return aggr_out
 
 
 class MRConv(nn.Module):

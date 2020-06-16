@@ -1,8 +1,11 @@
 # Code referenced from https://gist.github.com/gyglim/1f8dfb1b5c82627ae3efcfbbadb9f514
-import tensorflow as tf
+try:
+    import tensorflow as tf
+    import tensorboard.plugins.mesh.summary as meshsummary
+except ImportError:
+    print('tensorflow is not installed.')
 import numpy as np
 import scipy.misc
-import tensorboard.plugins.mesh.summary as meshsummary
 
 
 try:
@@ -12,7 +15,7 @@ except ImportError:
 
 
 class TfLogger(object):
-    
+
     def __init__(self, log_dir):
         """Create a summary writer logging to log_dir."""
         self.writer = tf.compat.v1.summary.FileWriter(log_dir)
@@ -59,7 +62,7 @@ class TfLogger(object):
         # Create and write Summary
         summary = tf.Summary(value=img_summaries)
         self.writer.add_summary(summary, step)
-        
+
     def mesh_summary(self, tag, vertices, faces=None, colors=None, step=0):
 
         """Log a list of mesh images."""
