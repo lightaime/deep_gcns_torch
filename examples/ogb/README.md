@@ -1,4 +1,4 @@
-# DeeperGCN: All You Need to Train Deeper GCNs
+# [DeeperGCN: All You Need to Train Deeper GCNs](https://arxiv.org/abs/2006.07739)
 In this work, we propose a novel Generalized Aggregation Function suited for graph convolutions. We show how our function covers all commonly used aggregations. Our generalized aggregation function is fully differentiable and can also be learned in an end-to-end fashion. We also show how by modifying current GCN skip connections and introducing a novel message normalization layer, we can enhance the performance in several benchmarks. Through combining our generalized aggregations, modified skip connections, and message normalization, we achieve state-of-the-art (SOTA) performance on four [Open Graph Benchmark](https://ogb.stanford.edu/) (OGB) datasets. 
 [[paper](https://arxiv.org/pdf/2006.07739.pdf)]
 
