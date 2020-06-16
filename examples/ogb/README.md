@@ -27,12 +27,12 @@ Learning curves of 7-layer DyResGEN with ***PowerMean_Agg<sub>p</sub>(.)*** and 
 ## Results on OGB Datasets
 
 
-|Dataset      |  Test     |
-|-------------|---------------|
-|[ogbn-proteins](ogbn_proteins)|0.8580 ± 0.0017|
-|[ogbn-arxiv](ogbn_arxiv)   |0.7192 ± 0.0016|
-|[ogbg-ppa](ogbg_ppa )     |0.7712 ± 0.0071|
-|[ogbg-molhiv](ogbg_molhiv)  |0.7858 ± 0.0117|
+|Dataset      |  Test     |  Rank@submission     |
+|-------------|---------------|---------------|
+|[ogbn-proteins](ogbn_proteins)|0.8580 ± 0.0017|1st|
+|[ogbn-arxiv](ogbn_arxiv)   |0.7192 ± 0.0016|1st|
+|[ogbg-ppa](ogbg_ppa )     |0.7712 ± 0.0071|1st|
+|[ogbg-molhiv](ogbg_molhiv)  |0.7858 ± 0.0117|1st|
 
 ## Requirements
 
