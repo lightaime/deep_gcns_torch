@@ -174,7 +174,8 @@ if __name__ == '__main__':
 
     else:
         criterion = SmoothCrossEntropy()
-        test_overall_acc, test_class_acc = infer(model, test_loader, criterion, opt)
+        opt.test_losses = AverageMeter()
+        test_overall_acc, test_class_acc, opt = infer(model, test_loader, criterion, opt)
         logging.info(
             'Test Overall Acc {:.4f}, Its test avg acc {:.4f}.'.
                 format(test_overall_acc, test_class_acc))

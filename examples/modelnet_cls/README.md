@@ -9,7 +9,7 @@ For training ResGCN-28, run:
 ```
 python main.py --phase train --n_blocks 28 --block res --data_dir /path/to/modelnet40
 ```
-Just need to set `--data` into your data folder, dataset will be downloaded automatically.
+Just need to set `--data_dir` into your data folder, dataset will be downloaded automatically.
 
 ### Test
 Models can be tested on one 1080Ti.   
@@ -18,6 +18,6 @@ Our pretrained models are available [Google Drive](https://drive.google.com/driv
 Use the parameter `--pretrained_model` to set a specific pretrained model to load. For example,
 
 ```
-python main.py --phase test --n_blocks 28 --block res  --pretrained_model --data_dir /path/to/modelnet40
+python main.py --phase test --n_blocks 28 --block res  --pretrained_model /path/to/pretrained_model --data_dir /path/to/modelnet40
 ```
 
