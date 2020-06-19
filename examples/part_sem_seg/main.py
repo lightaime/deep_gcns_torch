@@ -10,8 +10,7 @@ from config import OptInit
 from architecture import DeepGCN
 from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer
 from utils.metrics import AverageMeter
-from utils import scale_translate_pointcloud
-from utils.data_util import PartNet
+from data import scale_translate_pointcloud, PartNet
 
 
 def train(model, train_loader, val_loader, test_loader, opt):
