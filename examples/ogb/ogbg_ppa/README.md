@@ -22,7 +22,7 @@ We initialize the features of nodes of ogbg_ppa dataset through aggregating the 
 	python main.py --use_gpu --conv_encode_edge --num_layers 28 --gcn_aggr softmax_sg --t 0.01
 
 
-### Test (use pre-trained model, [download](https://drive.google.com/open?id=1vlmNPUgDes8QJ0SQoo-K5L_yFVeV1lkH) from Google Drive)
+### Test (use pre-trained model, [download](https://drive.google.com/file/d/1vlmNPUgDes8QJ0SQoo-K5L_yFVeV1lkH/view?usp=sharing) from Google Drive)
 	python test.py --use_gpu --conv_encode_edge --num_layers 28 --gcn_aggr softmax_sg --t 0.01
 
 
