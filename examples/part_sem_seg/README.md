@@ -44,9 +44,10 @@ Use the parameter `--pretrained_model` to set a specific pretrained model to loa
 ```
 python -u main.py --phase test --category 1 --pretrained_model checkpoints/PartnetSemanticSeg-Bed-L3-res-edge-n28-C64-k9-drop0.5-lr0.005_B6-val_best_model.pth --data_dir /data/deepgcn/partnet  --test_batch_size 8
 ```
-Please also specify the number of blocks and filters. 
-Note: the path of `--pretrained_model` is a relative path to `main.py`, so don't add `examples/part_sem_seg` in `--pretrained_model`. Or you can feed an absolute path of `--pretrained_model`. 
-
+Please also specify the number of blocks and filters.   
+Note: 
+- the path of `--pretrained_model` is a relative path to `main.py`, so don't add `examples/part_sem_seg` in `--pretrained_model`. Or you can feed an absolute path of `--pretrained_model`.  
+- if you do not have V100, you can set the `test_batch_size` to 1. It does not influence the test accuracy.  
 
 #### Visualization
 1. step1
