@@ -76,6 +76,19 @@ def random_points_augmentation(points, rotate=False, translate=False, **kwargs):
     return points
 
 
+def scale_translate_pointcloud(pointcloud, shift=[-0.2, 0.2], scale=[2. / 3., 3. /2.]):
+    """
+    for scaling and shifting the point cloud
+    :param pointcloud:
+    :return:
+    """
+    B, C, N = pointcloud.shape[0:3]
+    scale = scale[0] + torch.rand([B, C, 1, 1])*(scale[1]-scale[0])
+    shift = shift[0] + torch.rand([B, C, 1, 1]) * (shift[1]-shift[0])
+    translated_pointcloud = torch.mul(pointcloud, scale) + shift
+    return translated_pointcloud
+
+
 class PartNet(InMemoryDataset):
     r"""The PartNet dataset from
     the `"PartNet: A Large-scale Benchmark for Fine-grained and Hierarchical Part-level 3D Object Understanding"
@@ -305,6 +318,7 @@ def get_atom_feature_dims():
         allowable_features['possible_is_in_ring_list']
         ]))
 
+
 def bond_to_feature_vector(bond):
     """
     Converts rdkit bond object to feature list of indices
@@ -325,6 +339,7 @@ def get_bond_feature_dims():
         allowable_features['possible_bond_stereo_list'],
         allowable_features['possible_is_conjugated_list']
         ]))
+
 
 def atom_feature_vector_to_dict(atom_feature):
     [atomic_num_idx,
