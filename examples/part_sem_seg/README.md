@@ -35,7 +35,7 @@ category_names = ['Bag', 'Bed', 'Bottle', 'Bowl', 'Chair', 'Clock', 'Dishwasher'
 ```
 ### Test
 We test and report results on the testing dataset using the checkpoints which perform the best in the validation dataset.  
-Our pretrained models can be found from [Google Cloud](https://drive.google.com/open?id=15v_zDUMgpB6pf2F2_YJsDizeyHwe-7Oc).  
+Our pretrained models can be found from [Google Cloud](https://drive.google.com/drive/folders/15Y7Ao4VBysHBHxyQwYvb2SU1iFi9ZZRK?usp=sharing).  
 
 The Naming format of our pretrained model is: `task-category-segmentationLevel-conv-n_blocks-n_filters-otherParameters-val_best_model_best.pth`, eg. `PartnetSemanticSeg-Bed-L3-res-edge-n28-C64-k9-drop0.5-lr0.005_B6-val_best_model.pth`. 
 val_best means the checkpoint is the best one on the validation dataset. 
