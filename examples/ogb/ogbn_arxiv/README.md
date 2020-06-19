@@ -16,5 +16,5 @@
 ### Train
 	python main.py --use_gpu --self_loop --num_layers 28 --block res+ --gcn_aggr softmax_sg --t 0.1
 
-### Test (use pre-trained model, [download](https://drive.google.com/open?id=19DA0SzfInkb3Q2cdeazejJ_mYMAvRZyb) from Google Drive)
+### Test (use pre-trained model, [download](https://drive.google.com/file/d/19DA0SzfInkb3Q2cdeazejJ_mYMAvRZyb/view?usp=sharing) from Google Drive)
 	python test.py --use_gpu --self_loop --num_layers 28 --block res+ --gcn_aggr softmax_sg --t 0.1
