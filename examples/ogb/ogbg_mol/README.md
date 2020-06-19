@@ -18,5 +18,5 @@
 ## DyResGEN
 ### Train
 	python main.py --use_gpu --conv_encode_edge --num_layers 7 --dataset ogbg-molhiv --block res+ --gcn_aggr softmax --t 1.0 --learn_t
-### Test (use pre-trained model, [download](https://drive.google.com/open?id=1ja1xc2a4U4ps8AtZm5xo2CmffWA-C5Yl) from Google Drive)
+### Test (use pre-trained model, [download](https://drive.google.com/file/d/1ja1xc2a4U4ps8AtZm5xo2CmffWA-C5Yl/view?usp=sharing) from Google Drive)
 	python test.py --use_gpu --conv_encode_edge --num_layers 7 --dataset ogbg-molhiv --block res+ --gcn_aggr softmax --t 1.0 --learn_t
