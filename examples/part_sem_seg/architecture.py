@@ -1,5 +1,5 @@
 import torch
-from gcn_lib.dense import BasicConv, GraphConv2d, ResDynBlock2d, DenseDynBlock2d, DilatedKnnGraph, PlainDynBlock2d
+from gcn_lib.dense import BasicConv, GraphConv2d, ResDynBlock2d, DenseDynBlock2d, DenseDilatedKnnGraph, PlainDynBlock2d
 from torch.nn import Sequential as Seq
 import torch.nn.functional as F
 
@@ -21,7 +21,7 @@ class DeepGCN(torch.nn.Module):
 
         self.n_blocks = opt.n_blocks
 
-        self.knn = DilatedKnnGraph(k, 1, stochastic, epsilon)
+        self.knn = DenseDilatedKnnGraph(k, 1, stochastic, epsilon)
         self.head = GraphConv2d(opt.in_channels, channels, conv, act, norm, bias=False)
 
         if opt.block.lower() == 'res':
