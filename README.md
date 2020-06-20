@@ -62,6 +62,17 @@ Please cite our paper if you find anything helpful,
 }
 ```
 
+```
+@misc{li2020deepergcn,
+    title={DeeperGCN: All You Need to Train Deeper GCNs},
+    author={Guohao Li and Chenxin Xiong and Ali Thabet and Bernard Ghanem},
+    year={2020},
+    eprint={2006.07739},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
+}
+```
+
 ## License
 MIT License
 
