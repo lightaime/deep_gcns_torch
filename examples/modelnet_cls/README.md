@@ -1,6 +1,8 @@
 ## [Point cloud classification on ModelNet40](https://arxiv.org/pdf/1910.06849.pdf)
-
-<div style="text-align:center"><img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/modelnet_cls.png' width=500>
+  
+<p align="center">
+  <img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/modelnet_cls.png' width=500>
+</p>
 
 ### Train
 We train PlainGCN-28 and ResGCN-28 models on one Tesla V100.
