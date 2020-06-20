@@ -1,5 +1,4 @@
-## Point cloud classification on ModelNet40
-
+## [Point cloud classification on ModelNet40](https://arxiv.org/pdf/1910.06849.pdf)
 
 ### Train
 We train PlainGCN-28 and ResGCN-28 models on one Tesla V100.
