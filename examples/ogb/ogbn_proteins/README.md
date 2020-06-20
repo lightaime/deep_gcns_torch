@@ -19,7 +19,7 @@ We simply apply a random partition to generate batches for both mini-batch train
     --dropout 0.0
     --num_evals 1
 
-## DyResGEN
+## DyResGEN-112
 
 ### Train the model that performs best
 	python main.py --use_gpu --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
@@ -28,6 +28,9 @@ We simply apply a random partition to generate batches for both mini-batch train
 ### Test by multiple evaluations (e.g. 5 times)
 
     python test.py --use_gpu --num_evals 5 --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
+    
+## Train ResGCN-112
+	python main.py --use_gpu --conv_encode_edge --num_layers 112 --block res --gcn_aggr max
 
 #### Train with different GCN models with 28 layers on GPU 
 
