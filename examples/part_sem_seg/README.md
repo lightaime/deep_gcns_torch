@@ -1,6 +1,6 @@
-## (Part Segmentation on PartNet)[https://arxiv.org/pdf/1910.06849.pdf]
+## [Part Segmentation on PartNet](https://arxiv.org/pdf/1910.06849.pdf)
 
-<div style="text-align:center"><img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/part_sem_seg.png' width=500>
+<div style="text-align:center"><img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/part_sem_seg.png' width=800>
 
 
 ### Preparing the Dataset
