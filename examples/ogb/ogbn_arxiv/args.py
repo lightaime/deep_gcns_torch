@@ -71,7 +71,7 @@ class ArgsInit(object):
                                           self.args.num_layers, self.args.hidden_channels,
                                           self.args.dropout, self.args.gcn_aggr,
                                           self.args.t, self.args.learn_t, self.args.p, self.args.learn_p,
-                                          self.args.msg_norm, self.args.learn_msg_scale, )
+                                          self.args.msg_norm, self.args.learn_msg_scale)
 
         self.args.save = 'log/{}-{}-{}'.format(self.args.save, time.strftime("%Y%m%d-%H%M%S"), str(uuid.uuid4()))
         self.args.model_save_path = os.path.join(self.args.save, self.args.model_save_path)
