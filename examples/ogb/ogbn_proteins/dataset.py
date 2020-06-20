@@ -113,16 +113,7 @@ class OGBNDataset(object):
         parts = np.random.randint(cluster_number, size=num_nodes)
         return parts
 
-    def partition_graph(self, idx_nodes, cluster_number=100):
-        self.length = cluster_number
-        num_nodes = len(idx_nodes)
-
-        edge_cuts = 0
-        clusters = [cluster for cluster in range(cluster_number)]
-        parts = [random.choice(clusters) for _ in range(num_nodes)]
-
-        return edge_cuts, parts
-
+    
     def generate_sub_graphs(self, parts, cluster_number=10, batch_size=1):
 
         no_of_batches = cluster_number // batch_size
