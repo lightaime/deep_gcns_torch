@@ -1,4 +1,7 @@
-## Part Segmentation on PartNet
+## (Part Segmentation on PartNet)[https://arxiv.org/pdf/1910.06849.pdf]
+
+<div style="text-align:center"><img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/part_sem_seg.png' width=500>
+
 
 ### Preparing the Dataset
 Make sure you request access to download the PartNet v0 dataset [here](https://cs.stanford.edu/~kaichun/partnet/). It's an official website of Partnet. 
