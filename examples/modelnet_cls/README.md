@@ -1,6 +1,6 @@
 ## [Point cloud classification on ModelNet40](https://arxiv.org/pdf/1910.06849.pdf)
 
-<div style="text-align:center"><img src='misc/
+<div style="text-align:center"><img src='/misc/
 modelnet_cls.png' width=300>
 
 ### Train
