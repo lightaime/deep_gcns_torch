@@ -1,4 +1,8 @@
-## Semantic segmentation of indoor scenes
+## [Semantic segmentation of indoor scenes](https://arxiv.org/pdf/1904.03751.pdf)
+
+<p align="center">
+  <img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/sem_seg_s3dis.png' width=800>
+</p>
 
 Sem_seg_dense and sem_seg_sparse are both for the semantic segmentation task. The difference between them is that the data shape is different. 
 As for sem_seg_sparse, data shape is N x feature_size and there is a batch variable indicating the batch of each node. 
