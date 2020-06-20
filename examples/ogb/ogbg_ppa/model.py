@@ -156,7 +156,7 @@ class DeeperGCN(torch.nn.Module):
         if self.msg_norm:
             ss = []
             for gcn in self.gcns:
-                ss.append(gcn.msg_scale.item())
+                ss.append(gcn.msg_norm.msg_scale.item())
             if final:
                 print('Final s {}'.format(ss))
             else:
