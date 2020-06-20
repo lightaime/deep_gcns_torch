@@ -43,3 +43,16 @@ Learning curves of 7-layer DyResGEN with ***PowerMean_Agg<sub>p</sub>(.)*** and 
 Install enviroment by runing:
 
     source deeper_gcn_env.sh
+    
+Please cite our paper if you find anything helpful,
+    
+```
+@misc{li2020deepergcn,
+    title={DeeperGCN: All You Need to Train Deeper GCNs},
+    author={Guohao Li and Chenxin Xiong and Ali Thabet and Bernard Ghanem},
+    year={2020},
+    eprint={2006.07739},
+    archivePrefix={arXiv},
+    primaryClass={cs.LG}
+}
+```
