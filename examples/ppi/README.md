@@ -1,4 +1,9 @@
-## Graph Learning on Biological Networks
+## [Graph Learning on Biological Networks](https://arxiv.org/pdf/1910.06849.pdf)
+
+<p align="center">
+  <img src='https://github.com/lightaime/deep_gcns_torch/blob/master/misc/ppi.png' width=500>
+</p>
+
 ### Train
 We train each model on one tesla V100.
 
