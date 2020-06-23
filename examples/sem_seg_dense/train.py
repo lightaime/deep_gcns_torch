@@ -93,7 +93,7 @@ def train(model, train_loader, optimizer, scheduler, criterion, opt):
         'optimizer_state_dict': optimizer.state_dict(),
         'scheduler_state_dict': scheduler.state_dict(),
         'best_value': opt.best_value,
-    }, is_best, opt.ckpt_dir, opt.post)
+    }, is_best, opt.ckpt_dir, opt.exp_name)
 
 
 def test(model, test_loader, test_metric, opt):
