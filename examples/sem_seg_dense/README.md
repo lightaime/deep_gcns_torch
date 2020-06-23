@@ -14,13 +14,13 @@ In gcn_lib, there are two folders: dense and sparse. They are used for different
 ### Train
 We keep using 2 Tesla V100 GPUs for distributed training. Run:
 ```
-CUDA_VISIBLE_DEVICES=0,1 python train.py  --multi_gpus --phase train --train_path /data/deepgcn/S3DIS --batch_size 16
+CUDA_VISIBLE_DEVICES=0,1 python train.py  --multi_gpus --phase train --data_dir /data/deepgcn/S3DIS --batch_size 16
 ```
-Note on `--train_path`: Make sure you have the folder. Just need to set `--train_path path/to/data`, dataset will be downloaded automatically. 
+Note on `--data_dir`: Make sure you have the folder. Just need to set `--data_dir path/to/data`, dataset will be downloaded automatically. 
 
 If you want to train model with other gcn layers (for example mrgcn), run
 ```
-python train.py --conv mr --multi_gpus --phase train --train_path /data/deepgcn/S3DIS 
+python train.py --conv mr --multi_gpus --phase train --data_dir /data/deepgcn/S3DIS 
 ```
 Other parameters for changing the architecture are:
 ```
