@@ -14,7 +14,7 @@ import logging
 def main():
     opt = OptInit().get_args()
     logging.info('===> Creating dataloader ...')
-    train_dataset = GeoData.S3DIS(opt.data_dir, 5, True, pre_transform=T.NormalizeScale())
+    train_dataset = GeoData.S3DIS(opt.data_dir, opt.area, True, pre_transform=T.NormalizeScale())
     train_loader = DenseDataLoader(train_dataset, batch_size=opt.batch_size, shuffle=True, num_workers=4)
     opt.n_classes = train_loader.dataset.num_classes
 

@@ -15,7 +15,7 @@ def main():
     opt = OptInit().get_args()
 
     logging.info('===> Creating dataloader...')
-    test_dataset = GeoData.S3DIS(opt.data_dir, 5, train=False, pre_transform=T.NormalizeScale())
+    test_dataset = GeoData.S3DIS(opt.data_dir, opt.area, train=False, pre_transform=T.NormalizeScale())
     test_loader = DenseDataLoader(test_dataset, batch_size=opt.batch_size, shuffle=False, num_workers=0)
     opt.n_classes = test_loader.dataset.num_classes
     if opt.no_clutter:
