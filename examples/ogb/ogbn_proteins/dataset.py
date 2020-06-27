@@ -36,7 +36,7 @@ class OGBNDataset(object):
         self.num_tasks = self.dataset.num_tasks
         self.total_no_of_edges = self.whole_graph.edge_attr.shape[0]
         self.total_no_of_nodes = self.whole_graph.y.shape[0]
-        self.species = self.whole_graph.species
+        self.species = self.whole_graph.node_species
         self.y = self.whole_graph.y
 
         self.edge_index = self.whole_graph.edge_index
