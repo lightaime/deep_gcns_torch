@@ -27,30 +27,15 @@ def add_zeros(data):
     return data
 
 
-def extract_node_feature_add(data):
-    data.x = scatter(data.edge_attr,
-                     data.edge_index[0],
-                     dim=0,
-                     dim_size=data.num_nodes,
-                     reduce='add')
-    return data
-
-
-def extract_node_feature_mean(data):
-    data.x = scatter(data.edge_attr,
-                     data.edge_index[0],
-                     dim=0,
-                     dim_size=data.num_nodes,
-                     reduce='mean')
-    return data
-
-
-def extract_node_feature_max(data):
-    data.x = scatter(data.edge_attr,
-                     data.edge_index[0],
-                     dim=0,
-                     dim_size=data.num_nodes,
-                     reduce='max')
+def extract_node_feature(reduce, data):
+    if reduce in ['mean', 'max', 'add']:
+        data.x = scatter(data.edge_attr,
+                         data.edge_index[0],
+                         dim=0,
+                         dim_size=data.num_nodes,
+                         reduce=reduce)
+    else:
+        raise Exception('Unknown Aggregation Type')
     return data
 
 
