@@ -53,6 +53,26 @@ def extract_node_feature_max(data):
                      reduce='max')
     return data
 
+# random partition graph
+def random_partition_graph(num_nodes, cluster_number=10):
+    parts = np.random.randint(cluster_number, size=num_nodes)
+    return parts
+
+
+def generate_sub_graphs(adj, parts, cluster_number=10, batch_size=1):
+    # convert sparse tensor to scipy csr
+    adj = adj.to_scipy(layout='csr')
+
+    num_batches = cluster_number // batch_size
+
+    sg_nodes = [[] for _ in range(num_batches)]
+    sg_edges = [[] for _ in range(num_batches)]
+
+    for cluster in range(num_batches):
+        sg_nodes[cluster] = np.where(parts == cluster)[0]
+        sg_edges[cluster] = tg.utils.from_scipy_sparse_matrix(adj[sg_nodes[cluster], :][:, sg_nodes[cluster]])[0]
+
+    return sg_nodes, sg_edges
 
 def random_rotate(points):
     theta = np.random.uniform(0, np.pi * 2)
