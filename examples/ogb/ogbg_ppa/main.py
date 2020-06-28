@@ -5,8 +5,9 @@ from model import DeeperGCN
 from tqdm import tqdm
 from args import ArgsInit
 from utils.ckpt_util import save_ckpt
-from utils.data_util import add_zeros, extract_node_feature_add, extract_node_feature_max, extract_node_feature_mean
+from utils.data_util import add_zeros, extract_node_feature
 import logging
+from functools import partial
 import time
 import statistics
 from ogb.graphproppred import PygGraphPropPredDataset, Evaluator
@@ -71,17 +72,9 @@ def main():
         dataset = PygGraphPropPredDataset(name=args.dataset,
                                           transform=add_zeros)
     else:
-        if args.aggr == 'add':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_add)
-        elif args.aggr == 'mean':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_mean)
-        elif args.aggr == 'max':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_max)
-        else:
-            raise Exception('Unknown Aggregation Type')
+        extract_node_feature_func = partial(extract_node_feature, args.aggr)
+        dataset = PygGraphPropPredDataset(name=args.dataset,
+                                          transform=extract_node_feature_func)
 
         sub_dir = sub_dir + '-NF_{}'.format(args.aggr)
 
