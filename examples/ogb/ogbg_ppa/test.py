@@ -45,7 +45,7 @@ def main():
         dataset = PygGraphPropPredDataset(name=args.dataset,
                                           transform=add_zeros)
     else:
-        extract_node_feature_func = partial(extract_node_feature, args.aggr)
+        extract_node_feature_func = partial(extract_node_feature, reduce=args.aggr)
         dataset = PygGraphPropPredDataset(name=args.dataset,
                                           transform=extract_node_feature_func)
 
