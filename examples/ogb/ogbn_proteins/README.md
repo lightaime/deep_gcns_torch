@@ -23,7 +23,7 @@ We simply apply a random partition to generate batches for both mini-batch train
 
 ### Train the model that performs best
 	python main.py --use_gpu --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
-### Test (use pre-trained model, [download](https://drive.google.com/file/d/182bEK33rRyr3lKkRGugUmeTFuEmnjY6J/view?usp=sharing) from Google Drive)
+### Test (use pre-trained model, [download](https://drive.google.com/file/d/1LjsgXZo02WgzpIJe-SQHrbrwEuQl8VQk/view?usp=sharing) from Google Drive)
 	python test.py --use_gpu --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1
 ### Test by multiple evaluations (e.g. 5 times)
 
