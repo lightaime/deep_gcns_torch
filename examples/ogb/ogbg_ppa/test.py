@@ -3,8 +3,9 @@ from torch_geometric.data import DataLoader
 from model import DeeperGCN
 from tqdm import tqdm
 from args import ArgsInit
-from utils.data_util import add_zeros, extract_node_feature_add, extract_node_feature_max, extract_node_feature_mean
+from utils.data_util import add_zeros, extract_node_feature
 from ogb.graphproppred import PygGraphPropPredDataset, Evaluator
+from functools import partial
 
 
 @torch.no_grad()
@@ -44,17 +45,9 @@ def main():
         dataset = PygGraphPropPredDataset(name=args.dataset,
                                           transform=add_zeros)
     else:
-        if args.aggr == 'add':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_add)
-        elif args.aggr == 'mean':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_mean)
-        elif args.aggr == 'max':
-            dataset = PygGraphPropPredDataset(name=args.dataset,
-                                              transform=extract_node_feature_max)
-        else:
-            raise Exception('Unknown Aggregation Type')
+        extract_node_feature_func = partial(extract_node_feature, args.aggr)
+        dataset = PygGraphPropPredDataset(name=args.dataset,
+                                          transform=extract_node_feature_func)
 
     args.num_tasks = dataset.num_classes
     evaluator = Evaluator(args.dataset)
