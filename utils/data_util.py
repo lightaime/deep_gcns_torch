@@ -27,7 +27,7 @@ def add_zeros(data):
     return data
 
 
-def extract_node_feature(reduce, data):
+def extract_node_feature(data, reduce='add'):
     if reduce in ['mean', 'max', 'add']:
         data.x = scatter(data.edge_attr,
                          data.edge_index[0],
