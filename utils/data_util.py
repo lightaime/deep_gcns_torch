@@ -8,6 +8,7 @@ import torch
 from torch_scatter import scatter
 from torch_geometric.data import InMemoryDataset, Data, extract_zip
 from tqdm import tqdm
+import torch_geometric as tg
 
 
 def intersection(lst1, lst2):
