@@ -34,6 +34,8 @@ class DeeperGCN(torch.nn.Module):
         mlp_layers = args.mlp_layers
         node_features_file_path = args.nf_path
 
+        self.use_one_hot_encoding = args.use_one_hot_encoding
+
         if aggr in ['softmax_sg', 'softmax', 'power'] and self.num_layers > 50:
             self.checkpoint_grad = True
             self.ckp_k = 3
@@ -76,10 +78,12 @@ class DeeperGCN(torch.nn.Module):
             self.gcns.append(gcn)
             self.layer_norms.append(norm_layer(norm, hidden_channels))
 
-        self.node_features = torch.load(node_features_file_path).to(args.device)
-
-        self.node_one_hot_encoder = torch.nn.Linear(8, 8)
-        self.node_features_encoder = torch.nn.Linear(8 * 2, hidden_channels)
+        if self.use_one_hot_encoding:
+            self.node_features = torch.load(node_features_file_path).to(args.device)
+            self.node_one_hot_encoder = torch.nn.Linear(8, 8)
+            self.node_features_encoder = torch.nn.Linear(8 * 2, hidden_channels)
+        else:
+            self.node_features_encoder = torch.nn.Linear(8, hidden_channels)
 
         self.edge_encoder = torch.nn.Linear(8, hidden_channels)
 
@@ -88,9 +92,14 @@ class DeeperGCN(torch.nn.Module):
     def forward(self, x, node_index, edge_index, edge_attr):
 
         node_features_1st = self.node_features[node_index]
-        node_features_2nd = self.node_one_hot_encoder(x)
-        # concatenate
-        node_features = torch.cat((node_features_1st, node_features_2nd), dim=1)
+
+        if self.use_one_hot_encoding:
+            node_features_2nd = self.node_one_hot_encoder(x)
+            # concatenate
+            node_features = torch.cat((node_features_1st, node_features_2nd), dim=1)
+        else:
+            node_features = node_features_1st
+
         h = self.node_features_encoder(node_features)
 
         edge_emb = self.edge_encoder(edge_attr)
