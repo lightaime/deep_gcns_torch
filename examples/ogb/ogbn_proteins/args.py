@@ -63,6 +63,8 @@ class ArgsInit(object):
         parser.add_argument('--learn_msg_scale', action='store_true')
         # encode edge in conv
         parser.add_argument('--conv_encode_edge', action='store_true')
+        # if use one-hot-encoding node feature
+        parser.add_argument('--use_one_hot_encoding', action='store_true')
         # save model
         parser.add_argument('--model_save_path', type=str, default='model_ckpt',
                             help='the directory used to save models')
