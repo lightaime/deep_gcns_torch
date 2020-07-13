@@ -54,8 +54,8 @@ def dense_knn_matrix(x, k=16):
         x = x.transpose(2, 1).squeeze(-1)
         batch_size, n_points, n_dims = x.shape
         _, nn_idx = torch.topk(-pairwise_distance(x.detach()), k=k)
-        center_idx = torch.arange(0, n_points).repeat(batch_size, k, 1).transpose(2, 1)
-        center_idx = center_idx.to(x.device)
+        center_idx = torch.arange(0, n_points, device=x.device).repeat(batch_size, k, 1).transpose(2, 1)
+        #center_idx = center_idx.to(x.device)
     return torch.stack((nn_idx, center_idx), dim=0)
 
 
