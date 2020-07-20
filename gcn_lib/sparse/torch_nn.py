@@ -2,18 +2,12 @@ from torch import nn
 from torch.nn import Sequential as Seq, Linear as Lin
 from utils.data_util import get_atom_feature_dims, get_bond_feature_dims
 
+
 ##############################
 #    Basic layers
 ##############################
 def act_layer(act_type, inplace=False, neg_slope=0.2, n_prelu=1):
-    """
-    helper selecting activation
-    :param act:
-    :param inplace:
-    :param neg_slope:
-    :param n_prelu:
-    :return:
-    """
+    # activation layer
 
     act = act_type.lower()
     if act == 'relu':
@@ -28,7 +22,7 @@ def act_layer(act_type, inplace=False, neg_slope=0.2, n_prelu=1):
 
 
 def norm_layer(norm_type, nc):
-    # helper selecting normalization layer
+    # normalization layer 1d
     norm = norm_type.lower()
     if norm == 'batch':
         layer = nn.BatchNorm1d(nc, affine=True)

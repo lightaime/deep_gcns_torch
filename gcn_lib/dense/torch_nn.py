@@ -7,14 +7,7 @@ from torch.nn import Sequential as Seq, Linear as Lin, Conv2d
 #    Basic layers
 ##############################
 def act_layer(act, inplace=False, neg_slope=0.2, n_prelu=1):
-    """
-    helper selecting activation
-    :param act:
-    :param inplace:
-    :param neg_slope:
-    :param n_prelu:
-    :return:
-    """
+    # activation layer
 
     act = act.lower()
     if act == 'relu':
@@ -29,7 +22,7 @@ def act_layer(act, inplace=False, neg_slope=0.2, n_prelu=1):
 
 
 def norm_layer(norm, nc):
-    # helper selecting normalization layer
+    # normalization layer 2d
     norm = norm.lower()
     if norm == 'batch':
         layer = nn.BatchNorm2d(nc, affine=True)
