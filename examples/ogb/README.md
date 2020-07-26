@@ -29,15 +29,17 @@ Learning curves of 7-layer DyResGEN with ***PowerMean_Agg<sub>p</sub>(.)*** and 
 
 |Dataset      |  Test     |
 |-------------|---------------|
+|[ogbn-products](ogbn-products)|0.8098 ± 0.0020|
 |[ogbn-proteins](ogbn_proteins)|0.8580 ± 0.0017|
 |[ogbn-arxiv](ogbn_arxiv)   |0.7192 ± 0.0016|
+|[ogbg-molhiv](ogbg_mol)  |0.7858 ± 0.0117|
+|[ogbg-molpcba](ogbg_mol) |0.2745 ± 0.0025|
 |[ogbg-ppa](ogbg_ppa )     |0.7712 ± 0.0071|
-|[ogbg-molhiv](ogbg_molhiv)  |0.7858 ± 0.0117|
 
 ## Requirements
 
  - [PyTorch 1.5.0](https://pytorch.org/get-started/locally/) 
- - [torch-geometric 1.5.0](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
+ - [torch-geometric 1.6.0](https://pytorch-geometric.readthedocs.io/en/latest/index.html)
  - [ogb >= 1.1.1](https://ogb.stanford.edu/docs/home/)
 
 Install enviroment by runing:
