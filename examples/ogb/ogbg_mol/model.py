@@ -58,9 +58,8 @@ class DeeperGCN(torch.nn.Module):
             self.mlp_virtualnode_list = torch.nn.ModuleList()
 
             for layer in range(self.num_layers - 1):
-                self.mlp_virtualnode_list.append(MLP([hidden_channels, hidden_channels],
-                                                     norm=norm,
-                                                     last_act=True))
+                self.mlp_virtualnode_list.append(MLP([hidden_channels]*3,
+                                                     norm=norm))
 
         for layer in range(self.num_layers):
             if conv == 'gen':
