@@ -12,7 +12,12 @@ In gcn_lib, there are two folders: dense and sparse. They are used for different
 
 
 ### Train
-We keep using 2 Tesla V100 GPUs for distributed training. Run:
+We keep using 2 Tesla V100 GPUs for distributed training. 
+``` 
+cd examples/sem_seg/dense
+```
+
+Run:
 ```
 CUDA_VISIBLE_DEVICES=0,1 python train.py  --multi_gpus --phase train --data_dir /data/deepgcn/S3DIS --batch_size 16
 ```
@@ -30,11 +35,17 @@ Other parameters for changing the architecture are:
     --n_blocks      number of basic blocks, default is 28
 ```
 
+A shallow version of DeepGCN (ResGCN-7) could be trained by the command below:
+```
+CUDA_VISIBLE_DEVICES=0 python train.py  --multi_gpus --phase train --data_dir /data/deepgcn/S3DIS --batch_size 16 --n_blocks 7
+```
+
+
 ### Evaluation
 Qucik test on area 5, run:
 
 ```
-python test.py --pretrained_model examples/sem_seg_dense/checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
+python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
 ```
 
 #### Pretrained Models
@@ -43,7 +54,7 @@ Our pretrained model is available here [google driver](https://drive.google.com/
 Note: Please use our Tensorflow code if you want to reproduce the same result in the paper. 
 The performance of pytorch code is slightly worse than tensorflow. mIOU is 52.11% compared to 52.49% in the tensorflow version.
 ```
-python test.py --pretrained_model examples/sem_seg_dense/checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
+python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
 ```
 Lower the batch size if out of memory. The batch size will not influence the test results.
 
