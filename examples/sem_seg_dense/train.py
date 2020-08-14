@@ -45,7 +45,7 @@ def main():
     for _ in range(opt.epoch, opt.total_epochs):
         opt.epoch += 1
         logging.info('Epoch:{}'.format(opt.epoch))
-        # train(model, train_loader, optimizer, scheduler, criterion, opt)
+        train(model, train_loader, optimizer, scheduler, criterion, opt)
         if opt.epoch % opt.eval_freq == 0 and opt.eval_freq != -1:
             test(model, test_loader, opt)
         scheduler.step()
