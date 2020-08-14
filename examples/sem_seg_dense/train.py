@@ -60,7 +60,7 @@ def train(model, train_loader, optimizer, scheduler, criterion, opt):
             opt.iter += 1
 
             # tqdm progress bar
-            desc = 'Epoch:{}\t Iter: {}\t [{}/{}]\t Loss: {Losses.avg: .4f}'\
+            desc = 'Epoch:{}  Iter:{}  [{}/{}]  Loss:{Losses.avg: .4f}'\
                 .format(opt.epoch, opt.iter, i + 1, len(train_loader), Losses=opt.losses)
             tqdm_loader.set_description(desc)
 
