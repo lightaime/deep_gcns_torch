@@ -52,9 +52,9 @@ class GENConv(GenMessagePassing):
 
         if self.encode_edge:
             if self.bond_encoder:
-                self.edge_encoder = BondEncoder(emb_dim=emb_dim)
+                self.edge_encoder = BondEncoder(emb_dim=in_dim)
             else:
-                self.edge_encoder = torch.nn.Linear(edge_feat_dim, emb_dim)
+                self.edge_encoder = torch.nn.Linear(edge_feat_dim, in_dim)
 
     def forward(self, x, edge_index, edge_attr=None):
         x = x
