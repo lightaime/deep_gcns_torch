@@ -15,11 +15,7 @@ class GenMessagePassing(MessagePassing):
             self.aggr = aggr
 
             if learn_t and aggr == 'softmax':
-                if t < 1.0:
-                    c = torch.nn.Parameter(torch.Tensor([1/t]), requires_grad=True)
-                    self.t = 1 / c
-                else:
-                    self.t = torch.nn.Parameter(torch.Tensor([t]), requires_grad=True)
+                self.t = torch.nn.Parameter(torch.Tensor([t]), requires_grad=True)
             else:
                 self.t = t
 
