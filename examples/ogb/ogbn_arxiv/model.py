@@ -27,6 +27,9 @@ class DeeperGCN(torch.nn.Module):
         self.learn_t = args.learn_t
         p = args.p
         self.learn_p = args.learn_p
+        y = args.y
+        self.learn_y = args.learn_y
+        
         self.msg_norm = args.msg_norm
         learn_msg_scale = args.learn_msg_scale
 
@@ -65,6 +68,7 @@ class DeeperGCN(torch.nn.Module):
                               aggr=aggr,
                               t=t, learn_t=self.learn_t,
                               p=p, learn_p=self.learn_p,
+                              y=y, learn_y=self.learn_y,
                               msg_norm=self.msg_norm, learn_msg_scale=learn_msg_scale,
                               norm=norm, mlp_layers=mlp_layers)
             else:
@@ -153,6 +157,16 @@ class DeeperGCN(torch.nn.Module):
                 print('Final p {}'.format(ps))
             else:
                 logging.info('Epoch {}, p {}'.format(epoch, ps))
+                
+        if self.learn_y:
+            ps = []
+            for gcn in self.gcns:
+                ps.append(gcn.sigmoid_y.item())
+            if final:
+                print('Final sigmoid y {}'.format(ps))
+            else:
+                logging.info('Epoch {}, sigmoid y {}'.format(epoch, ps))
+                
         if self.msg_norm:
             ss = []
             for gcn in self.gcns:
