@@ -2,12 +2,14 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.nn import MessagePassing
 from torch_scatter import scatter, scatter_softmax
+from torch_geometric.utils import degree
 
 
 class GenMessagePassing(MessagePassing):
     def __init__(self, aggr='softmax',
                  t=1.0, learn_t=False,
-                 p=1.0, learn_p=False):
+                 p=1.0, learn_p=False, 
+                 y=0.0, learn_y=False):
 
         if aggr == 'softmax' or aggr == 'softmax_sg':
 
@@ -28,6 +30,15 @@ class GenMessagePassing(MessagePassing):
                 self.p = torch.nn.Parameter(torch.Tensor([p]), requires_grad=True)
             else:
                 self.p = p
+                
+        elif aggr == 'sum':
+            super(GenMessagePassing, self).__init__(aggr=None)
+            self.aggr = aggr
+            
+            if learn_y:
+                self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
+            else:
+                self.y = torch.Tensor(y)
         else:
             super(GenMessagePassing, self).__init__(aggr=aggr)
 
@@ -56,7 +67,13 @@ class GenMessagePassing(MessagePassing):
                           dim_size=dim_size, reduce='mean')
             torch.clamp_(out, min_value, max_value)
             return torch.pow(out, 1/self.p)
-
+        
+        elif self.aggr == 'sum':
+            self.sigmoid_y = torch.sigmoid(self.y)
+            out = scatter(inputs, index, dim=self.node_dim,
+                          dim_size=dim_size, reduce='mean')
+            degrees = degree(index).unsqueeze(1)
+            return torch.pow(degrees, self.sigmoid_y) * out
         else:
             raise NotImplementedError('To be implemented')
 
