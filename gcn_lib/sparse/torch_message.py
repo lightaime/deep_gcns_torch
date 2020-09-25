@@ -2,6 +2,7 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.nn import MessagePassing
 from torch_scatter import scatter, scatter_softmax
+from torch_geometric.utils import degree
 
 
 class GenMessagePassing(MessagePassing):
