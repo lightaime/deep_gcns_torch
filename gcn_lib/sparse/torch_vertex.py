@@ -17,6 +17,7 @@ class GENConv(GenMessagePassing):
                  aggr='softmax',
                  t=1.0, learn_t=False,
                  p=1.0, learn_p=False,
+                 y=0.0, learn_y=False,
                  msg_norm=False, learn_msg_scale=True,
                  encode_edge=False, bond_encoder=False,
                  edge_feat_dim=None,
@@ -25,7 +26,8 @@ class GENConv(GenMessagePassing):
 
         super(GENConv, self).__init__(aggr=aggr,
                                       t=t, learn_t=learn_t,
-                                      p=p, learn_p=learn_p)
+                                      p=p, learn_p=learn_p, 
+                                      y=y, learn_y=learn_y)
 
         channels_list = [in_dim]
 
