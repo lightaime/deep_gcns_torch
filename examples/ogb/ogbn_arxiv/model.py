@@ -160,14 +160,14 @@ class DeeperGCN(torch.nn.Module):
                 logging.info('Epoch {}, p {}'.format(epoch, ps))
 
         if self.learn_y:
-            ps = []
+            ys = []
             for gcn in self.gcns:
-                ps.append(gcn.sigmoid_y.item())
+                ys.append(gcn.sigmoid_y.item())
             if final:
-                print('Final sigmoid(y) {}'.format(ps))
+                print('Final sigmoid(y) {}'.format(ys))
             else:
-                logging.info('Epoch {}, sigmoid(y) {}'.format(epoch, ps))
-                
+                logging.info('Epoch {}, sigmoid(y) {}'.format(epoch, ys))
+
         if self.msg_norm:
             ss = []
             for gcn in self.gcns:

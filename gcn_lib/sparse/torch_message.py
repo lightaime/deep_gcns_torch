@@ -7,7 +7,7 @@ from torch_scatter import scatter, scatter_softmax
 class GenMessagePassing(MessagePassing):
     def __init__(self, aggr='softmax',
                  t=1.0, learn_t=False,
-                 p=1.0, learn_p=False, 
+                 p=1.0, learn_p=False,
                  y=0.0, learn_y=False):
 
         if aggr in ['softmax_sg', 'softmax', 'softmax_sum']:
@@ -69,7 +69,7 @@ class GenMessagePassing(MessagePassing):
 
             return out
 
- 
+
         elif self.aggr in ['power', 'power_sum']:
             min_value, max_value = 1e-7, 1e1
             torch.clamp_(inputs, min_value, max_value)
@@ -82,7 +82,7 @@ class GenMessagePassing(MessagePassing):
                 self.sigmoid_y = torch.sigmoid(self.y)
                 degrees = degree(index).unsqueeze(1)
                 out = torch.pow(degrees, self.sigmoid_y) * out
-                
+
             return out
 
         else:
