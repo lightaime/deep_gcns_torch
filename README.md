@@ -37,7 +37,7 @@ source deepgcn_env_install.sh
     │   ├── sem_seg_sparse      # code for point clouds semantic segmentation on S3DIS (data type: sparse)
     │   ├── part_sem_seg        # code for part segmentation on PartNet
     │   ├── ppi                 # code for node classification on PPI dataset
-    │   └── ogb                 # code for node/graph classification on OGB datasets
+    │   └── ogb                 # code for node/graph property prediction on OGB datasets
     └── ...
 
 ## How to train, test and evaluate our models

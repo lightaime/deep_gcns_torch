@@ -39,6 +39,8 @@ class OptInit:
         parser.add_argument('--lr', default=1e-3, type=float, help='initial learning rate')
         parser.add_argument('--lr_decay_rate', default=0.5, type=float, help='learning rate decay')
         parser.add_argument('--print_freq', default=100, type=int, help='print frequency of training (default: 100)')
+        parser.add_argument('--eval_freq', default=1, type=int,
+                            help='evaluation frequency of training (default: 1). Set as -1 to disable evaluation')
         parser.add_argument('--multi_gpus', action='store_true', help='use multi-gpus')
         parser.add_argument('--seed', type=int, default=0, help='random seed')
 

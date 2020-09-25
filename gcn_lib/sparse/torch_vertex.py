@@ -52,9 +52,9 @@ class GENConv(GenMessagePassing):
 
         if self.encode_edge:
             if self.bond_encoder:
-                self.edge_encoder = BondEncoder(emb_dim=emb_dim)
+                self.edge_encoder = BondEncoder(emb_dim=in_dim)
             else:
-                self.edge_encoder = torch.nn.Linear(edge_feat_dim, emb_dim)
+                self.edge_encoder = torch.nn.Linear(edge_feat_dim, in_dim)
 
     def forward(self, x, edge_index, edge_attr=None):
         x = x
@@ -115,7 +115,7 @@ class EdgConv(tg.nn.EdgeConv):
 
 class GATConv(nn.Module):
     """
-    Edge convolution layer (with activation, batch normalization)
+    Graph Attention Convolution layer (with activation, batch normalization)
     """
     def __init__(self, in_channels, out_channels,  act='relu', norm=None, bias=True, heads=8):
         super(GATConv, self).__init__()
@@ -196,7 +196,7 @@ class SAGEConv(tg.nn.SAGEConv):
 
 class RSAGEConv(SAGEConv):
     """
-    Edge convolution layer (with activation, batch normalization)
+    Residual SAGE convolution layer (with activation, batch normalization)
     """
 
     def __init__(self, in_channels, out_channels, act='relu', norm=None, bias=True, relative=False):
@@ -206,7 +206,7 @@ class RSAGEConv(SAGEConv):
 
 class SemiGCNConv(nn.Module):
     """
-    Edge convolution layer (with activation, batch normalization)
+    SemiGCN convolution layer (with activation, batch normalization)
     """
 
     def __init__(self, in_channels, out_channels, act='relu', norm=None, bias=True):
@@ -226,7 +226,7 @@ class SemiGCNConv(nn.Module):
 
 class GinConv(tg.nn.GINConv):
     """
-    Edge convolution layer (with activation, batch normalization)
+    GINConv layer (with activation, batch normalization)
     """
     def __init__(self, in_channels, out_channels, act='relu', norm=None, bias=True, aggr='add'):
         super(GinConv, self).__init__(MLP([in_channels, out_channels], act, norm, bias))
@@ -281,7 +281,7 @@ class DynConv(GraphConv):
 
 class PlainDynBlock(nn.Module):
     """
-    Residual Dynamic graph convolution block
+    Plain Dynamic graph convolution block
     """
     def __init__(self, channels,  kernel_size=9, dilation=1, conv='edge', act='relu', norm=None,
                  bias=True, res_scale=1, **kwargs):
@@ -338,7 +338,7 @@ class ResGraphBlock(nn.Module):
 
 class DenseGraphBlock(nn.Module):
     """
-    Residual Static graph convolution block
+    Dense Static graph convolution block
     """
     def __init__(self, in_channels,  out_channels, conv='edge', act='relu', norm=None, bias=True, heads=8):
         super(DenseGraphBlock, self).__init__()
