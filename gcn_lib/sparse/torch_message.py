@@ -7,19 +7,28 @@ from torch_scatter import scatter, scatter_softmax
 class GenMessagePassing(MessagePassing):
     def __init__(self, aggr='softmax',
                  t=1.0, learn_t=False,
-                 p=1.0, learn_p=False):
+                 p=1.0, learn_p=False, 
+                 y=0.0, learn_y=False):
 
-        if aggr == 'softmax' or aggr == 'softmax_sg':
+        if aggr in ['softmax_sg', 'softmax', 'softmax_sum']:
 
             super(GenMessagePassing, self).__init__(aggr=None)
             self.aggr = aggr
 
-            if learn_t and aggr == 'softmax':
+            if learn_t and (aggr == 'softmax' or aggr == 'softmax_sum'):
+                self.learn_t = True
                 self.t = torch.nn.Parameter(torch.Tensor([t]), requires_grad=True)
             else:
+                self.learn_t = False
                 self.t = t
 
-        elif aggr == 'power':
+            if aggr == 'softmax_sum':
+                if learn_y:
+                    self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
+                else:
+                    self.y = torch.Tensor(y)
+
+        elif aggr in ['power', 'power_sum']:
 
             super(GenMessagePassing, self).__init__(aggr=None)
             self.aggr = aggr
@@ -28,6 +37,12 @@ class GenMessagePassing(MessagePassing):
                 self.p = torch.nn.Parameter(torch.Tensor([p]), requires_grad=True)
             else:
                 self.p = p
+
+            if aggr == 'power_sum':
+                if learn_y:
+                    self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
+                else:
+                    self.y = torch.Tensor(y)
         else:
             super(GenMessagePassing, self).__init__(aggr=aggr)
 
@@ -36,26 +51,39 @@ class GenMessagePassing(MessagePassing):
         if self.aggr in ['add', 'mean', 'max', None]:
             return super(GenMessagePassing, self).aggregate(inputs, index, ptr, dim_size)
 
-        elif self.aggr == 'softmax':
-            out = scatter_softmax(inputs*self.t, index, dim=self.node_dim)
-            out = scatter(inputs*out, index, dim=self.node_dim,
-                          dim_size=dim_size, reduce='sum')
-            return out
+        elif self.aggr in ['softmax_sg', 'softmax', 'softmax_sum']:
 
-        elif self.aggr == 'softmax_sg':
-            with torch.no_grad():
+            if self.learn_t:
                 out = scatter_softmax(inputs*self.t, index, dim=self.node_dim)
+            else:
+                with torch.no_grad():
+                    out = scatter_softmax(inputs*self.t, index, dim=self.node_dim)
+
             out = scatter(inputs*out, index, dim=self.node_dim,
                           dim_size=dim_size, reduce='sum')
+
+            if self.aggr == 'softmax_sum':
+                self.sigmoid_y = torch.sigmoid(self.y)
+                degrees = degree(index).unsqueeze(1)
+                out = torch.pow(degrees, self.sigmoid_y) * out
+
             return out
 
-        elif self.aggr == 'power':
+ 
+        elif self.aggr in ['power', 'power_sum']:
             min_value, max_value = 1e-7, 1e1
             torch.clamp_(inputs, min_value, max_value)
             out = scatter(torch.pow(inputs, self.p), index, dim=self.node_dim,
                           dim_size=dim_size, reduce='mean')
             torch.clamp_(out, min_value, max_value)
-            return torch.pow(out, 1/self.p)
+            out = torch.pow(out, 1/self.p)
+
+            if self.aggr == 'power_sum':
+                self.sigmoid_y = torch.sigmoid(self.y)
+                degrees = degree(index).unsqueeze(1)
+                out = torch.pow(degrees, self.sigmoid_y) * out
+                
+            return out
 
         else:
             raise NotImplementedError('To be implemented')
