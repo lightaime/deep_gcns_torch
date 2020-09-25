@@ -43,7 +43,7 @@ class GenMessagePassing(MessagePassing):
                 if learn_y:
                     self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
                 else:
-                    self.y = torch.Tensor(y)
+                    self.y = torch.Tensor([y])
         else:
             super(GenMessagePassing, self).__init__(aggr=aggr)
 
