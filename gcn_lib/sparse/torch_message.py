@@ -42,7 +42,7 @@ class GenMessagePassing(MessagePassing):
                 if learn_y:
                     self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
                 else:
-                    self.y = torch.Tensor(y)
+                    self.y = torch.Tensor([y])
         else:
             super(GenMessagePassing, self).__init__(aggr=aggr)
 
@@ -64,7 +64,7 @@ class GenMessagePassing(MessagePassing):
 
             if self.aggr == 'softmax_sum':
                 self.sigmoid_y = torch.sigmoid(self.y)
-                degrees = degree(index).unsqueeze(1)
+                degrees = degree(index, num_nodes=dim_size).unsqueeze(1)
                 out = torch.pow(degrees, self.sigmoid_y) * out
 
             return out
