@@ -39,11 +39,8 @@ class DeeperGCN(torch.nn.Module):
 
         self.use_one_hot_encoding = args.use_one_hot_encoding
 
-        if aggr in ['softmax_sg', 'softmax', 'power'] and self.num_layers > 50:
-            self.checkpoint_grad = True
-            self.ckp_k = 3
-
-        if (self.learn_t or self.learn_p) and self.num_layers > 15:
+        # save gpu mem using gradient ckpt
+        if aggr not in ['add', 'max', 'mean'] and self.num_layers > 15:
             self.checkpoint_grad = True
             self.ckp_k = 9
 
