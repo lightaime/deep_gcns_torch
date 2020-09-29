@@ -24,10 +24,6 @@ class GenMessagePassing(MessagePassing):
                 self.t = t
 
             if aggr == 'softmax_sum':
-                # if learn_y:
-                #     self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
-                # else:
-                #     self.y = torch.Tensor([y])
                 self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=learn_y)
 
         elif aggr in ['power', 'power_sum']:
@@ -41,10 +37,6 @@ class GenMessagePassing(MessagePassing):
                 self.p = p
 
             if aggr == 'power_sum':
-                # if learn_y:
-                #     self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=True)
-                # else:
-                #     self.y = torch.Tensor([y])
                 self.y = torch.nn.Parameter(torch.Tensor([y]), requires_grad=learn_y)
         else:
             super(GenMessagePassing, self).__init__(aggr=aggr)
