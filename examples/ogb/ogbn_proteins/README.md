@@ -23,9 +23,9 @@ We simply apply a random partition to generate batches for both mini-batch train
 ## DyResGEN-112
 
 ### Train the model that performs best
-	python main.py --use_gpu --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
+	python main.py --use_gpu --conv_encode_edge --use_one_hot_encoding --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
 ### Test (use pre-trained model, [download](https://drive.google.com/file/d/1LjsgXZo02WgzpIJe-SQHrbrwEuQl8VQk/view?usp=sharing) from Google Drive)
-	python test.py --use_gpu --conv_encode_edge --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1
+	python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1
 ### Test by multiple evaluations (e.g. 5 times)
 
     python test.py --use_gpu --num_evals 5 --conv_encode_edge --use_one_hot_encoding --num_layers 112 --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.1 
