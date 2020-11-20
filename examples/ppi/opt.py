@@ -6,7 +6,6 @@ import numpy as np
 import torch
 import logging
 import logging.config
-from utils.tf_logger import TfLogger
 
 
 class OptInit():

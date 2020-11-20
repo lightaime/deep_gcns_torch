@@ -71,7 +71,7 @@ def train(model, train_loader, test_loader, opt):
             'lr': scheduler.get_lr()[0]
         }
         for tag, value in info.items():
-            opt.logger.scalar_summary(tag, value, opt.step)
+            opt.writer.scalar_summary(tag, value, opt.step)
 
     save_ckpt(model, optimizer, scheduler, opt, 'last')
     logging.info(

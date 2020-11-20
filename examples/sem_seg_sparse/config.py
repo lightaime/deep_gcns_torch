@@ -5,7 +5,7 @@ import shutil
 import random
 import numpy as np
 import torch
-from utils.tf_logger import TfLogger
+from torch.utils.tensorboard import SummaryWriter
 import logging
 import logging.config
 import pathlib
@@ -70,7 +70,7 @@ class OptInit:
         if self.args.phase == 'train':
             self._generate_exp_directory()
             # logger
-            self.args.logger = TfLogger(self.args.exp_dir)
+            self.args.writer = SummaryWriter(log_dir=self.args.exp_dir)
             # loss
             self.args.epoch = -1
             self.args.step = -1

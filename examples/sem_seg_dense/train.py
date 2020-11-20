@@ -86,7 +86,7 @@ def train(model, train_loader, optimizer, scheduler, criterion, opt):
                 'lr': scheduler.get_lr()[0]
             }
             for tag, value in info.items():
-                opt.logger.scalar_summary(tag, value, opt.iter)
+                opt.writer.scalar_summary(tag, value, opt.iter)
 
     # ------------------ save checkpoints
     # min or max. based on the metrics

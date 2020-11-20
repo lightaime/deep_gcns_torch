@@ -1,18 +1,18 @@
 import os
+import sys
 import datetime
 import argparse
 import shutil
 import random
 import numpy as np
 import torch
-from utils.tf_logger import TfLogger
 import logging
 import logging.config
 import pathlib
 import glob
 import time
 import uuid
-import sys
+from torch.utils.tensorboard import SummaryWriter
 
 
 class OptInit:
@@ -53,7 +53,7 @@ class OptInit:
         parser.add_argument('--block', default='res', type=str, help='graph backbone block type {plain, res, dense}')
         parser.add_argument('--conv', default='edge', type=str, help='graph conv layer {edge, mr}')
         parser.add_argument('--act', default='relu', type=str, help='activation layer {relu, prelu, leakyrelu}')
-        parser.add_argument('--norm', default='batch', type=str, help='{batch, instance} normalization')
+        parser.add_argument('--norm', default='batch', type=str, help='{batch, instance, None} normalization')
         parser.add_argument('--bias', default=True,  type=bool, help='bias of conv layer True or False')
         parser.add_argument('--n_filters', default=64, type=int, help='number of channels of deep features')
         parser.add_argument('--n_blocks', default=28, type=int, help='number of basic blocks')
@@ -72,7 +72,7 @@ class OptInit:
         if self.args.phase == 'train':
             self._generate_exp_directory()
             # logger
-            self.args.logger = TfLogger(self.args.exp_dir)
+            self.args.writer = SummaryWriter(log_dir=self.args.exp_dir)
             # loss
             self.args.epoch = -1
             self.args.step = -1
