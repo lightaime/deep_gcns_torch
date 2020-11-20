@@ -17,7 +17,7 @@ export LD_LIBRARY_PATH=/usr/local/cuda-10.0/lib64:$LD_LIBRARY_PATH
 conda create -n deepgcn
 conda activate deepgcn
 # make sure pytorch version >=1.4.0
-conda install -y pytorch=1.4.0 torchvision cudatoolkit=10.0 tensorflow=1.14.0 python=3.7 -c pytorch
+conda install -y pytorch=1.4.0 torchvision cudatoolkit=10.0 python=3.7 -c pytorch
 
 # command to install pytorch geometric, please refer to the official website for latest installation.
 #  https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html
@@ -28,7 +28,6 @@ pip install torch-spline-conv==latest+${CUDA} -f https://pytorch-geometric.com/w
 pip install torch-cluster==1.4.5
 pip install torch-geometric==1.4.3
 
-pip install --upgrade tensorflow-graphics
 # install useful modules
 pip install requests # sometimes pytorch geometric forget to install it, but it is in need
 pip install tqdm
