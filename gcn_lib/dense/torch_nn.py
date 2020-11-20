@@ -38,9 +38,9 @@ class MLP(Seq):
         m = []
         for i in range(1, len(channels)):
             m.append(Lin(channels[i - 1], channels[i], bias))
-            if act:
+            if act is not None and act.lower() != 'none':
                 m.append(act_layer(act))
-            if norm:
+            if norm is not None and norm.lower() != 'none':
                 m.append(norm_layer(norm, channels[-1]))
         super(MLP, self).__init__(*m)
 
@@ -50,9 +50,9 @@ class BasicConv(Seq):
         m = []
         for i in range(1, len(channels)):
             m.append(Conv2d(channels[i - 1], channels[i], 1, bias=bias))
-            if act:
+            if act is not None and act.lower() != 'none':
                 m.append(act_layer(act))
-            if norm:
+            if norm is not None and norm.lower() != 'none':
                 m.append(norm_layer(norm, channels[-1]))
             if drop > 0:
                 m.append(nn.Dropout2d(drop))

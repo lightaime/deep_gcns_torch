@@ -18,7 +18,7 @@ We keep using 2 Tesla V100 GPUs for distributed training.
 cd examples/sem_seg/dense
 ```
 
-Run ResGCN-28:
+Train ResGCN-28 (DeepGCN with 28 residually connected EdgeConv layers, dilated graph convolutions and batch normalization):
 ```
 CUDA_VISIBLE_DEVICES=0,1 python train.py --multi_gpus --phase train --data_dir /data/deepgcn/S3DIS
 ```

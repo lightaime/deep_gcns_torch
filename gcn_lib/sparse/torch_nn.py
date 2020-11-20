@@ -8,7 +8,6 @@ from utils.data_util import get_atom_feature_dims, get_bond_feature_dims
 ##############################
 def act_layer(act_type, inplace=False, neg_slope=0.2, n_prelu=1):
     # activation layer
-
     act = act_type.lower()
     if act == 'relu':
         layer = nn.ReLU(inplace)
@@ -61,9 +60,9 @@ class MLP(Seq):
             if (i == len(channels) - 1) and last_lin:
                 pass
             else:
-                if norm:
+                if norm is not None and norm.lower() != 'none':
                     m.append(norm_layer(norm, channels[i]))
-                if act:
+                if act is not None and act.lower() != 'none':
                     m.append(act_layer(act))
                 if drop > 0:
                     m.append(nn.Dropout2d(drop))
