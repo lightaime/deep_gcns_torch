@@ -1,7 +1,7 @@
 ## [Semantic segmentation of indoor scenes](https://arxiv.org/pdf/1904.03751.pdf)
 
 <p align="center">
-  <img src='../../misc/sem_seg_s3dis.png' width=800>
+  <img src='../../misc/sem_seg_s3dis.png' width=800>  
 </p>
 
 
@@ -46,17 +46,16 @@ CUDA_VISIBLE_DEVICES=0 python train.py  --multi_gpus --phase train --data_dir /d
 Quick test on area 5, run:
 
 ```
-python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS 
+python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --data_dir /data/deepgcn/S3DIS 
 ```
-Note: `test_path` is the path to where you put the S3DIS. In our setting, it is the same path as `data_dir`.
  
 #### Pretrained Models
 Our pretrained model is available here [google driver](https://drive.google.com/open?id=1iAJbHqiNwc4nJlP67sp1xLkl5EtC4PU_).
 
 Note: Please use our Tensorflow code if you want to reproduce the same result in the paper. 
-The performance of pytorch code is slightly worse than tensorflow. mIOU is 52.11% compared to 52.49% in the tensorflow version.
+The performance of pytorch code is slightly worse than tensorflow. mIOU is 52.11% on Area 5 compared to 52.49% in the tensorflow version.
 ```
-python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --test_path /data/deepgcn/S3DIS
+python test.py --pretrained_model checkpoints/sem_seg_dense-res-edge-28-64-ckpt_best_model.pth  --batch_size 32  --data_dir /data/deepgcn/S3DIS
 ```
 Lower the batch size if running out of memory. The batch size will not influence the test results.
 

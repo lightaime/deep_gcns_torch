@@ -26,7 +26,7 @@ pip install torch-scatter==latest+${CUDA} -f https://pytorch-geometric.com/whl/t
 pip install torch-sparse==latest+${CUDA} -f https://pytorch-geometric.com/whl/torch-1.4.0.html
 pip install torch-spline-conv==latest+${CUDA} -f https://pytorch-geometric.com/whl/torch-1.4.0.html
 pip install torch-cluster==1.4.5
-pip install torch-geometric
+pip install torch-geometric==1.4.3
 
 pip install --upgrade tensorflow-graphics
 # install useful modules
