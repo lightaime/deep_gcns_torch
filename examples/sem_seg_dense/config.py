@@ -22,7 +22,8 @@ class OptInit:
         # base
         parser.add_argument('--phase', default='test', type=str, help='train or test(default)')
         parser.add_argument('--use_cpu', action='store_true', help='use cpu?')
-        parser.add_argument('--exp_name', type=str, default='sem_seg_dense', help='prefix of saved file')
+        parser.add_argument('--exp_name', type=str, default='sem_seg_dense', help='prefix of exp directory')
+        parser.add_argument('--job_name', type=str, default='', help='full name of exp directory')
         parser.add_argument('--root_dir', type=str, default='log', help='the dir of experiment results')
 
         # dataset args
@@ -70,7 +71,13 @@ class OptInit:
 
         # ===> generate log dir
         if self.args.phase == 'train':
-            self._generate_exp_directory()
+            # generate exp_dir when pretrained model does not exist, otherwise continue training using the pretrained
+            if not self.args.pretrained_model:
+                self._generate_exp_directory()
+            else:
+                self.args.exp_dir = os.path.dirname(os.path.dirname(self.args.pretrained_model))
+                self.args.ckpt_dir = os.path.join(self.args.exp_dir, "checkpoint")
+
             # logger
             self.args.writer = SummaryWriter(log_dir=self.args.exp_dir)
             # loss
@@ -94,15 +101,17 @@ class OptInit:
         model checkpoints using the provided model directory
         but we add a sub-folder for each separate experiment:
         """
-        timestamp = time.strftime('%Y%m%d-%H%M%S')
+        timestamp = time.strftime('%Y%m%d_%H%M%S')
 
-        self.args.jobname = '{}-{}-{}-n{}-C{}-k{}-drop{}-lr{}_B{}' \
-            .format(self.args.exp_name,
-                    self.args.block, self.args.conv, self.args.n_blocks, self.args.n_filters,
-                    self.args.k, self.args.dropout,  self.args.lr, self.args.batch_size)
-
-        experiment_string = '_'.join([self.args.jobname, timestamp, str(uuid.uuid4())])
-        self.args.exp_dir = os.path.join(self.args.root_dir, experiment_string)
+        # One can define the jobname by the code below.
+        # In the current version, we decide to define the jobname directly using exp_name.
+        # self.args.jobname = '{}-{}-{}-n{}-C{}-norm_{}-lr{}_B{}' \
+        #     .format(self.args.exp_name,
+        #             self.args.block, self.args.conv, self.args.n_blocks, self.args.n_filters,
+        #             self.args.norm, self.args.lr, self.args.batch_size)
+        if not self.args.job_name:
+            self.args.job_name = '_'.join([self.args.exp_name, timestamp, str(uuid.uuid4())])
+        self.args.exp_dir = os.path.join(self.args.root_dir, self.args.job_name)
         self.args.ckpt_dir = os.path.join(self.args.exp_dir, "checkpoint")
         self.args.code_dir = os.path.join(self.args.exp_dir, "code")
         pathlib.Path(self.args.exp_dir).mkdir(parents=True, exist_ok=True)
@@ -134,7 +143,6 @@ class OptInit:
             raise ValueError('Invalid log level: {}'.format(self.args.loglevelloglevel))
 
             # configure logger to display and save log data
-        # log_format = logging.Formatter('%(asctime)s [%(levelname)-5.5s] [%(filename)s:%(lineno)04d] %(message)s')
         log_format = logging.Formatter('%(asctime)s %(message)s')
         logger = logging.getLogger()
         logger.setLevel(numeric_level)
