@@ -105,10 +105,10 @@ def load_pretrained_optimizer(pretrained_model, optimizer, scheduler, lr, use_ck
 
 
 def save_checkpoint(state, is_best, save_path, postname):
-    filename = '{}/{}_ckpt_{}.pth'.format(save_path, postname, int(state['epoch']))
+    filename = '{}/{}_{}.pth'.format(save_path, postname, int(state['epoch']))
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, '{}/{}_model_best.pth'.format(save_path, postname))
+        shutil.copyfile(filename, '{}/{}_best.pth'.format(save_path, postname))
 
 
 def change_ckpt_dict(model, optimizer, scheduler, opt):
