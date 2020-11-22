@@ -18,6 +18,7 @@ conda create -n deepgcn
 conda activate deepgcn
 # make sure pytorch version >=1.4.0
 conda install -y pytorch=1.4.0 torchvision cudatoolkit=10.0 python=3.7 -c pytorch
+pip install tensorboard
 
 # command to install pytorch geometric, please refer to the official website for latest installation.
 #  https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html
@@ -27,7 +28,7 @@ pip install torch-sparse==latest+${CUDA} -f https://pytorch-geometric.com/whl/to
 pip install torch-spline-conv==latest+${CUDA} -f https://pytorch-geometric.com/whl/torch-1.4.0.html
 pip install torch-cluster==1.4.5
 pip install torch-geometric==1.4.3
+pip install requests
 
 # install useful modules
-pip install requests # sometimes pytorch geometric forget to install it, but it is in need
 pip install tqdm
