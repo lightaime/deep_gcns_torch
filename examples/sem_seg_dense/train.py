@@ -26,6 +26,7 @@ def main():
     model = DenseDeepGCN(opt).to(opt.device)
     if opt.multi_gpus:
         model = DataParallel(DenseDeepGCN(opt)).to(opt.device)
+
     logging.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
     logging.info(model)
@@ -45,21 +46,41 @@ def main():
     for _ in range(opt.epoch, opt.total_epochs):
         opt.epoch += 1
         logging.info('Epoch:{}'.format(opt.epoch))
-        train(model, train_loader, optimizer, scheduler, criterion, opt)
+        train(model, train_loader, optimizer, criterion, opt)
         if opt.epoch % opt.eval_freq == 0 and opt.eval_freq != -1:
             test(model, test_loader, opt)
         scheduler.step()
+
+        # ------------------ save checkpoints
+        # min or max. based on the metrics
+        is_best = (opt.test_value < opt.best_value)
+        opt.best_value = max(opt.test_value, opt.best_value)
+        model_cpu = {k: v.cpu() for k, v in model.state_dict().items()}
+        save_checkpoint({
+            'epoch': opt.epoch,
+            'state_dict': model_cpu,
+            'optimizer_state_dict': optimizer.state_dict(),
+            'scheduler_state_dict': scheduler.state_dict(),
+            'best_value': opt.best_value,
+        }, is_best, opt.ckpt_dir, opt.exp_name)
+
+        # ------------------ tensorboard log
+        info = {
+            'loss': opt.losses.avg,
+            'test_value': opt.test_value,
+            'lr': scheduler.get_lr()[0]
+        }
+        opt.writer.add_scalars('epoch', info, opt.iter)
+
     logging.info('Saving the final model.Finish!')
 
 
-def train(model, train_loader, optimizer, scheduler, criterion, opt):
+def train(model, train_loader, optimizer, criterion, opt):
     opt.losses.reset()
     model.train()
     with tqdm(train_loader) as tqdm_loader:
         for i, data in enumerate(tqdm_loader):
             opt.iter += 1
-
-            # tqdm progress bar
             desc = 'Epoch:{}  Iter:{}  [{}/{}]  Loss:{Losses.avg: .4f}'\
                 .format(opt.epoch, opt.iter, i + 1, len(train_loader), Losses=opt.losses)
             tqdm_loader.set_description(desc)
@@ -78,29 +99,6 @@ def train(model, train_loader, optimizer, scheduler, criterion, opt):
             optimizer.step()
 
             opt.losses.update(loss.item())
-
-            # ------------------ tensor board log
-            info = {
-                'loss': loss,
-                'test_value': opt.test_value,
-                'lr': scheduler.get_lr()[0]
-            }
-            for tag, value in info.items():
-                opt.writer.scalar_summary(tag, value, opt.iter)
-
-    # ------------------ save checkpoints
-    # min or max. based on the metrics
-    is_best = (opt.test_value < opt.best_value)
-    opt.best_value = max(opt.test_value, opt.best_value)
-
-    model_cpu = {k: v.cpu() for k, v in model.state_dict().items()}
-    save_checkpoint({
-        'epoch': opt.epoch,
-        'state_dict': model_cpu,
-        'optimizer_state_dict': optimizer.state_dict(),
-        'scheduler_state_dict': scheduler.state_dict(),
-        'best_value': opt.best_value,
-    }, is_best, opt.ckpt_dir, opt.exp_name)
 
 
 def test(model, loader, opt):
@@ -132,7 +130,7 @@ def test(model, loader, opt):
     ious = np.divide(np.sum(Is, 0), np.sum(Us, 0))
     ious[np.isnan(ious)] = 1
     iou = np.mean(ious)
-    if opt.phase=='test':
+    if opt.phase == 'test':
         for cl in range(opt.n_classes):
             logging.info("===> mIOU for class {}: {}".format(cl, ious[cl]))
 
@@ -142,5 +140,3 @@ def test(model, loader, opt):
 
 if __name__ == '__main__':
     main()
-
-
