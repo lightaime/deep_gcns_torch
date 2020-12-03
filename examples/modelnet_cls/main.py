@@ -1,18 +1,17 @@
 import __init__
 import numpy as np
 import logging
-
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from config import OptInit
 from architecture import DeepGCN
-
 import sklearn.metrics as metrics
 from utils.ckpt_util import load_pretrained_models, load_pretrained_optimizer
 from utils.metrics import AverageMeter
 from utils.loss import SmoothCrossEntropy
 from data import ModelNet40
+from tqdm import tqdm
 
 
 def train(model, train_loader, test_loader, opt):
@@ -71,14 +70,14 @@ def train(model, train_loader, test_loader, opt):
             'lr': scheduler.get_lr()[0]
         }
         for tag, value in info.items():
-            opt.writer.scalar_summary(tag, value, opt.step)
+            opt.writer.add_scalar(tag, value, opt.step)
 
     save_ckpt(model, optimizer, scheduler, opt, 'last')
     logging.info(
         'Saving the final model.Finish! Best Test Overall Acc {:.4f}, Its test avg acc {:.4f}. '
         'Last Test Overall Acc {:.4f}, Its test avg acc {:.4f}.'.
-            format(best_test_overall_acc, avg_acc_when_best,
-                   test_overall_acc, test_class_acc))
+        format(best_test_overall_acc, avg_acc_when_best,
+               test_overall_acc, test_class_acc))
 
 
 def train_step(model, train_loader, optimizer, criterion, opt):
@@ -86,7 +85,7 @@ def train_step(model, train_loader, optimizer, criterion, opt):
 
     train_pred = []
     train_true = []
-    for data, label in train_loader:
+    for data, label in tqdm(train_loader):
         data, label = data.to(opt.device), label.to(opt.device).squeeze()
         data = data.permute(0, 2, 1).unsqueeze(-1)
 
@@ -136,7 +135,7 @@ def infer(model, test_loader, criterion, opt):
 
 def save_ckpt(model, optimizer, scheduler, opt, name_post):
     # ------------------ save ckpt
-    filename = '{}/{}_model.pth'.format(opt.ckpt_dir, opt.jobname + '-' + name_post)
+    filename = '{}/{}_model.pth'.format(opt.ckpt_dir, opt.exp_name + '-' + name_post)
     model_cpu = {k: v.cpu() for k, v in model.state_dict().items()}
     state = {
         'epoch': opt.epoch,
@@ -150,8 +149,8 @@ def save_ckpt(model, optimizer, scheduler, opt, name_post):
 
 
 if __name__ == '__main__':
-    opt = OptInit()._get_args()
-    logging.info('===> Creating dataloader ...')
+    opt = OptInit().get_args()
+    logging.info('===> Creating data-loader ...')
 
     train_loader = DataLoader(ModelNet40(data_dir=opt.data_dir, partition='train', num_points=opt.num_points),
                               num_workers=8, batch_size=opt.batch_size, shuffle=True, drop_last=True)
@@ -163,9 +162,12 @@ if __name__ == '__main__':
     logging.info('===> Loading ModelNet40 from {}. number of classes equal to {}'.format(opt.data_dir, opt.n_classes))
 
     logging.info('===> Loading the network ...')
-    model = DeepGCN(opt).to(opt.device)
+    model = DeepGCN(opt)
     if opt.multi_gpus:
-        model = nn.DataParallel(model).to(opt.device)
+        model = nn.DataParallel(model)
+    model = model.to(opt.device)
+    logging.info(model)
+
     logging.info('===> loading pre-trained ...')
     model, opt.best_value, opt.epoch = load_pretrained_models(model, opt.pretrained_model, opt.phase)
 
@@ -177,5 +179,4 @@ if __name__ == '__main__':
         opt.test_losses = AverageMeter()
         test_overall_acc, test_class_acc, opt = infer(model, test_loader, criterion, opt)
         logging.info(
-            'Test Overall Acc {:.4f}, Its test avg acc {:.4f}.'.
-                format(test_overall_acc, test_class_acc))
+            'Test Overall Acc {:.4f}, Its test avg acc {:.4f}.'.format(test_overall_acc, test_class_acc))
