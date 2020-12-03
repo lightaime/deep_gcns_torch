@@ -72,22 +72,25 @@ class BasicConv(Seq):
                 m.bias.data.zero_()
 
 
-def batched_index_select(inputs, index):
+def batched_index_select(x, idx):
+    r"""fetches neighbors features from a given neighbor idx
+
+    Args:
+        x (Tensor): input feature Tensor
+                :math:`\mathbf{X} \in \mathbb{R}^{B \times C \times N \times 1}`.
+        idx (Tensor): edge_idx
+                :math:`\mathbf{X} \in \mathbb{R}^{B \times N \times l}`.
+    Returns:
+        Tensor: output neighbors features
+            :math:`\mathbf{X} \in \mathbb{R}^{B \times C \times N \times k}`.
     """
+    batch_size, num_dims, num_vertices = x.shape[:3]
+    k = idx.shape[-1]
+    idx_base = torch.arange(0, batch_size, device=idx.device).view(-1, 1, 1) * num_vertices
+    idx = idx + idx_base
+    idx = idx.contiguous().view(-1)
 
-    :param inputs: torch.Size([batch_size, num_dims, num_vertices, 1])
-    :param index: torch.Size([batch_size, num_vertices, k])
-    :return: torch.Size([batch_size, num_dims, num_vertices, k])
-    """
-
-    batch_size, num_dims, num_vertices, _ = inputs.shape
-    k = index.shape[2]
-    idx = torch.arange(0, batch_size) * num_vertices
-    idx = idx.view(batch_size, -1)
-
-    inputs = inputs.transpose(2, 1).contiguous().view(-1, num_dims)
-    index = index.view(batch_size, -1) + idx.type(index.dtype).to(inputs.device)
-    index = index.view(-1)
-
-    return torch.index_select(inputs, 0, index).view(batch_size, -1, num_dims).transpose(2, 1).view(batch_size, num_dims, -1, k)
-
+    x = x.transpose(2, 1)
+    feature = x.contiguous().view(batch_size * num_vertices, -1)[idx, :]
+    feature = feature.view(batch_size, num_vertices, k, num_dims).permute(0, 3, 1, 2).contiguous()
+    return feature
