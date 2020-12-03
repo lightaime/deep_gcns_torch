@@ -18,7 +18,7 @@ class DeepGCN(torch.nn.Module):
         bias = opt.bias
         knn = 'matrix'  # implement knn using matrix multiplication
         epsilon = opt.epsilon
-        stochastic = opt.stochastic
+        stochastic = opt.use_stochastic
         conv = opt.conv
         c_growth = channels
         emb_dims = opt.emb_dims
@@ -45,7 +45,7 @@ class DeepGCN(torch.nn.Module):
                                       for _ in range(self.n_blocks - 1)])
             fusion_dims = int(channels + c_growth * (self.n_blocks - 1))
         else:
-            # Plain GCN. No dilation, no stochastic
+            # Plain GCN. No dilation, no stochastic, no residual connections
             stochastic = False
 
             self.backbone = Seq(*[PlainDynBlock2d(channels, k, 1, conv, act, norm,
@@ -54,7 +54,6 @@ class DeepGCN(torch.nn.Module):
 
             fusion_dims = int(channels+c_growth*(self.n_blocks-1))
 
-        # fusion_dims = int((channels + channels + c_growth*self.num_backbone_layers)*(self.num_backbone_layers+1)//2)
         self.fusion_block = BasicConv([fusion_dims, emb_dims], 'leakyrelu', norm, bias=False)
         self.prediction = Seq(*[BasicConv([emb_dims * 2, 512], 'leakyrelu', norm, drop=opt.dropout),
                                 BasicConv([512, 256], 'leakyrelu', norm, drop=opt.dropout),
@@ -109,7 +108,6 @@ if __name__ == '__main__':
 
     feats = torch.rand((2, 3, 1024, 1), dtype=torch.float).to(args.device)
     num_neighbors = 20
-
 
     print('Input size {}'.format(feats.size()))
     net = DeepGCN(args).to(args.device)
