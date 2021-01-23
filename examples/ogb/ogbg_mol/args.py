@@ -54,7 +54,7 @@ class ArgsInit(object):
                             help='the power of PowerMean')
         parser.add_argument('--learn_t', action='store_true')
         parser.add_argument('--learn_p', action='store_true')
-        parser.add_argument('--y', type=float, default=0.5,
+        parser.add_argument('--y', type=float, default=0.0,
                             help='the power of softmax_sum and powermean_sum')
         parser.add_argument('--learn_y', action='store_true')
 
