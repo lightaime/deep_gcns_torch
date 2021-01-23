@@ -20,9 +20,9 @@ class ArgsInit(object):
         parser.add_argument('--use_gpu', action='store_true')
         parser.add_argument('--device', type=int, default=0,
                             help='which gpu to use if any (default: 0)')
-        parser.add_argument('--epochs', type=int, default=500,
-                            help='number of epochs to train (default: 500)')
-        parser.add_argument('--lr', type=float, default=0.01,
+        parser.add_argument('--epochs', type=int, default=400,
+                            help='number of epochs to train (default: 400)')
+        parser.add_argument('--lr', type=float, default=0.001,
                             help='learning rate set for optimizer.')
         parser.add_argument('--dropout', type=float, default=0.0)
         parser.add_argument('--batch_size', type=int, default=64 * 1024,
@@ -57,9 +57,15 @@ class ArgsInit(object):
                             help='the power of PowerMean')
         parser.add_argument('--learn_t', action='store_true')
         parser.add_argument('--learn_p', action='store_true')
+        parser.add_argument('--y', type=float, default=0.0,
+                            help='the power of softmax_sum and powermean_sum')
+        parser.add_argument('--learn_y', action='store_true')
+
         # message norm
         parser.add_argument('--msg_norm', action='store_true')
+        parser.add_argument('--scale_msg', action='store_true')
         parser.add_argument('--learn_msg_scale', action='store_true')
+
         # save model
         parser.add_argument('--model_save_path', type=str, default='model_ckpt',
                             help='the directory used to save models')
