@@ -34,3 +34,10 @@ pip install requests
 # install useful modules
 pip install tqdm
 
+# additional environment required by deepergcn
+pip install ogb
+### check the version of ogb installed, if it is not the latest
+python -c "import ogb; print(ogb.__version__)"
+# please update the version by running
+pip install -U ogb
+
