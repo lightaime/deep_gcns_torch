@@ -11,7 +11,7 @@ import statistics
 from ogb.graphproppred import PygGraphPropPredDataset, Evaluator
 
 
-def train(model, device, loader, optimizer, task_type):
+def train(model, device, loader, optimizer, task_type, grad_clip=0.):
     loss_list = []
     model.train()
 
@@ -30,6 +30,12 @@ def train(model, device, loader, optimizer, task_type):
                 loss = reg_criterion(pred.to(torch.float32)[is_labeled], batch.y.to(torch.float32)[is_labeled])
 
             loss.backward()
+
+            if grad_clip > 0:
+                torch.nn.utils.clip_grad_value_(
+                    model.parameters(),
+                    grad_clip)
+
             optimizer.step()
 
             loss_list.append(loss.item())
@@ -112,7 +118,7 @@ def main():
         logging.info("=====Epoch {}".format(epoch))
         logging.info('Training...')
 
-        epoch_loss = train(model, device, train_loader, optimizer, dataset.task_type)
+        epoch_loss = train(model, device, train_loader, optimizer, dataset.task_type, grad_clip=args.grad_clip)
 
         logging.info('Evaluating...')
         train_result = eval(model, device, train_loader, evaluator)[dataset.eval_metric]

@@ -30,6 +30,9 @@ class ArgsInit(object):
         parser.add_argument('--lr', type=float, default=0.01,
                             help='learning rate set for optimizer.')
         parser.add_argument('--dropout', type=float, default=0.5)
+        parser.add_argument('--grad_clip', type=float, default=0.,
+                            help='gradient clipping')
+
         # model
         parser.add_argument('--num_layers', type=int, default=3,
                             help='the number of layers of the networks')
