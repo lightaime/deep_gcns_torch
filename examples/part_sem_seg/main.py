@@ -118,27 +118,29 @@ def test(model, loader, opt):
             pred_np = pred.cpu().numpy()
             target_np = gt.cpu().numpy()
 
-            cur_shape_iou_tot = 0.0
-            cur_shape_iou_cnt = 0
+            batch_size = pred.shape[0]
+            for b in range(batch_size):
+                cur_shape_iou_tot = 0.0
+                cur_shape_iou_cnt = 0
 
-            for cl in range(opt.n_classes):
-                cur_gt_mask = (target_np == cl)
-                cur_pred_mask = (pred_np == cl)
+                for cl in range(opt.n_classes):
+                    cur_gt_mask = (target_np[b] == cl)
+                    cur_pred_mask = (pred_np[b] == cl)
 
-                I = np.sum(np.logical_and(cur_pred_mask, cur_gt_mask), dtype=np.float32)
-                U = np.sum(np.logical_or(cur_pred_mask, cur_gt_mask), dtype=np.float32)
+                    I = np.sum(np.logical_and(cur_pred_mask, cur_gt_mask), dtype=np.float32)
+                    U = np.sum(np.logical_or(cur_pred_mask, cur_gt_mask), dtype=np.float32)
 
-                if U > 0:
-                    part_intersect[cl] += I
-                    part_union[cl] += U
+                    if U > 0:  # or if U > 0 or I > 0:
+                        part_intersect[cl] += I
+                        part_union[cl] += U
 
-                    cur_shape_iou_tot += I / U
-                    cur_shape_iou_cnt += 1.
+                        cur_shape_iou_tot += I / U
+                        cur_shape_iou_cnt += 1.
 
-            if cur_shape_iou_cnt > 0:
-                cur_shape_miou = cur_shape_iou_tot / cur_shape_iou_cnt
-                shape_iou_tot += cur_shape_miou
-                shape_iou_cnt += 1.
+                if cur_shape_iou_cnt > 0:
+                    cur_shape_miou = cur_shape_iou_tot / cur_shape_iou_cnt
+                    shape_iou_tot += cur_shape_miou
+                    shape_iou_cnt += 1.
 
     shape_mIoU = shape_iou_tot / shape_iou_cnt
     part_iou = np.divide(part_intersect[1:], part_union[1:])
