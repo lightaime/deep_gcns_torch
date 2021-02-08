@@ -61,7 +61,19 @@ python -u eval.py --phase test --category 1 --pretrained_model checkpoints/Partn
 ```
 2. step2
 To visualize the output of a trained model please use `visualize.py`.
-Define the category's name and model number in the script and run below:
+Define the path to the result folder (`--dir_path`), category's number (`--category`), the No. of model instance (`--obj_no`), the folders to visualize (`--folders`) and run below:
 ```
-python -u visualize.py
+python -u visualize.py --dir_path /change/the/path/to/your/result/ --category 1 --obj_no 0 --folders res
 ```
+`dir_path` is the path to the folder of your result, the structure is the following: 
+    
+    dir_path
+        ├── res      # result folder for ResGCN
+             ├── Bed    # result of Bed class
+             ├── Bottle # result of Bottle class
+             ...        # result of other classes
+             
+        ├── plain    # result folder for PlainGCN
+             ├── Bed    # result of Bed class
+             ├── Bottle # result of Bottle class
+             ...        # result of other classes

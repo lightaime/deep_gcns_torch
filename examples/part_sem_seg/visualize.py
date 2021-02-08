@@ -41,11 +41,13 @@ folder_paths = list(map(lambda x: osp.join(args.dir_path, x, category), folders)
 file_name_pred = '_'.join([category, str(obj_no), 'pred.obj'])
 file_name_gt = '_'.join([category, str(obj_no), 'gt.obj'])
 
+texts = folders.copy()
+texts.insert(0, 'Ground Truth')
 # show Ground Truth, PlainGCN, ResGCN
 visualize_part_seg(file_name_pred,
                    file_name_gt,
                    folder_paths,
                    limit=-1,
-                   text=['Ground Truth', 'PlainGCN-28', 'ResGCN-28'],
+                   text=texts,
                    interactive=True,
                    orientation='horizontal')
