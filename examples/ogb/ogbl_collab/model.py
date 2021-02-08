@@ -64,7 +64,7 @@ class DeeperGCN(torch.nn.Module):
                               aggr=aggr,
                               t=t, learn_t=self.learn_t,
                               p=p, learn_p=self.learn_p,
-                              y=y, learn_y=self.learn_p,
+                              y=y, learn_y=self.learn_y,
                               msg_norm=self.msg_norm, learn_msg_scale=learn_msg_scale,
                               norm=norm, mlp_layers=mlp_layers)
             else:
