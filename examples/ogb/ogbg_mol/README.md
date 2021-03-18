@@ -16,7 +16,7 @@ The code is shared by two molecular datasets: ogbg_molhiv and ogbg_molpcba.
     --epochs 300
     --lr 0.01
 	--dropout 0.5
-	--graph_pooling mean  #options: [mean, max, add]
+	--graph_pooling mean  #options: [mean, max, sum]
 ## ogbg_molhiv: DyResGEN
 ### Train
 	python main.py --use_gpu --conv_encode_edge --num_layers 7 --dataset ogbg-molhiv --block res+ --gcn_aggr softmax --t 1.0 --learn_t --dropout 0.2
