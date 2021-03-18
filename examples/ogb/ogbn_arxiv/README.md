@@ -4,7 +4,7 @@
 	--self_loop False
     --block res+ 	#options: [plain, res, res+]
     --conv gen
-    --gcn_aggr max 	#options: [max, mean, add, softmax_sg, softmax, power]
+    --gcn_aggr max 	#options: [max, mean, add, softmax, softmax_sg, softmax_sum, power, power_sum]
     --num_layers 3
 	--mlp_layers 1
     --norm batch
