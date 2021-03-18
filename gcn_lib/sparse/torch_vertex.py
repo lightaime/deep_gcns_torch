@@ -26,7 +26,7 @@ class GENConv(GenMessagePassing):
 
         super(GENConv, self).__init__(aggr=aggr,
                                       t=t, learn_t=learn_t,
-                                      p=p, learn_p=learn_p, 
+                                      p=p, learn_p=learn_p,
                                       y=y, learn_y=learn_y)
 
         channels_list = [in_dim]
@@ -59,8 +59,6 @@ class GENConv(GenMessagePassing):
                 self.edge_encoder = torch.nn.Linear(edge_feat_dim, in_dim)
 
     def forward(self, x, edge_index, edge_attr=None):
-        x = x
-
         if self.encode_edge and edge_attr is not None:
             edge_emb = self.edge_encoder(edge_attr)
         else:
