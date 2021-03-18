@@ -6,7 +6,7 @@ The code is shared by two molecular datasets: ogbg_molhiv and ogbg_molpcba.
 	--batch_size 32
     --block res+	#options: [plain, res, res+]
     --conv gen
-    --gcn_aggr max 	#options: [max, mean, add, softmax_sg, softmax, power]
+    --gcn_aggr max 	#options: [max, mean, add, softmax, softmax_sg, softmax_sum, power, power_sum]
     --num_layers 3
     --conv_encode_edge False
     --add_virtual_node False

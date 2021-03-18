@@ -3,7 +3,7 @@
 	--use_gpu False 
     --block res+ 	#options: [plain, res, res+]
     --conv gen
-    --gcn_aggr max 	#options: [max, mean, add, softmax_sg, softmax, power]
+    --gcn_aggr max 	#options: [max, mean, add, softmax, softmax_sg, softmax_sum, power, power_sum]
     --num_layers 3 #the number of layers of DeeperGCN model
     --lp_num_layers 3 #the number of layers of the link predictor model
 	--mlp_layers 1

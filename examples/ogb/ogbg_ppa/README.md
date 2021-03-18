@@ -7,7 +7,7 @@ We initialize the features of nodes of ogbg_ppa dataset through aggregating the 
     --aggr add		#options: [mean, max, add]
     --block res+	#options: [plain, res, res+]
     --conv gen
-    --gcn_aggr max 	#options: [max, mean, add, softmax_sg, softmax, power]
+    --gcn_aggr max 	#options: [max, mean, add, softmax, softmax_sg, softmax_sum, power, power_sum]
     --num_layers 3
     --conv_encode_edge False
 	--mlp_layers 2

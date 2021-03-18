@@ -8,7 +8,7 @@ We simply apply a random partition to generate batches for both mini-batch train
     --aggr add 	#options: [mean, max, add]
     --block plain 	#options: [plain, res, res+]
     --conv gen
-    --gcn_aggr max 	#options: [max, mean, add, softmax_sg, softmax, power]
+    --gcn_aggr max 	#options: [max, mean, add, softmax, softmax_sg, softmax_sum, power, power_sum]
     --num_layers 3
     --conv_encode_edge False
     --use_one_hot_encoding False
