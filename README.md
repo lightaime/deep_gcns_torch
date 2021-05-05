@@ -56,13 +56,12 @@ Please cite our paper if you find anything helpful,
 ```
 
 ```
-@misc{li2019deepgcns_journal,
-    title={DeepGCNs: Making GCNs Go as Deep as CNNs},
-    author={Guohao Li and Matthias Müller and Guocheng Qian and Itzel C. Delgadillo and Abdulellah Abualshour and Ali Thabet and Bernard Ghanem},
-    year={2019},
-    eprint={1910.06849},
-    archivePrefix={arXiv},
-    primaryClass={cs.CV}
+@article{li2021deepgcns_pami,
+  title={Deepgcns: Making gcns go as deep as cnns},
+  author={Li, Guohao and M{\"u}ller, Matthias and Qian, Guocheng and Perez, Itzel Carolina Delgadillo and Abualshour, Abdulellah and Thabet, Ali Kassem and Ghanem, Bernard},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2021},
+  publisher={IEEE}
 }
 ```
 
