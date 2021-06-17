@@ -2,7 +2,8 @@
 
 # ogbn-proteins
 
-We simply apply a random partition to generate batches for both mini-batch training and test. We set the number of partitions to be 10 for training and 5 for test, and we set the batch size to 1 subgraph.  We initialize the features of nodes through aggregating the features of their connected edges by a Sum (Add) aggregation.
+Our models RevGNN-Deep (1001 layers with 80 channels each) and RevGNN-Wide (448 layers with 224 channels each) were both trained on a single commodity GPU and achieve an ROC-AUC of 87.74 ± 0.13 and 88.24 ± 0.15 on the ogbn-proteins dataset. To the best of our knowledge, RevGNN-Deep is the deepest GNN in the literature by one order of magnitude.
+
 ## Default 
 	--use_gpu False 
     --cluster_number 10 
