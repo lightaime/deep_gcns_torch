@@ -28,21 +28,22 @@ class SharedDropout(nn.Module):
 
 class BasicBlock(nn.Module):
     def __init__(self, norm, in_channels):
+        super(BasicBlock, self).__init__()
         self.norm = norm_layer(norm, in_channels)
         self.dropout = SharedDropout()
 
-    def forward(self, x, edge_index, **kwargs):
-        dropout_mask = kwargs.get('dropout_mask', None)
-        edge_emb = kwargs.get('edge_emb', None)
+    def forward(self, x, edge_index, dropout_mask=None, edge_emb=None):
+        # dropout_mask = kwargs.get('dropout_mask', None)
+        # edge_emb = kwargs.get('edge_emb', None)
         out = self.norm(x)
         out = F.relu(out)
 
         if isinstance(self.dropout, SharedDropout):
-            if dropout_mask:
+            if dropout_mask is not None:
                 self.dropout.set_mask(dropout_mask)
         out = self.dropout(out)
 
-        if edge_emb:
+        if edge_emb is not None:
             out = self.gcn(out, edge_index, edge_emb)
         else:
             out = self.gcn(out, edge_index)

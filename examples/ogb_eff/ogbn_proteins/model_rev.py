@@ -73,8 +73,7 @@ class RevGCN(torch.nn.Module):
                           learn_msg_scale=learn_msg_scale,
                           encode_edge=conv_encode_edge,
                           edge_feat_dim=hidden_channels,
-                          norm=norm, mlp_layers=mlp_layers,
-                          dropout=self.dropout)
+                          norm=norm, mlp_layers=mlp_layers)
 
             for i in range(self.group):
                 if i == 0:
@@ -84,8 +83,7 @@ class RevGCN(torch.nn.Module):
 
 
             invertible_module = memgcn.GroupAdditiveCoupling(Fms,
-                                                             group=self.group,
-                                                             pre_shuffle=False)
+                                                             group=self.group)
 
 
             gcn = memgcn.InvertibleModuleWrapper(fn=invertible_module,
