@@ -22,7 +22,7 @@ class ArgsInit(object):
                             help='which gpu to use if any (default: 0)')
         parser.add_argument('--epochs', type=int, default=500,
                             help='number of epochs to train (default: 500)')
-        parser.add_argument('--lr', type=float, default=0.01,
+        parser.add_argument('--lr', type=float, default=0.001,
                             help='learning rate set for optimizer.')
         parser.add_argument('--dropout', type=float, default=0.5)
         # model
@@ -73,7 +73,7 @@ class ArgsInit(object):
                     '-MN_{}-LS_{}'.format(self.args.save, self.args.block, self.args.conv,
                                           self.args.num_layers, self.args.hidden_channels,
                                           self.args.dropout, self.args.gcn_aggr,
-                                          self.args.t, self.args.learn_t, 
+                                          self.args.t, self.args.learn_t,
                                           self.args.p, self.args.learn_p,
                                           self.args.y, self.args.learn_y,
                                           self.args.msg_norm, self.args.learn_msg_scale)

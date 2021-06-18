@@ -31,7 +31,7 @@ class ArgsInit(object):
                             help='number of epochs to train (default: 100)')
         parser.add_argument('--num_evals', type=int, default=1,
                             help='The number of evaluation times')
-        parser.add_argument('--lr', type=float, default=0.01,
+        parser.add_argument('--lr', type=float, default=0.001,
                             help='learning rate set for optimizer.')
         parser.add_argument('--dropout', type=float, default=0.0)
         # model

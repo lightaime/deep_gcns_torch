@@ -24,7 +24,7 @@ class ArgsInit(object):
                             help='which gpu to use if any (default: 0)')
         parser.add_argument('--epochs', type=int, default=500,
                             help='number of epochs to train (default: 500)')
-        parser.add_argument('--lr', type=float, default=0.01,
+        parser.add_argument('--lr', type=float, default=0.001,
                             help='learning rate set for optimizer.')
         parser.add_argument('--dropout', type=float, default=0.5)
         # model

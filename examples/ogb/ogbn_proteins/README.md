@@ -16,7 +16,7 @@ We simply apply a random partition to generate batches for both mini-batch train
     --norm layer
     --hidden_channels 64
     --epochs 1000
-    --lr 0.01
+    --lr 0.001
     --dropout 0.0
     --num_evals 1
 

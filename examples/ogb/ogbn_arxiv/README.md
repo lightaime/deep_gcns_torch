@@ -10,7 +10,7 @@
     --norm batch
     --hidden_channels 128
     --epochs 500
-    --lr 0.01
+    --lr 0.001
 	--dropout 0.5
 ## ResGEN
 ### Train
