@@ -17,7 +17,8 @@ We do extensive experiments to show how different components (#Layers, #Filters,
 ## Requirements
 * [Pytorch>=1.4.0](https://pytorch.org)
 * [pytorch_geometric>=1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
-* [tensorflow graphics](https://github.com/tensorflow/graphics/blob/master/tensorflow_graphics/g3doc/install.md) only used for tensorboard visualization
+* [ogb>=1.3.0](https://github.com/snap-stanford/ogb) only used for experiments on OGB datasets
+* [dgl>=0.5.3](https://github.com/dmlc/dgl) only used for the experiment `examples/ogb_eff/ogbn_arxiv_dgl`
 
 Install enviroment by runing:
 ```
@@ -38,6 +39,7 @@ source deepgcn_env_install.sh
     │   ├── part_sem_seg        # code for part segmentation on PartNet
     │   ├── ppi                 # code for node classification on PPI dataset
     │   └── ogb                 # code for node/graph property prediction on OGB datasets
+    │   └── ogb_eff             # code for node/graph property prediction on OGB datasets with memory efficiemnt GNNs
     └── ...
 
 ## How to train, test and evaluate our models
@@ -73,6 +75,15 @@ Please cite our paper if you find anything helpful,
     eprint={2006.07739},
     archivePrefix={arXiv},
     primaryClass={cs.LG}
+}
+```
+
+```
+@InProceedings{li2021gnn1000,
+    title={Training Graph Neural Networks with 1000 layers},
+    author={Guohao Li and Matthias Müller and Bernard Ghanem and Vladlen Koltun},
+    booktitle={International Conference on Machine Learning (ICML)},
+    year={2021}
 }
 ```
 
