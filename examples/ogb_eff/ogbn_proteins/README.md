@@ -73,3 +73,6 @@ Expected test ROC-AUC 87.06 ± 0.20. 32G GPU is enough. NVIDIA Tesla V100 (32GB 
 python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ --gcn_aggr max --num_layers 1001 --hidden_channels 80 --lr 0.001 --backbone rev --dropout 0.1 --group 2 --model_load_path revgnn_deep.pth  --valid_cluster_number 5 --num_evals 1
 ```
 
+### Acknowledgements
+TThe reversible module is implemented based on [MemCNN](https://github.com/silvandeleemput/memcnn).
+
