@@ -14,3 +14,8 @@ Expected results: Average test accuracy: 74.26 ± 0.17
 ```
 python3 main.py --use-norm --use-labels --n-label-iters=1 --no-attn-dst --edge-drop=0.3 --input-drop=0.25 --n-layers 5 --dropout 0.75 --n-hidden 256 --save kd --backbone rev --group 2 --alpha 0.95 --temp 0.7 --mode student
 ```
+
+### Acknowledgements
+
+Our implementation is based on two previous submissions on OGB: [GAT+label reuse+self KD](https://github.com/Espylapiza/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
+and [GAT+norm. adj.+label reuse](https://github.com/ShunliRen/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
