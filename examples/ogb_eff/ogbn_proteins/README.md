@@ -74,5 +74,5 @@ python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ 
 ```
 
 ### Acknowledgements
-TThe reversible module is implemented based on [MemCNN](https://github.com/silvandeleemput/memcnn).
+The reversible module is implemented based on [MemCNN](https://github.com/silvandeleemput/memcnn).
 
