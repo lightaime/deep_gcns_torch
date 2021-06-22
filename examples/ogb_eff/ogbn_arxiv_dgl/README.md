@@ -17,5 +17,5 @@ python3 main.py --use-norm --use-labels --n-label-iters=1 --no-attn-dst --edge-d
 
 ### Acknowledgements
 
-Our implementation is based on two previous submissions on OGB: [GAT+label reuse+self KD](https://github.com/Espylapiza/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
-and [GAT+norm. adj.+label reuse](https://github.com/ShunliRen/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
+Our implementation is based on two previous submissions on OGB: [GAT+norm. adj.+label reuse](https://github.com/Espylapiza/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
+and [GAT+label reuse+self KD](https://github.com/ShunliRen/dgl/tree/master/examples/pytorch/ogb/ogbn-arxiv)
