@@ -36,14 +36,14 @@ python main.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ 
 ``` 
 
 ### Test the RevGNN-Wide model by multiple view inference (e.g. 10 times with 3 parts)
-Pre-trained model: [download](https://github.com/lightaime/deep_gcns_torch/tree/master/examples/ogb_eff/ogbn_proteins) from Google Drive.
+Pre-trained model: [download](https://drive.google.com/drive/folders/1Bw6S0OUy8qDIZIfwQOD5I5VBjPdmN9yB?usp=sharing) from Google Drive.
  
 Expected test ROC-AUC: 88.24 ± 0.15. Need 48G GPU memory. NVIDIA RTX 6000 (48G) is recommented.
 ```
 python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ --gcn_aggr max --num_layers 448 --hidden_channels 224 --lr 0.001 --backbone rev --dropout 0.2 --group 2 --model_load_path revgnn_wide.pth  --valid_cluster_number 3 --num_evals 10
 ```
 ### Test the RevGNN-Wide model by single inference (e.g. 1 time with 5 parts)
-Pre-trained model, [download](https://github.com/lightaime/deep_gcns_torch/tree/master/examples/ogb_eff/ogbn_proteins) from Google Drive.
+Pre-trained model, [download](https://drive.google.com/drive/folders/1Bw6S0OUy8qDIZIfwQOD5I5VBjPdmN9yB?usp=sharing) from Google Drive.
  
 Expected test ROC-AUC: 87.62 ± 0.18. 32G GPU is enough. NVIDIA Tesla V100 (32GB GPU) is recommented.
 ```
@@ -58,7 +58,7 @@ python main.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ 
 ``` 
 
 ### Test the RevGNN-Deep model by multiple view inference (e.g. 10 times with 3 parts)
-Pre-trained model, [download](https://github.com/lightaime/deep_gcns_torch/tree/master/examples/ogb_eff/ogbn_proteins) from Google Drive.
+Pre-trained model, [download](https://drive.google.com/drive/folders/1Bw6S0OUy8qDIZIfwQOD5I5VBjPdmN9yB?usp=sharing) from Google Drive.
  
 Expected test ROC-AUC 87.74 ± 0.13. 32G GPU is enough. NVIDIA Tesla V100 (32GB GPU) is recommented.
 ```
@@ -66,7 +66,7 @@ python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ 
 ```
 
 ### Test the RevGNN-Deep model by single inference (e.g. 1 time with 5 parts)
-Pre-trained model, [download](https://github.com/lightaime/deep_gcns_torch/tree/master/examples/ogb_eff/ogbn_proteins) from Google Drive.
+Pre-trained model, [download](https://drive.google.com/drive/folders/1Bw6S0OUy8qDIZIfwQOD5I5VBjPdmN9yB?usp=sharing) from Google Drive.
 
 Expected test ROC-AUC 87.06 ± 0.20. 32G GPU is enough. NVIDIA Tesla V100 (32GB GPU) is recommented.
 ```
