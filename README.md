@@ -39,7 +39,7 @@ source deepgcn_env_install.sh
     │   ├── part_sem_seg        # code for part segmentation on PartNet
     │   ├── ppi                 # code for node classification on PPI dataset
     │   └── ogb                 # code for node/graph property prediction on OGB datasets
-    │   └── ogb_eff             # code for node/graph property prediction on OGB datasets with memory efficiemnt GNNs
+    │   └── ogb_eff             # code for node/graph property prediction on OGB datasets with memory efficient GNNs
     └── ...
 
 ## How to train, test and evaluate our models
