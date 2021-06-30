@@ -74,5 +74,5 @@ python test.py --use_gpu --conv_encode_edge --use_one_hot_encoding --block res+ 
 ```
 
 ### Acknowledgements
-The reversible module is implemented based on [MemCNN](https://github.com/silvandeleemput/memcnn/blob/master/LICENSE.txt) under MIT license.
+The [reversible module](../../../eff_gcn_modules/rev/gcn_revop.py) is implemented based on [MemCNN](https://github.com/silvandeleemput/memcnn/blob/master/LICENSE.txt) under MIT license.
 
