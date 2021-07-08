@@ -1,4 +1,4 @@
-"""This module is implemented based on MemCNN @ Copyright (c) 2018 Sil C. van de Leemput under MIT license."""
+"""This module is implemented by Guohao Li based on MemCNN @ Copyright (c) 2018 Sil C. van de Leemput under MIT license."""
 
 import numpy as np
 import torch
