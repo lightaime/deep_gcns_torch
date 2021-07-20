@@ -22,10 +22,11 @@ All the information of code, data, and pretrained models can be found there.
 * DeeperGCN ([Arxiv'2020](https://arxiv.org/abs/2006.07739)): [OGB](examples/ogb)
 * GNN'1000 ([ICML'2021](https://arxiv.org/abs/2106.07476)): [OGB](examples/ogb_eff)
 
-## Requirements
-* [Pytorch>=1.4.0](https://pytorch.org)
-* [pytorch_geometric>=1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
-* [ogb>=1.3.0](https://github.com/snap-stanford/ogb) only used for experiments on OGB datasets
+## Recommended Requirements
+* [Python>=3.6](https://www.python.org/)
+* [Pytorch>=1.8.0](https://pytorch.org)
+* [pytorch_geometric>=1.9.0](https://pytorch-geometric.readthedocs.io/en/latest/)
+* [ogb>=1.3.1](https://github.com/snap-stanford/ogb) only used for experiments on OGB datasets
 * [dgl>=0.5.3](https://github.com/dmlc/dgl) only used for the experiment `examples/ogb_eff/ogbn_arxiv_dgl`
 
 Install enviroment by runing:
