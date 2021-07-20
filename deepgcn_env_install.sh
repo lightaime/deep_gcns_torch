@@ -44,4 +44,4 @@ python -c "import ogb; print(ogb.__version__)"
 pip install -U ogb
 
 # additional package required for dgl implementation
-pip install dgl-cu101
+pip install dgl-cu102
