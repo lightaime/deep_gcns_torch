@@ -14,6 +14,14 @@ We do extensive experiments to show how different components (#Layers, #Filters,
   <img src='./misc/pipeline.png' width=800>
 </p>
 
+
+## How to train, test and evaluate our models
+Please look the details in `Readme.md` of each task inside `examples` folder.
+All the information of code, data, and pretrained models can be found there.
+* DeepGCNs ([ICCV'2019](https://arxiv.org/abs/1904.03751), [TPAMI'2021](https://arxiv.org/abs/1910.06849)): [S3DIS](examples/sem_seg_dense), [PartNet](examples/part_sem_seg), [ModelNet40](examples/modelnet_cls), [PPI](/examples/ppi)
+* DeeperGCN ([Arxiv'2020](https://arxiv.org/abs/2006.07739)): [OGB](examples/ogb)
+* GNN'1000 ([ICML'2021](https://arxiv.org/abs/2106.07476)): [OGB](examples/ogb_eff)
+
 ## Requirements
 * [Pytorch>=1.4.0](https://pytorch.org)
 * [pytorch_geometric>=1.3.0](https://pytorch-geometric.readthedocs.io/en/latest/)
@@ -32,6 +40,7 @@ source deepgcn_env_install.sh
     ├── gcn_lib                 # gcn library
     │   ├── dense               # gcn library for dense data (B x C x N x 1)
     │   └── sparse              # gcn library for sparse data (N x C)
+    ├── eff_gcn_modules         # modules for mem efficient gnns
     ├── examples 
     │   ├── modelnet_cls        # code for point clouds classification on ModelNet40
     │   ├── sem_seg_dense       # code for point clouds semantic segmentation on S3DIS (data type: dense)
@@ -42,9 +51,6 @@ source deepgcn_env_install.sh
     │   └── ogb_eff             # code for node/graph property prediction on OGB datasets with memory efficient GNNs
     └── ...
 
-## How to train, test and evaluate our models
-Please look the details in `Readme.md` of each task inside `examples` folder.
-All the information of code, data, and pretrained models can be found there.
 ## Citation
 Please cite our paper if you find anything helpful,
 
