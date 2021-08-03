@@ -3,7 +3,6 @@ import torch
 import torch.nn as nn
 from gcn_lib.sparse.torch_nn import norm_layer
 import torch.nn.functional as F
-from torch.utils.checkpoint import checkpoint
 import logging
 import eff_gcn_modules.rev.memgcn as memgcn
 from eff_gcn_modules.rev.rev_layer import GENBlock
@@ -14,22 +13,21 @@ class RevGCN(torch.nn.Module):
     def __init__(self, args):
         super(RevGCN, self).__init__()
 
-        self.inject_input = args.inject_input
         self.num_layers = args.num_layers
-        self.num_steps = args.num_steps
         self.dropout = args.dropout
-        self.block = args.block
         self.group = args.group
 
         hidden_channels = args.hidden_channels
         num_tasks = args.num_tasks
-        conv = args.conv
         aggr = args.gcn_aggr
 
         t = args.t
         self.learn_t = args.learn_t
         p = args.p
         self.learn_p = args.learn_p
+        y = args.y
+        self.learn_y = args.learn_y
+
         self.msg_norm = args.msg_norm
         learn_msg_scale = args.learn_msg_scale
 
@@ -40,26 +38,6 @@ class RevGCN(torch.nn.Module):
 
         self.use_one_hot_encoding = args.use_one_hot_encoding
 
-        self.checkpoint_grad = False
-        if self.num_steps > 15 or hidden_channels > 64:
-            self.checkpoint_grad = True
-            self.ckp_k = 10
-
-        print('The number of layers {}'.format(self.num_layers),
-              'Aggregation method {}'.format(aggr),
-              'block: {}'.format(self.block))
-
-        if self.block == 'res+':
-            print('LN/BN->ReLU->GraphConv->Res')
-        elif self.block == 'res':
-            print('GraphConv->LN/BN->ReLU->Res')
-        elif self.block == 'dense':
-            raise NotImplementedError('To be implemented')
-        elif self.block == "plain":
-            print('GraphConv->LN/BN->ReLU')
-        else:
-            raise Exception('Unknown block Type')
-
         self.gcns = torch.nn.ModuleList()
         self.last_norm = norm_layer(norm, hidden_channels)
 
@@ -69,6 +47,7 @@ class RevGCN(torch.nn.Module):
                           aggr=aggr,
                           t=t, learn_t=self.learn_t,
                           p=p, learn_p=self.learn_p,
+                          y=y, learn_y=self.learn_y,
                           msg_norm=self.msg_norm,
                           learn_msg_scale=learn_msg_scale,
                           encode_edge=conv_encode_edge,
@@ -143,6 +122,7 @@ class RevGCN(torch.nn.Module):
                 print('Final t {}'.format(ts))
             else:
                 logging.info('Epoch {}, t {}'.format(epoch, ts))
+
         if self.learn_p:
             ps = []
             for gcn in self.gcns:
@@ -151,6 +131,16 @@ class RevGCN(torch.nn.Module):
                 print('Final p {}'.format(ps))
             else:
                 logging.info('Epoch {}, p {}'.format(epoch, ps))
+
+        if self.learn_y:
+            ys = []
+            for gcn in self.gcns:
+                ys.append(gcn.sigmoid_y.item())
+            if final:
+                print('Final sigmoid(y) {}'.format(ys))
+            else:
+                logging.info('Epoch {}, sigmoid(y) {}'.format(epoch, ys))
+
         if self.msg_norm:
             ss = []
             for gcn in self.gcns:
