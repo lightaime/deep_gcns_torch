@@ -62,8 +62,11 @@ class ArgsInit(object):
                             help='the temperature of SoftMax')
         parser.add_argument('--p', type=float, default=1.0,
                             help='the power of PowerMean')
+        parser.add_argument('--y', type=float, default=0.0,
+                            help='the power of degrees')
         parser.add_argument('--learn_t', action='store_true')
         parser.add_argument('--learn_p', action='store_true')
+        parser.add_argument('--learn_y', action='store_true')
         # message norm
         parser.add_argument('--msg_norm', action='store_true')
         parser.add_argument('--learn_msg_scale', action='store_true')
@@ -87,7 +90,7 @@ class ArgsInit(object):
 
     def save_exp(self):
         self.args.save = '{}-B_{}-C_{}-L_{}-G_{}-S_{}_F_{}-DP_{}' \
-                    '-A_{}-GA_{}-T_{}-LT_{}-P_{}-LP_{}' \
+                    '-A_{}-GA_{}-T_{}-LT_{}-P_{}-LP_{}-Y_{}-LY_{}' \
                     '-MN_{}-LS_{}-II_{}-LR_{}-BB_{}-PE_{}'.format(self.args.save,
                                           self.args.block,
                                           self.args.conv,
@@ -100,6 +103,7 @@ class ArgsInit(object):
                                           self.args.gcn_aggr,
                                           self.args.t, self.args.learn_t,
                                           self.args.p, self.args.learn_p,
+                                          self.args.y, self.args.learn_y,
                                           self.args.msg_norm,
                                           self.args.learn_msg_scale,
                                           self.args.inject_input,
