@@ -1,3 +1,5 @@
+"""This module is implemented by Guohao Li based on MemCNN @ Copyright (c) 2018 Sil C. van de Leemput under MIT license."""
+
 import numpy as np
 import torch
 import torch.nn as nn

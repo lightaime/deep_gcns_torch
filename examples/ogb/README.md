@@ -44,7 +44,7 @@ Learning curves of 7-layer DyResGEN with ***PowerMean_Agg<sub>p</sub>(.)*** and 
 
 Install enviroment by runing:
 
-    source deeper_gcn_env.sh
+    source deepgcn_env_install.sh
     
 Please cite our paper if you find anything helpful,
     

@@ -437,7 +437,7 @@ if __name__ == "__main__":
     main()
 
 #  ******************************Teacher******************************
-#  Namespace(alpha=0.5, attn_drop=0.0, backbone='rev', cpu=False, dropout=0.75, edge_drop=0.3, gpu=0, group=2, input_drop=0.25, kd_dir='kd2', log_every=20, lr=0.002, mask_rate=0.5, mode='teacher', n_epochs=2000, n_heads=3, n_hidden=256, n_label_iters=1, n_layers=5, n_runs=10, no_attn_dst=True, plot_curves=False, save='log/kd-L5-DP0.75-H256-20210620-044728-d9034b17-88b2-45fb-bfd2-bdc7d6de3313', save_pred=False, seed=0, temp=1.0, use_labels=True, use_norm=True, wd=0)
+#  Namespace(alpha=0.5, attn_drop=0.0, backbone='rev', cpu=False, dropout=0.75, edge_drop=0.3, gpu=0, group=2, input_drop=0.25, kd_dir='./kd', log_every=20, lr=0.002, mask_rate=0.5, mode='teacher', n_epochs=2000, n_heads=3, n_hidden=256, n_label_iters=1, n_layers=5, n_runs=10, no_attn_dst=True, plot_curves=False, save='log/kd-L5-DP0.75-H256-20210620-044728-d9034b17-88b2-45fb-bfd2-bdc7d6de3313', save_pred=False, seed=0, temp=1.0, use_labels=True, use_norm=True, wd=0)
 #  Runned 10 times
 #  Val Accs:
 #  [0.7505620993993087, 0.7485150508406322, 0.7487835162253766, 0.7498909359374476, 0.7514681700728212, 0.7500922849760059, 0.7511661465149837, 0.7490184234370281, 0.7503943085338434, 0.7509312393033323]
@@ -448,7 +448,7 @@ if __name__ == "__main__":
 #  Number of params: 2098256
 
 #  ******************************Student******************************
-# Namespace(alpha=0.95, attn_drop=0.0, backbone='rev', cpu=False, dropout=0.75, edge_drop=0.3, gpu=0, group=2, input_drop=0.25, kd_dir='kd2', log_every=20, lr=0.002, mask_rate=0.5, mode='student', n_epochs=2000, n_heads=3, n_hidden=256, n_label_iters=1, n_layers=5, n_runs=10, no_attn_dst=True, plot_curves=False, save='log/kd-L5-DP0.75-H256-20210621-001327-5cb604b1-36de-46ac-9d20-3614702ece43', save_pred=False, seed=0, temp=0.7, use_labels=True, use_norm=True, wd=0)
+# Namespace(alpha=0.95, attn_drop=0.0, backbone='rev', cpu=False, dropout=0.75, edge_drop=0.3, gpu=0, group=2, input_drop=0.25, kd_dir='./kd', log_every=20, lr=0.002, mask_rate=0.5, mode='student', n_epochs=2000, n_heads=3, n_hidden=256, n_label_iters=1, n_layers=5, n_runs=10, no_attn_dst=True, plot_curves=False, save='log/kd-L5-DP0.75-H256-20210621-001327-5cb604b1-36de-46ac-9d20-3614702ece43', save_pred=False, seed=0, temp=0.7, use_labels=True, use_norm=True, wd=0)
 # Runned 10 times
 # Val Accs:
 # [0.7487499580522836, 0.748951307090842, 0.7502936340145643, 0.750159401322192, 0.7500251686298198, 0.7499916104567267, 0.7487835162253766, 0.7487835162253766, 0.750696332091681, 0.7508976811302392]
