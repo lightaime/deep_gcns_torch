@@ -51,6 +51,7 @@ def train(model, x, edge_index, y_true, train_idx, optimizer):
 def main():
 
     args = ArgsInit().save_exp()
+    logging.getLogger().setLevel(logging.INFO)
 
     if args.use_gpu:
         device = torch.device("cuda:" + str(args.device)) if torch.cuda.is_available() else torch.device("cpu")
@@ -100,7 +101,7 @@ def main():
         model.print_params(epoch=epoch)
 
         result = test(model, x, edge_index, y_true, split_idx, evaluator)
-        logging.info(result)
+        logging.info("%s" % results)
         train_accuracy, valid_accuracy, test_accuracy = result
 
         if train_accuracy > results['highest_train']:
