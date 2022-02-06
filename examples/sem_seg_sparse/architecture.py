@@ -2,6 +2,7 @@ import torch
 from torch.nn import Linear as Lin
 import torch_geometric as tg
 from gcn_lib.sparse import MultiSeq, MLP, GraphConv, PlainDynBlock, ResDynBlock, DenseDynBlock, DilatedKnnGraph
+from utils.pyg_util import scatter_
 
 
 class SparseDeepGCN(torch.nn.Module):
@@ -63,6 +64,6 @@ class SparseDeepGCN(torch.nn.Module):
             feats.append(self.backbone[i](feats[-1], batch)[0])
         feats = torch.cat(feats, dim=1)
 
-        fusion = tg.utils.scatter_('max', self.fusion_block(feats), batch)
+        fusion = scatter_('max', self.fusion_block(feats), batch)
         fusion = torch.repeat_interleave(fusion, repeats=feats.shape[0]//fusion.shape[0], dim=0)
         return self.prediction(torch.cat((fusion, feats), dim=1))

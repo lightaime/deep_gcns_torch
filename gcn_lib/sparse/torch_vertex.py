@@ -5,6 +5,7 @@ import torch_geometric as tg
 from .torch_nn import MLP, act_layer, norm_layer, BondEncoder
 from .torch_edge import DilatedKnnGraph
 from .torch_message import GenMessagePassing, MsgNorm
+from .utils.pyg_util import scatter_
 from torch_geometric.utils import remove_self_loops, add_self_loops
 
 
@@ -98,7 +99,7 @@ class MRConv(nn.Module):
 
     def forward(self, x, edge_index):
         """"""
-        x_j = tg.utils.scatter_(self.aggr, torch.index_select(x, 0, edge_index[0]) - torch.index_select(x, 0, edge_index[1]), edge_index[1], dim_size=x.shape[0])
+        x_j = scatter_(self.aggr, torch.index_select(x, 0, edge_index[0]) - torch.index_select(x, 0, edge_index[1]), edge_index[1], dim_size=x.shape[0])
         return self.nn(torch.cat([x, x_j], dim=1))
 
 
