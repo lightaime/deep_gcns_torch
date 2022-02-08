@@ -79,23 +79,15 @@ def knn_matrix(x, k=16, batch=None):
         x = x.view(batch_size, -1, x.shape[-1])
 
         neg_adj = -pairwise_distance(x.detach())
+
         _, nn_idx = torch.topk(neg_adj, k=k)
-        del neg_adj
 
         n_points = x.shape[1]
-        start_idx = torch.arange(0, n_points*batch_size, n_points).long().view(batch_size, 1, 1)
-        if x.is_cuda:
-            start_idx = start_idx.cuda()
+        start_idx = torch.arange(0, n_points * batch_size, n_points, device=x.device).view(batch_size, 1, 1)
         nn_idx += start_idx
-        del start_idx
-
-        if x.is_cuda:
-            torch.cuda.empty_cache()
 
         nn_idx = nn_idx.view(1, -1)
-        center_idx = torch.arange(0, n_points*batch_size).repeat(k, 1).transpose(1, 0).contiguous().view(1, -1)
-        if x.is_cuda:
-            center_idx = center_idx.cuda()
+        center_idx = torch.arange(0, n_points*batch_size, device=x.device).expand(k, -1).transpose(1, 0).contiguous().view(1, -1)
     return nn_idx, center_idx
 
 

@@ -1,3 +1,4 @@
+import __init__
 import torch
 from gcn_lib.dense import BasicConv, GraphConv2d, PlainDynBlock2d, ResDynBlock2d, DenseDynBlock2d, DenseDilatedKnnGraph
 from torch.nn import Sequential as Seq
@@ -89,8 +90,21 @@ if __name__ == "__main__":
 
     inputs = torch.cat((pos, x), 2).transpose(1, 2).unsqueeze(-1)
 
-    # net = DGCNNSegDense().to(device)
     net = DenseDeepGCN(args).to(device)
     print(net)
+
     out = net(inputs)
-    print(out.shape)
+
+    print(inputs.shape, out.shape)
+    import time 
+    st = time.time()
+    runs = 1000
+    
+    with torch.no_grad():
+        for i in range(runs):
+
+            out = net(inputs)
+            torch.cuda.synchronize()
+        
+    print(time.time() - st)
+
