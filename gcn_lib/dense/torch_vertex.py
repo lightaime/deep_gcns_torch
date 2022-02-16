@@ -66,8 +66,9 @@ class DynConv2d(GraphConv2d):
         else:
             self.dilated_knn_graph = DilatedKnnGraph(kernel_size, dilation, stochastic, epsilon)
 
-    def forward(self, x):
-        edge_index = self.dilated_knn_graph(x)
+    def forward(self, x, edge_index=None):
+        if edge_index is None:
+            edge_index = self.dilated_knn_graph(x)
         return super(DynConv2d, self).forward(x, edge_index)
 
     
@@ -81,8 +82,8 @@ class PlainDynBlock2d(nn.Module):
         self.body = DynConv2d(in_channels, in_channels, kernel_size, dilation, conv,
                               act, norm, bias, stochastic, epsilon, knn)
 
-    def forward(self, x):
-        return self.body(x)
+    def forward(self, x, edge_index=None):
+        return self.body(x, edge_index)
     
     
 class ResDynBlock2d(nn.Module):
@@ -96,8 +97,8 @@ class ResDynBlock2d(nn.Module):
                               act, norm, bias, stochastic, epsilon, knn)
         self.res_scale = res_scale
 
-    def forward(self, x):
-        return self.body(x) + x*self.res_scale
+    def forward(self, x, edge_index=None):
+        return self.body(x, edge_index) + x*self.res_scale
 
 
 class DenseDynBlock2d(nn.Module):
@@ -110,6 +111,6 @@ class DenseDynBlock2d(nn.Module):
         self.body = DynConv2d(in_channels, out_channels, kernel_size, dilation, conv,
                               act, norm, bias, stochastic, epsilon, knn)
 
-    def forward(self, x):
-        dense = self.body(x)
+    def forward(self, x, edge_index=None):
+        dense = self.body(x, edge_index)
         return torch.cat((x, dense), 1)

@@ -275,8 +275,9 @@ class DynConv(GraphConv):
         self.d = dilation
         self.dilated_knn_graph = DilatedKnnGraph(kernel_size, dilation, **kwargs)
 
-    def forward(self, x, batch=None):
-        edge_index = self.dilated_knn_graph(x, batch)
+    def forward(self, x, batch=None, edge_index=None):
+        if edge_index is None:
+            edge_index = self.dilated_knn_graph(x, batch)
         return super(DynConv, self).forward(x, edge_index)
 
 
@@ -291,8 +292,8 @@ class PlainDynBlock(nn.Module):
                             act, norm, bias, **kwargs)
         self.res_scale = res_scale
 
-    def forward(self, x, batch=None):
-        return self.body(x, batch), batch
+    def forward(self, x, batch=None, edge_index=None):
+        return self.body(x, batch, edge_index), batch
 
 
 class ResDynBlock(nn.Module):
@@ -306,8 +307,8 @@ class ResDynBlock(nn.Module):
                             act, norm, bias, **kwargs)
         self.res_scale = res_scale
 
-    def forward(self, x, batch=None):
-        return self.body(x, batch) + x*self.res_scale, batch
+    def forward(self, x, batch=None, edge_index=None):
+        return self.body(x, batch, edge_index) + x*self.res_scale, batch
 
 
 class DenseDynBlock(nn.Module):
@@ -319,8 +320,8 @@ class DenseDynBlock(nn.Module):
         self.body = DynConv(in_channels, out_channels, kernel_size, dilation, conv,
                             act, norm, bias, **kwargs)
 
-    def forward(self, x, batch=None):
-        dense = self.body(x, batch)
+    def forward(self, x, batch=None, edge_index=None):
+        dense = self.body(x, batch, edge_index)
         return torch.cat((x, dense), 1), batch
 
 

@@ -101,7 +101,7 @@ if __name__ == '__main__':
     # dilated knn
     parser.add_argument('--use_dilation', default=True, type=bool, help='use dilated knn or not')
     parser.add_argument('--epsilon', default=0.2, type=float, help='stochastic epsilon for gcn')
-    parser.add_argument('--stochastic', default=True, type=bool, help='stochastic for gcn, True or False')
+    parser.add_argument('--use_stochastic', default=True, type=bool, help='stochastic for gcn, True or False')
 
     args = parser.parse_args()
     args.device = torch.device('cuda')
@@ -112,5 +112,5 @@ if __name__ == '__main__':
     print('Input size {}'.format(feats.size()))
     net = DeepGCN(args).to(args.device)
     out = net(feats)
-
+    print(net)
     print('Output size {}'.format(out.size()))
